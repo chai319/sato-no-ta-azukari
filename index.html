@@ -203,6 +203,67 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
 .sh-tag{display:inline-block;font-size:.82rem;border:1.5px solid var(--sen);border-radius:999px;padding:0 8px;color:var(--usuzumi);background:var(--kami);white-space:nowrap}
 .sh-inv .it.tool{border-style:dashed;border-color:var(--usuzumi)}
 
+/* ==== スマホ（幅のせまい画面）。契約書 10.17 ==== */
+/* 作業中（ミニゲーム・全画面の頁）は、舞台を広く取るために、語りの帯と暦の帯をたたむ（#app.sh-busy は shell が付ける） */
+@media (max-width:700px){
+  #app{padding-inline:6px;padding-block:6px;gap:6px}
+  .hud{gap:4px 6px}
+  .hud .koyomi{font-size:.95rem}
+  .hud .sh-ico{min-height:40px;min-width:44px;padding:2px 10px;font-size:.82rem}
+  .hud .steps{flex:1 1 50px;min-width:40px}
+  .hud .timer{min-width:3.2em}
+  .talk{padding:6px 8px;gap:6px 8px;min-height:0}
+  .talk .line{font-size:.95rem;min-height:0}
+  .sh-inv{max-height:54px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .mg-head{padding:6px 10px 4px;gap:2px 8px;align-items:center}
+  .mg-head h2{font-size:1.02rem;margin:0}
+  .mg-head .goal{font-size:.82rem;line-height:1.3;flex:1 1 100%;order:3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .guide-btn{min-height:40px;padding:0 12px;font-size:.8rem}
+  .mg-foot{padding:4px 10px 6px;gap:6px}
+  .mg-foot .info{font-size:.82rem;line-height:1.3;flex:1 1 100%;min-width:0;margin-right:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .mg-foot .btn{min-height:44px;padding:4px 14px;font-size:.92rem}
+  .guide{padding:6px;align-items:stretch}
+  .guide-card{padding:12px 12px 0;gap:8px;touch-action:pan-y;-webkit-overflow-scrolling:touch}
+  .guide-pic{height:78px;flex:none}
+  .guide-row{grid-template-columns:4.2em minmax(0,1fr);font-size:.92rem}
+  .guide-card .btn{position:sticky;bottom:0;margin-top:auto;align-self:stretch;box-shadow:0 0 0 8px var(--kami),0 10px 0 8px var(--kami);z-index:2;margin-bottom:10px}
+  .sh-page{padding:12px 10px}
+  .sh-page:has(> .btn.primary:last-child){padding-bottom:16px}
+  .sh-page > .btn.primary:last-child{margin-top:8px;box-shadow:0 0 0 8px var(--kami)}
+  .sh-ledger td{padding:5px 6px;font-size:.92rem}
+  .sh-seg button{padding:6px 10px;font-size:.84rem;min-height:44px}
+  .sh-page h1{font-size:1.7rem}
+  .talk{grid-template-columns:48px minmax(0,1fr)}
+  .talk .face{width:48px;height:48px}
+  .talk > .sh-talkbtns{grid-column:1 / -1;flex-direction:row;justify-content:space-between;align-items:center;width:100%}
+  .talk .mood{gap:4px}
+  .talk .mood .g{width:34px;height:34px}
+  .sh-talkbtns .btn{white-space:nowrap;min-height:44px;padding:6px 16px}
+  .sh-wx{font-size:.78rem;padding:1px 8px 1px 2px}
+  .sh-wxpic{width:24px;height:24px}
+  .sh-shop{grid-template-columns:1fr}
+  .sh-gods{grid-template-columns:1fr 1fr}
+  .sh-gods .gd .pic{width:40px;height:40px}
+  .sh-runs{font-size:.8rem}
+  .sh-runs th,.sh-runs td{padding:4px 3px}
+  .sh-spots{padding:5px 8px;gap:8px}
+  #app.sh-busy .sh-inv,#app.sh-busy .talk .mood{display:none}
+  #app.sh-busy .talk{grid-template-columns:40px minmax(0,1fr) auto;align-items:center;padding:4px 8px}
+  #app.sh-busy .talk .face{width:40px;height:40px}
+  #app.sh-busy .talk .who{display:none}
+  #app.sh-busy .talk .line{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:.86rem;line-height:1.35;min-height:2.7em}
+  #app.sh-busy .hud .steps,#app.sh-busy .hud .sh-wx{display:none}
+  #app.sh-busy .hud .zeni{margin-left:auto}
+  #app.sh-busy .sh-talkbtns{grid-column:auto;flex-direction:row;align-items:center}
+  #app.sh-busy .sh-talkbtns .btn{min-height:44px;padding:4px 12px;font-size:.86rem}
+}
+/* スマホを横に持ったとき：高さが足りないので、たてに持ってもらう（時計は shell が止める） */
+.sh-rotate{display:none}
+@media (orientation:landscape) and (max-height:480px) and (pointer:coarse){
+  .sh-rotate{display:flex;position:fixed;inset:0;z-index:100;background:var(--kinari);align-items:center;justify-content:center;flex-direction:column;gap:8px;text-align:center;padding:16px;font-family:var(--font-maru);font-weight:700;font-size:1.1rem}
+  .sh-rotate small{font-weight:500;color:var(--usuzumi);font-family:var(--font-body)}
+}
+
 </style>
 </head>
 <body>
@@ -282,7 +343,9 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     1.05: { label: '比重1.05', vigor: 0.92, shortage: 0.0 },
     1.08: { label: '比重1.08（もち米の基準）', vigor: 0.95, shortage: 0.0 },
     1.13: { label: '比重1.13（うるちの基準）', vigor: 1.0, shortage: 0.0 },
-    1.18: { label: '比重1.18（選びすぎ）', vigor: 1.02, shortage: 0.12 }
+    1.16: { label: '比重1.16（やや選びすぎ）', vigor: 1.01, shortage: 0.06 },
+    1.18: { label: '比重1.18（選びすぎ）', vigor: 1.02, shortage: 0.12 },
+    1.20: { label: '比重1.20（選びすぎ。苗が足りない）', vigor: 1.02, shortage: 0.2 }
   };
   const DENSITY = {
     sparse:   { label: '疎植', root: 0.85, early: 0.9, lodge: -0.1, yMul: 0.96 },
@@ -692,7 +755,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     kuntan:   { name: 'もみ殻くん炭', area: 'naya',   type: 'none',     nPerUnit: 0,   carbon: 0,   cost: 0, stock: 2, fx: { si: 1, k: 0.4 }, look: '黒く焼いた籾殻', truth: '籾殻をいぶして炭にしたもの。ケイ酸とカリウムを含み、土をふかふかにする。窒素は含まない。' },
     // --- 古い蔵
     shoseki:  { name: '白い結晶',   area: 'kura',     type: 'nitrate',  nPerUnit: 2.0, carbon: 0,   cost: 0, stock: 3, look: '蔵の隅の白い結晶',   truth: '硝石（硝酸態窒素）。元肥として水を張った田に入れると、還元層で脱窒され、ほとんど空へ逃げる。稲の根が張ってからの少量の追肥なら、吸われる分もある。' },
-    shio:     { name: '塩',         area: 'kura',     type: 'none',     nPerUnit: 0,   carbon: 0,   cost: 0, stock: 3, fx: { salt: 1 }, look: 'つぼに入った粗い塩', truth: '種籾えらびの塩水には欠かせない。けれど田に入れると、稲の根が水を吸えなくなる（塩害）。肥料にはならない。' },
+    shio:     { name: '塩',         area: 'kura',     type: 'none',     nPerUnit: 0,   carbon: 0,   cost: 0, stock: 6, fx: { salt: 1 }, look: 'つぼに入った粗い塩', truth: '種籾えらびの塩水には欠かせない。けれど田に入れると、稲の根が水を吸えなくなる（塩害）。肥料にはならない。' },
     sekkai:   { name: '貝灰',       area: 'kura',     type: 'none',     nPerUnit: 0,   carbon: 0,   cost: 0, stock: 2, fx: { ph: 2, min: 1 }, look: '袋に入った白い粉', truth: '貝殻を焼いて作った石灰。土の酸性を弱め、有機物の分解を早める（そのぶん土の蓄えは早く減る）。NH4+ の肥料と一緒に入れると、アンモニアが空へ逃げやすい。窒素は含まない。' },
     hoshika:  { name: '干鰯', gas: 0.6,       area: 'kura',     type: 'renge',    nPerUnit: 2.2, carbon: 0,   cost: 0, stock: 2, look: '俵に残った干し魚', truth: '干したイワシ（ほしか）。昔、銭で買って使われた肥料（金肥）。タンパク質が多く、分解されてすばやく NH4+ になる。' },
     // --- 湖岸
@@ -734,7 +797,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     kumo:      { name: 'クモ',     good: true,  season: ['taue', 'nakaboshi', 'hogoe'], ally: 1, look: '稲の株もとに巣をはる', truth: '虫を食べる天敵。薬をまくと、害虫と一緒にいなくなる。' },
     yago:      { name: 'ヤゴ',     good: true,  season: ['taue', 'nakaboshi'], ally: 0.5, look: '泥の色をした、水の中の虫', truth: 'トンボの子。水の中で小さな虫を食べ、夏に稲の茎をのぼって羽化する。' },
     tombo:     { name: 'トンボ',   good: true,  season: ['nakaboshi', 'hogoe'], ally: 0.7, look: '田の上をすいすい飛ぶ', truth: '飛びながらウンカやガを食べる天敵。幼虫（ヤゴ）は田の水の中で育つ。' },
-    tanishi:   { name: 'タニシ',   good: true,  season: ['taue', 'nakaboshi'], look: '泥の上をはう巻き貝', truth: '藻や草の芽を食べ、ふんは肥料になる。田の水をきれいにする。' },
+    tanishi:   { name: 'タニシ',   good: true,  season: ['taue', 'nakaboshi'], look: '泥の上をはう巻き貝', truth: '水面の藻や泥の有機物を食べ、ふんは稲の肥料になる。田の水もきれいにする。苗を食べるジャンボタニシ（外来種のスクミリンゴガイ）とは、別の貝。' },
     zarigani:  { name: 'ザリガニ', good: false, season: ['taue', 'nakaboshi'], look: '赤いはさみの生き物', truth: 'アメリカザリガニは外来種。苗を切り、あぜに穴をあけて水を漏らす。タニシやオタマジャクシ、ヤゴも食べてしまう。' },
     hebi:      { name: 'ヘビ',     good: false, season: ['nakaboshi', 'hogoe'], look: 'するすると草を分けて進む', truth: 'カエルを食べる。田に放すと、虫を食べてくれるはずのカエルが減る（食物連鎖）。ネズミも食べるので、悪者とは言いきれない。' },
     batta:     { name: 'バッタ',   good: false, season: ['hogoe'], look: '草むらで跳ねる緑の虫', truth: 'イネ科の葉を食べる。田に放せば稲の葉が食われる。' },
@@ -868,8 +931,8 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
   }
 
   // 種籾えらび → 比重と、籾の傷み
-  const SEED_SG = { none: [1.0], mud: [1.0, 1.05, 1.08, 1.08], salt: [1.0, 1.05, 1.08, 1.13, 1.18] };
-  const SEED_Y = { 1: 0.94, 1.05: 0.96, 1.08: 0.98, 1.13: 1, 1.18: 1 };   // 充実した籾ほど苗がそろう
+  const SEED_SG = { none: [1.0], mud: [1.0, 1.05, 1.08, 1.08], salt: [1.0, 1.05, 1.08, 1.13, 1.16, 1.18, 1.20] };   // 塩は、採った数だけ足せる（最大6つかみ。3つかみ＝うるちの基準 1.13。それより濃いと、よい籾まで浮いて苗が足りなくなる）
+  const SEED_Y = { 1: 0.94, 1.05: 0.96, 1.08: 0.98, 1.13: 1, 1.16: 1, 1.18: 1, 1.2: 1 };   // 充実した籾ほど苗がそろう
   function seedOf(d) {
     if (!d.seed) return { sg: d.seedSG || 1.0, damage: 0 };
     const tbl = SEED_SG[d.seed.method] || SEED_SG.none, lv = clamp(Math.round(d.seed.level || 0), 0, tbl.length - 1);
@@ -998,8 +1061,9 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     // 食物連鎖：ヘビはカエルを、ザリガニはオタマジャクシ・ヤゴ・タニシを食べる
     const frogs = Math.max(0, nRel('kaeru') + 0.5 * Math.max(0, nRel('otama') - zari) - 2 * hebi);
     const alliesRaw = frogs + nRel('kumo') + 0.7 * nRel('tombo') + 0.5 * Math.max(0, nRel('yago') - zari);
-    const snails = Math.max(0, nRel('tanishi') - 2 * zari);
-    const sprayKeep = usedStrong ? 0 : usedMild ? 0.5 : 1;      // 薬は天敵にも効く
+    const sprayKeep = usedStrong ? 0 : usedMild ? 0.5 : 1;      // 薬は、虫だけでなく田の生き物みんなに効く（強い薬＝ほぼ全滅、弱い薬＝半分）
+    const snails = Math.max(0, nRel('tanishi') - 2 * zari) * sprayKeep;
+    const NAT_ALLIES = 2.5;                                      // 放さなくても、田にもとからいるクモやカエル（少しだけ）
     const allies = alliesRaw, eaters = nRel('batta') + nRel('inago'), stink = nRel('kamemushi');
     const pestRisk = clamp((Math.max(s.blastRisk, (s.uptakeByStage.mid - 2.95) / 1.8) + 0.04 * (eaters + stink)) * (1 - Math.min(0.35, 0.07 * allies)) * (1 - clamp(0.1 * extras.fx.si, 0, 0.3)) * (d.ducks ? 0.6 : 1), 0, 1);
     const pestLossBase = pestRisk > PEST_FROM ? 0.28 * pestRisk : 0;
@@ -1010,9 +1074,11 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
 
     // 落水が早すぎると実が入りきらない
     const drainPenalty = d.finalDrainDay < 105 ? 0.07 * (105 - d.finalDrainDay) / 17 : 0;
-    const bugLoss = clamp(0.025 * eaters + 0.01 * stink + 0.02 * zari - 0.004 * snails, 0, 0.3);   // 放した害虫が葉を食べる
+    const bugLoss = clamp(0.025 * eaters + 0.01 * stink + 0.02 * zari, 0, 0.3);   // 放した害虫が葉を食べる
+    // タニシ：水面の藻や泥の有機物を食べ、ふんが稲の肥料になる（藻に取られていた養分が稲に回る）。1匹で +0.5%、最大 +3%
+    const snailGain = Math.min(0.03, 0.005 * snails);
     // 田にもとからいる虫（毎年すこし食べられる）。カエル・クモ・合鴨がいると、食べられる分が減る
-    const wildLoss = 0.02 * (1 - Math.min(0.75, 0.15 * allies * sprayKeep)) * (d.ducks ? 0.5 : 1) * (usedStrong ? 0.4 : usedMild ? 0.7 : 1);
+    const wildLoss = 0.026 * (1 - Math.min(0.75, 0.15 * (allies + NAT_ALLIES) * sprayKeep)) * (d.ducks ? 0.5 : 1) * (usedStrong ? 0.4 : usedMild ? 0.7 : 1);
     // 合鴨のその後：穂が出たあとも田に置くと、穂を食べる
     const duckLoss = d.ducks && d.duckFate === 'keep' ? 0.05 : 0;
     // 草取りで稲を踏んだり抜いたりした分（手応えがそのまま響く）
@@ -1022,7 +1088,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     // ガスわき：分解しやすい有機物を水の下に入れすぎると、土が強く還元されて硫化水素や有機酸が出て、根が傷む。中干しで土に空気が入ると軽くなる
     const gasOver = Math.max(0, extras.gasLoad - GAS_FROM);
     const gasLoss = Math.min(0.18, 0.035 * gasOver) * ((s.dryDays || 0) >= 5 ? 0.5 : 1);
-    const yieldKg = Math.round(s.yieldKg * (1 - pestLoss) * (1 - drainPenalty) * (1 - bugLoss) * (1 - wildLoss) * (1 - handLoss) * (1 - obstLoss) * (1 - gasLoss) * (1 - duckLoss));
+    const yieldKg = Math.round(s.yieldKg * (1 - pestLoss) * (1 - drainPenalty) * (1 - bugLoss) * (1 - wildLoss) * (1 - handLoss) * (1 - obstLoss) * (1 - gasLoss) * (1 - duckLoss) * (1 + snailGain));
 
     // 殻（被覆肥料）
     const shellsOut = extras.shells * (d.netBought ? 0.15 : 1);
@@ -1064,7 +1130,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       yieldKg, pestRisk: +pestRisk.toFixed(2), pestLoss: +pestLoss.toFixed(3),
       shellsOut: +shellsOut.toFixed(1), preVolat: +extras.preVolat.toFixed(2),
       gods, money: { income, cost, net: income - cost, price: +price.toFixed(2), tasteMul: +tasteMul.toFixed(2), repute: +repute.toFixed(2), dryMul: +dryMul.toFixed(2), polishPrice: +polishPrice.toFixed(2), polishWeight: +polishWeight.toFixed(2), spotMul: +spotMul.toFixed(2), soldKg, moisture: mo },
-      bugLoss: +bugLoss.toFixed(3), duckLoss, pestMethods: pm, wildLoss: +wildLoss.toFixed(4), handLoss: +handLoss.toFixed(4), obstLoss: +obstLoss.toFixed(4), gasLoss: +gasLoss.toFixed(4), gasLoad: +extras.gasLoad.toFixed(2), bulkLoad: +extras.bulkLoad.toFixed(2), winterAir: +extras.winterAir.toFixed(2), winterLake: +extras.winterLake.toFixed(2), released: rel,
+      bugLoss: +bugLoss.toFixed(3), snailGain: +snailGain.toFixed(4), natAllies: NAT_ALLIES, sprayKeep, duckLoss, pestMethods: pm, wildLoss: +wildLoss.toFixed(4), handLoss: +handLoss.toFixed(4), obstLoss: +obstLoss.toFixed(4), gasLoss: +gasLoss.toFixed(4), gasLoad: +extras.gasLoad.toFixed(2), bulkLoad: +extras.bulkLoad.toFixed(2), winterAir: +extras.winterAir.toFixed(2), winterLake: +extras.winterLake.toFixed(2), released: rel,
       fate: fateOf(sim, extras)
     };
     result.title = titleOf(result);
@@ -1247,7 +1313,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     { id: 'mushioi', name: '虫を追う手段', text: 'うちわで追う、水面に油を落とす（注油駆除。江戸時代から）、合鴨、薬。手段は重ねて使える。薬はよく効くが、害虫だけでなく天敵のクモやカエルにも効き、水路から湖へも流れる。効き目の強さと、まわりの生き物への響きは、たいてい一緒に大きくなる。', when: r => r.pestRisk > PEST_FROM },
     { id: 'rensa', name: '田の食物連鎖', text: 'オタマジャクシはカエルに、ヤゴはトンボになって、どちらも虫を食べる。ヘビはそのカエルを食べる。アメリカザリガニ（外来種）は、オタマジャクシやヤゴ、タニシを食べ、苗も切る。天敵を増やしたつもりでも、そのまわりの生き物しだいで、虫の害は変わる。', when: r => ['otama', 'yago', 'tombo', 'zarigani', 'hebi'].some(k => ((r.released || {})[k] || 0) > 0) },
     { id: 'hifuku', name: '被覆肥料の殻', text: MATERIALS.hifuku.truth, when: r => r.shellsOut > 0 },
-    { id: 'tenteki', name: '田の生き物', text: 'カエルやクモ、トンボは虫を食べる天敵（オタマジャクシとヤゴは、その子ども）、タニシは藻や草の芽を食べる。バッタやイナゴは稲の葉を食べ、カメムシは穂の汁を吸って米に黒い点をつける。田に何がいるかで、虫の害も米の値も変わる。', when: r => Object.keys(r.released || {}).length > 0 },
+    { id: 'tenteki', name: '田の生き物', text: 'カエルやクモ、トンボは虫を食べる天敵（オタマジャクシとヤゴは、その子ども）、タニシは藻や泥の有機物を食べて、ふんが稲の肥料になる。バッタやイナゴは稲の葉を食べ、カメムシは穂の汁を吸って米に黒い点をつける。クモやカエルは、放さなくても田に少しはいる。薬をまくと、虫といっしょに、こうした生き物も田からいなくなる。田に何がいるかで、虫の害も米の値も変わる。', when: r => Object.keys(r.released || {}).length > 0 },
     { id: 'kansou', name: '稲の乾燥', text: '刈ったばかりの籾は水分が多い（25%前後）。稲架（はさ）に掛けて、15%ほどまで干す。干し足りないとかびやすく、干しすぎると米が割れる。雨にあうと水分が戻る。', when: () => true },
     { id: 'seimai', name: '精米とぬか', text: '玄米の外側（ぬか層と胚芽）を削るのが精米。三分・五分・七分・白米と進むほど白く食べやすくなるが、目方は1割ほど減る。削ったぬかは、タンパク質や脂質が多く、肥料（米ぬか）になる。', when: () => true },
     { id: 'kyushu', name: 'イネは NH4+ を好む', text: '多くの畑の作物は NO3- をよく吸うが、水田に適応したイネは NH4+ をより速く吸う。水を張った土では硝化が進みにくく、窒素は NH4+ の形でたまるからである。吸った NH4+ の多くは根でアミノ酸に同化され、NO3- は一部がそのまま葉へ運ばれてから同化される。', when: () => true },
@@ -1981,6 +2047,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
 /* mg_a.js — 担当A のミニゲーム v0.2
    till（田を耕す）/ puddle（代かき）/ forage（素材集め）/ seed（種籾えらび。salt の名でも登録）/ cover（冬の種）/ koedame（肥溜め）/ basal（元肥）/ plant（田植え）
    契約書 7章・10章のとおり MG.register する。色は style.css のトークンだけを使う。専用CSSの接頭辞は mga-。
+   スマホ（舞台の幅 520px 未満）では、begin() が枠に mga-ph／mga-short を付け、CSS の「スマホ」の節だけが効く（iPad・PC は変わらない）。
    どのミニゲームも「手引き（UI.mg の guide ＋ f.intro）→ 遊ぶ（最初の一手のゴースト・f.info）→ 結果の札 → resolve」の順。 */
 (function () {
   'use strict';
@@ -2148,6 +2215,11 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
 .mga-saltbtn:active{transform:translateY(1px)}
 .mga-saltbtn:disabled{opacity:.45;cursor:default}
 .mga-saltbtn.mga-wash{border-color:var(--koke);color:var(--koke);min-height:50px}
+.mga-addlbl{display:flex;flex-direction:column;align-items:center;line-height:1.25}
+.mga-addlbl,.mga-addlbl small{white-space:nowrap}
+.mga-addlbl small{font-family:var(--font-body);font-weight:500;font-size:.78rem;color:var(--usuzumi)}
+.mga-addlbl small.mga-zero{color:var(--aka);font-weight:700}
+.mga-pick .mga-have{color:var(--usuzumi);font-family:var(--font-maru);font-weight:700;font-size:.82rem;display:block}
 .mga-pips{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:.88rem}
 .mga-pips i{width:16px;height:16px;border-radius:50%;border:2px solid var(--usuzumi);background:var(--kami);display:inline-block}
 .mga-pips i.mga-on{background:var(--awa);border-color:var(--ai);box-shadow:inset 0 0 0 3px var(--ai)}
@@ -2258,6 +2330,92 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
   .mga-rrow > b{font-size:1.25rem}
   .mga-tall .mga-gatepic{width:84px}
 }
+
+/* ==== スマホ（舞台の幅 520px 未満。begin() が枠に mga-ph／mga-short を付ける）。iPad・PC には効かない ==== */
+.mga-ph .mga-rcard{padding:10px 16px 8px;max-height:100%;overflow-y:auto;touch-action:pan-y}
+.mga-ph .mga-rrow{padding:2px 2px;gap:12px}
+.mga-ph .mga-rclose{margin-top:6px;min-height:44px;position:sticky;bottom:0}
+.mga-ph .mga-cap{font-size:.84rem}
+.mga-ph .mga-pop{font-size:.9rem}
+/* till：水口の札は一行にたたみ、田を広く見せる */
+.mga-ph .mga-gate{padding:4px 6px;gap:6px}
+.mga-ph .mga-tall .mga-gatepic{width:58px;height:46px;aspect-ratio:auto;border-radius:8px}
+.mga-ph .mga-tall .mga-segs{gap:2px 6px;flex-wrap:wrap}
+.mga-ph .mga-tall .mga-segs .mga-cap{font-size:11px;line-height:1.2}
+.mga-ph .mga-tall .mga-segs .mga-seg{flex:1 1 0;min-height:46px;padding:2px 8px;font-size:.88rem;line-height:1.2;white-space:nowrap}
+.mga-ph .mga-seg small{font-size:11px}
+.mga-short .mga-tall .mga-segs .mga-cap{display:none}
+/* えらぶ札（seed・cover・plant）：押せる高さを保ち、入りきらないときだけ中をめくる */
+.mga-ph .mga-picks{gap:6px;overflow-y:auto;touch-action:pan-y;-webkit-overflow-scrolling:touch}
+.mga-ph .mga-picks.mga-tall{grid-auto-rows:minmax(48px,1fr)}
+.mga-ph .mga-pick{padding:4px 10px;gap:4px;-webkit-touch-callout:none}
+.mga-ph .mga-picks.mga-tall:not(.mga-two) .mga-pick .mga-pic{flex:0 0 72px;width:72px;max-height:72px}
+.mga-ph .mga-picks.mga-two .mga-pick{padding:6px 4px}
+.mga-ph .mga-pick b{font-size:1rem}
+.mga-ph .mga-pick small{font-size:.8rem;line-height:1.3}
+.mga-short .mga-pick b{line-height:1.2}
+.mga-short .mga-pick small,.mga-short .mga-pick .mga-have,.mga-short .mga-pick .mga-warn{font-size:11px;line-height:1.2}
+.mga-ph .mga-dens{gap:6px}
+.mga-ph .mga-dens.mga-tall .mga-row{grid-template-rows:repeat(3,minmax(48px,1fr));gap:6px}
+.mga-ph .mga-dcard{padding:5px 8px}
+/* seed */
+.mga-ph .mga-seedside{gap:6px}
+.mga-ph .mga-tall .mga-saltbtn{min-height:48px;padding:2px 8px;line-height:1.2}
+.mga-ph .mga-tall .mga-saltbtn .mga-pic{width:44px;height:32px;flex:none}
+.mga-ph .mga-saltbtn.mga-wash{min-height:48px}
+.mga-ph .mga-seedside .mga-panel{padding:3px 8px}
+.mga-ph .mga-pips{gap:4px;font-size:.84rem}
+.mga-ph .mga-pips i{width:14px;height:14px}
+.mga-ph .mga-note:empty{display:none}
+/* forage */
+.mga-ph .mga-forside .mga-panel{padding:5px 6px}
+.mga-ph .mga-detail{font-size:11.5px;line-height:1.3;min-height:0;grid-template-columns:30px minmax(0,1fr);gap:5px;overflow:hidden}
+.mga-ph .mga-detail .mga-art{width:30px;height:30px}
+.mga-ph .mga-detail b{font-size:.86rem}
+.mga-ph .mga-detail.mga-blank{grid-template-columns:1fr}
+.mga-ph .mga-kiki{max-width:calc(100% - 8px);right:4px;top:4px;gap:4px}
+.mga-ph .mga-kiki .mga-pic{width:40px;height:40px}
+.mga-ph .mga-kiki .mga-bub{font-size:11.5px;padding:3px 8px;line-height:1.3;border-radius:10px 10px 3px 10px}
+.mga-ph .mga-kiki .mga-bub b{display:inline;font-size:11px;margin-right:6px}
+.mga-ph .mga-tall .mga-kago{grid-template-columns:repeat(4,40px);gap:4px}
+.mga-ph .mga-detail > div{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;font-size:11.5px}
+.mga-ph .mga-covname i{font-size:11px;padding:0 6px}
+.mga-short .mga-cov{--mga-cs:58px}
+.mga-short .mga-covname{bottom:-6px!important}
+/* cover */
+.mga-ph .mga-covside{gap:6px}
+.mga-ph .mga-covside > .mga-panel{padding:4px 6px}
+.mga-ph .mga-seedcard{grid-template-columns:40px minmax(0,1fr);font-size:.76rem;line-height:1.3}
+.mga-ph .mga-seedcard .mga-art{width:40px;height:40px}
+.mga-ph .mga-seedcard b{font-size:.9rem}
+.mga-ph .mga-bag i{width:15px;height:15px}
+/* koedame */
+.mga-ph .mga-koe{padding-inline:8px}
+/* basal：棚は一段（‹ › でめくる）にして、田の断面を主役にする。量の札は、断面の上の帯（空と水）に出す */
+.mga-ph .mga-bas{gap:4px}
+.mga-ph .mga-shelf{display:grid;grid-template-columns:40px minmax(0,1fr) 40px;gap:4px;flex:0 0 auto;align-items:stretch}
+.mga-ph .mga-shelf.mga-one{grid-template-columns:minmax(0,1fr)}
+.mga-ph .mga-shelf .mga-tray{grid-column:2;grid-row:1;grid-template-columns:repeat(var(--mga-per,4),minmax(0,1fr));gap:4px;padding-top:6px}
+.mga-ph .mga-shelf.mga-one .mga-tray{grid-column:1}
+.mga-ph .mga-pager{display:contents}
+.mga-ph .mga-pager button{grid-row:1;min-width:0;width:40px;height:auto;min-height:48px;margin-top:6px;border-radius:12px;padding:0 0 16px;font-size:1.3rem;touch-action:none}
+.mga-ph .mga-pager [data-act=prev]{grid-column:1;padding:0}
+.mga-ph .mga-pager [data-act=next]{grid-column:3}
+.mga-ph .mga-pager span{grid-column:3;grid-row:1;align-self:end;justify-self:center;font-size:11px;line-height:1;margin-bottom:6px;pointer-events:none;z-index:1;color:var(--ai)}
+.mga-ph .mga-tall .mga-mat{min-height:62px;height:62px;padding:3px 1px 2px;align-content:start;border-radius:10px;-webkit-touch-callout:none}
+.mga-ph .mga-mat .mga-art{width:30px;height:30px}
+.mga-ph .mga-tall .mga-mat b{font-size:11px;line-height:1.15;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-all}
+.mga-ph .mga-mat .mga-cnt{right:-3px;top:-7px;font-size:11px;padding:0 5px}
+.mga-ph .mga-split span{font-size:11px;right:4px;top:2px;padding:0 6px}
+.mga-ph .mga-depth{font-size:11px;right:4px;padding:0 6px}
+.mga-ph .mga-lname{font-size:11px;left:4px}
+.mga-ph .mga-tok{-webkit-touch-callout:none}
+.mga-ph .mga-tok .mga-q{right:-6px;bottom:-5px;font-size:11px;padding:0 5px}
+.mga-ph .mga-step{padding:2px;gap:3px;border-radius:14px}
+.mga-ph .mga-step button{min-width:44px;height:44px;padding:0 8px}
+.mga-ph .mga-step button.mga-back{font-size:.8rem}
+.mga-ph .mga-step span{min-width:3.9em;font-size:.86rem}
+.mga-ph .mga-ghost{width:52px;height:52px;margin:-26px 0 0 -26px}
 `;
   if (!document.getElementById('mga-style')) {
     const st = document.createElement('style'); st.id = 'mga-style'; st.textContent = CSS; document.head.append(st);
@@ -2314,9 +2472,13 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     ctx = ctx || {};
     const f = UI.mg(host, o);
     f.root.classList.add('mga');
+    // スマホ（舞台の幅がせまい）のとき mga-ph、そのうえ高さも低いとき mga-short を枠に付ける。iPad・PC では付かない
+    const sizeUp = () => { const r = f.body.getBoundingClientRect(); if (!r.width) return; const ph = r.width < 520; f.root.classList.toggle('mga-ph', ph); f.root.classList.toggle('mga-short', ph && r.height < 320); };
+    sizeUp();
     const timers = new Set(), cleanup = [];
     let resolve;
     const S = { f, ctx, over: false, dead: false, started: false, partial: () => ({}), final: null };
+    S.phone = () => f.root.classList.contains('mga-ph');
     S.promise = new Promise(r => { resolve = r; });
     S.on = fn => { cleanup.push(fn); return fn; };
     S.later = (fn, ms) => { const t = setTimeout(() => { timers.delete(t); if (!S.dead) fn(); }, ms); timers.add(t); return t; };
@@ -2389,7 +2551,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     };
     // 画面の向き（横長／縦長）をクラスで切り替える
     S.watch = (el, fn) => {
-      const run = () => { if (S.dead) return; const r = f.body.getBoundingClientRect(); const tall = r.width < r.height * 1.25 || r.width < 520; el.classList.toggle('mga-tall', tall); fn && fn(tall, r); };
+      const run = () => { if (S.dead) return; sizeUp(); const r = f.body.getBoundingClientRect(); const tall = r.width < r.height * 1.25 || r.width < 520; el.classList.toggle('mga-tall', tall); fn && fn(tall, r); };
       run();
       if (window.ResizeObserver) { const ro = new ResizeObserver(run); ro.observe(f.body); cleanup.push(() => ro.disconnect()); }
       else { window.addEventListener('resize', run); cleanup.push(() => window.removeEventListener('resize', run)); }
@@ -3227,9 +3389,9 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
   // 4. 種籾えらび（仕分け：浮く・沈む ＋ すくう）。旧 salt の名でも登録する
   //    真水／泥水／塩水をえらぶ → 足すほど浮く籾が増える → 網ですくって捨てる →（塩水だけ）真水で洗うかどうか
   // ==================================================================
-  const SEED_SG = { none: [1.0], mud: [1.0, 1.05, 1.08, 1.08], salt: [1.0, 1.05, 1.08, 1.13, 1.18] };
+  const SEED_SG = { none: [1.0], mud: [1.0, 1.05, 1.08, 1.08], salt: [1.0, 1.05, 1.08, 1.13, 1.16, 1.18, 1.20] };   // rules.js の SEED_SG と同じ。塩は、持っている数だけ足せる（最大6つかみ）
   const SEED_NAME = { none: '真水', mud: '泥水', salt: '塩水' };
-  const SEED_STEP = { none: [''], mud: ['泥なし', 'ひとすくい', 'ふたすくい', 'みすくい'], salt: ['塩なし', 'ひとつかみ', 'ふたつかみ', 'みつかみ', 'よつかみ'] };
+  const SEED_STEP = { none: [''], mud: ['泥なし', 'ひとすくい', 'ふたすくい', 'みすくい'], salt: ['塩なし', 'ひとつかみ', 'ふたつかみ', 'みつかみ', 'よつかみ', 'いつつかみ', 'むつかみ'] };
   const tubPic = (m) => svg('0 0 120 90',
     '<path d="M16 30 H104 L96 82 H24 Z" class="mga-c-sanka mga-s-sumi" stroke-width="3" stroke-linejoin="round"/><path d="M19 46 H101 M22 68 H98" class="mga-c-none mga-s-tsuchi" stroke-width="4"/>' +
     '<ellipse cx="60" cy="30" rx="44" ry="11" class="mga-c-mizu mga-s-sumi" stroke-width="3"/>' +
@@ -3250,20 +3412,22 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         id: 'seed', title, goal: '水をえらんで、種籾を入れる。浮いた籾は、すくって捨てる。',
         guide: {
           what: '春にまく種籾をえらぶ。水に入れて、浮いたものを捨てる。泥や塩を足すと、浮く籾が増える。',
-          how: ['真水・泥水・塩水から、桶をえらぶ', '「足す」を押すと、水が濃くなる', '浮いた籾を、水面でなぞってすくう（まとめて取れる）', '塩水のときは、最後に真水で洗うかどうかも決める'],
+          how: ['真水・泥水・塩水から、桶をえらぶ', '「足す」を押すと、水が濃くなる', '塩水は、足したつかみの数だけ塩を使う（手持ちの数まで。多くて6つかみ）', '浮いた籾を、水面でなぞってすくう（まとめて取れる）', '塩水のときは、最後に真水で洗うかどうかも決める'],
           look: '浮いた籾と、沈んだ籾の数。足すほど、残る籾は減る。',
           pic: SEED_PIC
         }
       });
       const N = 40, reveal = !!S.ctx.reveal, Rl = R();
-      const hasSalt = !!(S.ctx.inventory && S.ctx.inventory.shio >= 1);
+      const shio = Math.max(0, Math.floor((S.ctx.inventory && S.ctx.inventory.shio) || 0));   // 手持ちの塩
+      const SALT_MAX = Math.min(SEED_SG.salt.length - 1, shio);                                  // 塩水で足せる回数＝持っている数（最大6）
+      const hasSalt = shio >= 1;
       let method = null, level = 0, rinsed = false, rinseT = 0, scooped = 0, byMe = 0;
       const sgOf = (m, lv) => { const t = SEED_SG[m] || SEED_SG.none; return t[clamp(lv, 0, t.length - 1)]; };
       const SGnow = () => sgOf(method || 'none', level);
-      const maxLv = () => (SEED_SG[method] || SEED_SG.none).length - 1;
+      const maxLv = () => method === 'salt' ? SALT_MAX : (SEED_SG[method] || SEED_SG.none).length - 1;
       let seeds = [];
       function newSeeds() {
-        const dens = []; [[2, 0.98], [3, 1.03], [4, 1.07], [6, 1.11], [8, 1.16], [17, 1.3]].forEach(a => { for (let i = 0; i < a[0]; i++) dens.push(a[1]); });
+        const dens = []; [[2, 0.98], [3, 1.03], [4, 1.07], [6, 1.11], [4, 1.15], [4, 1.17], [2, 1.19], [15, 1.3]].forEach(a => { for (let i = 0; i < a[0]; i++) dens.push(a[1]); });
         seeds = dens.map((d, i) => ({ d, u: 0.06 + 0.88 * ((i * 17) % N + 0.5) / N, rest: rand(0.74, 0.96), v: 0, ang: rand(-0.6, 0.6), ph: rand(0, 6), delay: rand(0.2, 0.9), out: false, net: false, nx: 0, ny: 0, t: 0, zx: rand(-0.7, 0.7), zy: rand(0, 1), fx: 0, fy: 0 }));
         seeds.forEach(s => { s.v = s.rest; });
         scooped = 0; byMe = 0;
@@ -3275,17 +3439,17 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       // ---- えらぶ札 ----
       const mkPick = (m, sub) => {
         const dis = m === 'salt' && !hasSalt;
-        const b = h('button', { class: 'mga-pick', type: 'button', disabled: dis }, h('div', { class: 'mga-pic', html: tubPic(m) }), h('div', null, h('b', null, SEED_NAME[m]), h('small', null, sub), dis ? h('span', { class: 'mga-warn' }, '塩がない') : null));
+        const b = h('button', { class: 'mga-pick', type: 'button', disabled: dis }, h('div', { class: 'mga-pic', html: tubPic(m) }), h('div', null, h('b', null, SEED_NAME[m]), h('small', null, sub), m === 'salt' ? (dis ? h('span', { class: 'mga-warn' }, '塩がない') : h('span', { class: 'mga-have' }, '手持ちの塩 ×' + shio)) : null));
         S.listen(b, 'click', () => { if (S.over || dis || !S.started) return; S.sfx('tap'); choose(m); });
         return b;
       };
-      const picks = h('div', { class: 'mga-picks' }, mkPick('none', 'くんできた水のまま'), mkPick('mud', '田の泥をとかす'), mkPick('salt', '蔵の塩をとかす（塩をひとつ使う）'));
+      const picks = h('div', { class: 'mga-picks' }, mkPick('none', 'くんできた水のまま'), mkPick('mud', '田の泥をとかす'), mkPick('salt', '蔵の塩をとかす（足したつかみの数だけ、塩を使う）'));
       // ---- 桶 ----
       const cvHost = h('div', { class: 'mga-cv' });
       const fieldBox = h('div', { class: 'mga-main' }, cvHost);
       const pips = h('div', { class: 'mga-pips' });
       const note = h('div', { class: 'mga-note' });
-      const addPic = h('span', { class: 'mga-pic' }), addLbl = h('span');
+      const addPic = h('span', { class: 'mga-pic' }), addLbl = h('span', { class: 'mga-addlbl' });
       const addBtn = h('button', { class: 'mga-saltbtn', type: 'button', style: { position: 'relative' } }, addPic, addLbl);
       const washBtn = h('button', { class: 'mga-saltbtn mga-wash', type: 'button' }, '真水で洗う');
       const side = h('div', { class: 'mga-side mga-seedside' }, addBtn, washBtn, h('div', { class: 'mga-panel' }, pips, note));
@@ -3300,7 +3464,11 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         const mx = maxLv();
         addBtn.style.display = method === 'none' ? 'none' : '';
         washBtn.style.display = method === 'salt' ? '' : 'none';
-        if (method !== 'none' && method) { addPic.innerHTML = ADDPIC[method]; addLbl.textContent = method === 'mud' ? '泥を足す' : '塩を足す'; }
+        if (method !== 'none' && method) {
+          addPic.innerHTML = ADDPIC[method];
+          if (method === 'mud') addLbl.replaceChildren('泥を足す');
+          else { const rest = shio - level; addLbl.replaceChildren(level >= mx ? 'もう足せない' : '塩を足す', h('small', { class: rest > 0 ? '' : 'mga-zero' }, '塩 のこり' + rest)); }   // 足した数だけ塩が減る。なくなったら足せない
+        }
         addBtn.disabled = level >= mx || rinsed || rinseT > 0;
         washBtn.disabled = level < 1 || rinsed || rinseT > 0;
         washBtn.textContent = rinsed ? '真水で洗った' : '真水で洗う';
@@ -3478,7 +3646,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
 
       const result = () => {
         const lv = method && method !== 'none' ? level : 0, m = lv > 0 ? method : 'none';
-        return { method: m, level: lv, rinsed: m === 'salt' ? rinsed : false, keptFrac: round2(kept()), usedSalt: m === 'salt' ? 1 : 0, seedSG: sgOf(m, lv) };
+        return { method: m, level: lv, rinsed: m === 'salt' ? rinsed : false, keptFrac: round2(kept()), usedSalt: m === 'salt' ? lv : 0, seedSG: sgOf(m, lv) };
       };
       S.partial = result;
       function end() {
@@ -3492,6 +3660,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         S.sfx('good');
         const rows = [['えらんだ水', SEED_NAME[r.method] + (r.level ? '・' + SEED_STEP[r.method][r.level] : ''), true], ['残した籾', keptN + '／' + N], ['すくって捨てた籾', String(N - keptN)]];
         if (r.method === 'salt') rows.push(['真水で洗う', r.rinsed ? 'した' : 'していない', true]);
+        if (r.method === 'salt') rows.push(['使った塩', '×' + r.usedSalt, true]);
         if (reveal) rows.push(['比重', r.seedSG.toFixed(2), true]);
         S.finish(r, r.method === 'none' ? '真水でえらんだ。秋に答え合わせだ。' : 'よし、これでいこう。秋に答え合わせだ。', 'normal', rows, '種籾えらび');
       }
@@ -3792,19 +3961,20 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       }
       function unfill() { if (units > 0) { units--; if (!units) chosen = null; S.sfx('tap'); paint(); S.say('ひとつ、溜めにもどした。'); } }
 
-      let from = -1, moved = false, startEl = null;
+      let from = -1, moved = false, startEl = null, ladleOff = 0;
       const idx = (el, attr) => { const t = el && el.closest ? el.closest('[' + attr + ']') : null; return t ? +t.getAttribute(attr) : -1; };
       S.drag(root, {
         down(p, e) {
           if (S.over || !S.started) return;
           S.acted();
           startEl = e.target; moved = false; from = idx(startEl, 'data-pit');
+          ladleOff = e.pointerType === 'touch' ? 34 : 0;          // 指で隠れないよう、ひしゃくは指の少し上に出す
           if (from >= 0 && !pits[from].open) from = -2 - from;     // 閉じている溜め：タップで開けるだけ
         },
         move(p) {
           if (S.over) return;
           if (Math.hypot(p.dx, p.dy) > 12) moved = true;
-          if (from >= 0 && moved) { ghost.classList.add('mga-on'); ghost.style.left = p.x + 'px'; ghost.style.top = p.y + 'px'; }
+          if (from >= 0 && moved) { ghost.classList.add('mga-on'); ghost.style.left = p.x + 'px'; ghost.style.top = (p.y - ladleOff) + 'px'; }
         },
         up(p) {
           ghost.classList.remove('mga-on');
@@ -3903,7 +4073,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         step);
       const main = h('div', { class: 'mga-main' }, sec);
       const ghost = h('div', { class: 'mga-ghost' });
-      const wrap = h('div', { class: 'mga-wrap' }, shelf, main, ghost);
+      const wrap = h('div', { class: 'mga-wrap mga-bas' }, shelf, main, ghost);
       S.f.body.append(wrap);
 
       const used = k => entries.reduce((a, e) => a + (e.mat === k ? e.units : 0), 0);
@@ -3916,12 +4086,18 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         if (!keys.length) tray.append(h('div', { class: 'mga-empty' }, '手持ちの素材がない。'));
         show.forEach(k => { const l = left(k); cards[k].cnt.textContent = '×' + fmtUnits(l); cards[k].el.classList.toggle('mga-out', l < 0.5); tray.append(cards[k].el); });
         pager.style.display = pages() > 1 ? '' : 'none';
-        pgLbl.textContent = '棚 ' + (page + 1) + '／' + pages();
+        shelf.classList.toggle('mga-one', pages() <= 1);
+        pgLbl.textContent = S.phone() ? (page + 1) + '／' + pages() : '棚 ' + (page + 1) + '／' + pages();
         pager.querySelector('[data-act=prev]').disabled = page <= 0;
         pager.querySelector('[data-act=next]').disabled = page >= pages() - 1;
       }
       const paintInfo = () => { const n = entries.length; S.f.info(n ? '入れたもの ' + n + '種類（タップで量を変える）' : 'まだ何も入れていない'); };
-      S.watch(wrap, (tall, r) => { const p = tall ? (r.width < 560 ? 8 : 10) : (r.height < 380 ? 8 : 10); if (p !== per) { per = p; } paintTray(); placeStep(); });
+      S.watch(wrap, (tall, r) => {
+        // スマホ：棚は一段。幅に入る数だけ並べて、あとは ‹ › でめくる
+        let p = tall ? (r.width < 560 ? 8 : 10) : (r.height < 380 ? 8 : 10);
+        if (S.phone()) { p = clamp(Math.floor((r.width - 16 + 4) / 60), 3, 6); if (keys.length > p) p = clamp(Math.floor((r.width - 16 - 88 + 4) / 58), 3, 6); shelf.style.setProperty('--mga-per', p); }
+        if (p !== per) { per = p; } paintTray(); placeStep();
+      });
       function paintEnt(e) {
         e.el.style.left = (e.nx * 100) + '%'; e.el.style.top = (e.ny * 100) + '%';
         e.q.textContent = '×' + fmtUnits(e.units);
@@ -3936,6 +4112,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         const sr = sec.getBoundingClientRect(), w = step.offsetWidth || 230, hh = step.offsetHeight || 54;
         let x = selEnt.nx * sr.width - w / 2; x = clamp(x, 4, Math.max(4, sr.width - w - 4));
         let y = selEnt.ny * sr.height - 34 - hh; if (y < 4) y = selEnt.ny * sr.height + 34;
+        if (S.phone()) y = Math.max(2, Math.min(3, SURF_Y * sr.height - 24 - hh));   // スマホ：いつも上の帯（空と水）に。置いた素材や境の札に重ねない
         step.style.left = x + 'px'; step.style.top = y + 'px';
         step.querySelector('[data-act=plus]').disabled = left(selEnt.mat) < 0.5;
       }
@@ -4295,6 +4472,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     '.mgb-td{position:absolute;inset:0;display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:12px;padding:4px 14px 6px;touch-action:manipulation}',
     '.mgb-box{min-height:0;min-width:0;display:flex;flex-direction:column;gap:6px;border:2px solid var(--sen);border-radius:var(--r);padding:8px;background:var(--kinari)}',
     '.mgb-put{border-color:var(--ai);background:var(--kami);box-shadow:inset 0 0 0 2px #2f4b6e1f}',
+    '.mgb-inbox{display:flex;flex-direction:column;flex:1 1 0;min-height:0}',
     '.mgb-boxhead{flex:none;display:flex;align-items:baseline;gap:4px 10px;flex-wrap:wrap;padding:0 4px}',
     '.mgb-boxhead h3{font-size:1.02rem;letter-spacing:.06em}',
     '.mgb-put .mgb-boxhead h3{color:var(--ai)}',
@@ -4355,7 +4533,70 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     '.mgb-cal{width:92px;right:8px;bottom:8px}.mgb-cal b{font-size:1.8rem}',
     '}',
     '@media (max-width:520px){.mgb-box{padding:6px}.mgb-mats{grid-template-columns:repeat(2,minmax(0,1fr))}.mgb-mat{display:grid;grid-template-columns:38px minmax(0,1fr);column-gap:6px;align-items:center;text-align:left;padding:4px 6px 4px 4px;min-height:52px}.mgb-mat .mgb-pic{width:38px;height:38px;grid-row:1 / span 2}.mgb-mat b{font-size:.86rem;padding-right:1.6em;align-self:end}.mgb-mat span{text-align:left;align-self:start}.mgb-ret{grid-template-columns:36px minmax(0,1fr);gap:4px}.mgb-ret .mgb-pic{width:36px;height:36px}.mgb-ret b{font-size:.86rem}.mgb-kago svg{width:20px;height:20px}.mgb-qbox{min-width:4.4em}.mgb-stepper{gap:3px}.mgb-stepper .btn{min-width:44px;min-height:44px}.mgb-boxhead small{display:none}}',
-    '@media (max-width:520px){.mgb-ritopts{grid-template-columns:minmax(0,1fr)}.mgb-rit{padding-top:76px}.mgb-ritopt{flex-direction:row;min-height:96px;text-align:left}.mgb-ritopt .mgb-pic{flex:0 0 76px;height:76px}.mgb-ritopt>div:last-child{align-items:flex-start}}'
+    '@media (max-width:520px){.mgb-ritopts{grid-template-columns:minmax(0,1fr)}.mgb-rit{padding-top:76px}.mgb-ritopt{flex-direction:row;min-height:96px;text-align:left}.mgb-ritopt .mgb-pic{flex:0 0 76px;height:76px}.mgb-ritopt>div:last-child{align-items:flex-start}}',
+    /* ==== スマホ（たて持ち。舞台がおよそ 344×263 まで小さくなる）。ここから下は、幅 700px 以下だけに効く ==== */
+    '.mgb-root span.mgb-sm{display:none}',
+    '.mgb-fill,.mgb-leaf,.mgb-td,.mgb-rit,.mgb-cal{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}',
+    '@media (max-width:700px){',
+    /* 枠：10.12 の三本も、見出しと足元は親の詰めた寸法に合わせる（13px は保つ） */
+    '.mgb-ergroot .mg-foot .info,.mgb-ergroot .mg-head .goal{font-size:13px;line-height:1.35}',
+    '.mgb-ergroot .mg-head .guide-btn{min-height:44px}',
+    '.mgb-id-weed .mg-foot .btn{padding:4px 10px;font-size:.86rem}',
+    /* 上の帯：空の札を一行におさめる */
+    '.mgb-root span.mgb-lg{display:none}.mgb-root span.mgb-sm{display:inline}',
+    '.mgb-top{left:4px;right:4px;top:4px;gap:4px}',
+    '.mgb-top .chip{padding:1px 8px;gap:4px}',
+    '.mgb-top .mgb-wxs{gap:4px}',
+    '.mgb-wx i{width:20px;height:20px}',
+    '.mgb-wx small{margin-right:3px}',
+    '.mgb-note{right:6px;bottom:6px;max-width:94%;font-size:.76rem;padding:3px 8px}',
+    '.mgb-erg .mgb-note{font-size:.82rem}',
+    /* 結果の札：長くなっても「とじる」が切れない */
+    '.mgb-res{padding:8px}',
+    '.mgb-rescard{padding:10px 14px 8px;gap:6px;max-width:100%;max-height:100%;overflow-y:auto;touch-action:pan-y;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}',
+    '.mgb-rescard h3{padding-bottom:4px}',
+    '.mgb-rescard dl{gap:4px 14px;flex:none;grid-template-columns:fit-content(62%) minmax(0,1fr)}',
+    '.mgb-rescard dd{overflow-wrap:anywhere}',
+    '.mgb-id-weed .mgb-note{bottom:auto;top:6px;left:26px;right:6px;max-width:none}',
+    '.mgb-rescard dt{font-size:.88rem}',
+    '.mgb-rescard dd{font-size:1.04rem}',
+    '.mgb-rescard .mgb-rclose{position:sticky;bottom:0;flex:none;min-height:44px}',
+    /* 葉の色：上＝葉の絵、下＝札。札の段は、場面ごとに高さを変える（えらぶ場面で いちばん大きく） */
+    '.mgb-leaf{grid-template-rows:minmax(0,1fr) auto;gap:6px;padding:2px 4px}',
+    '.mgb-leaf .mgb-panel{gap:4px;overflow:visible;padding:0 1px}',
+    '.mgb-leaf .mgb-panel h3{font-size:.92rem;line-height:1.3}',
+    '.mgb-leaf .mgb-panel p{font-size:.82rem;line-height:1.35}',
+    '.mgb-leaf[data-ph=look] .mgb-panel p,.mgb-leaf[data-ph=hide] .mgb-panel p{display:none}',
+    '.mgb-sw{gap:3px;padding-top:2px}',
+    '.mgb-sw button{border-width:2px;border-radius:8px;min-height:40px;padding-bottom:3px}',
+    '.mgb-sw button i{font-size:.8rem}',
+    '.mgb-leaf[data-ph=hide] .mgb-sw{padding-top:8px}',
+    '.mgb-leaf[data-ph=hide] .mgb-sw button{min-height:clamp(100px,22vh,160px)}',
+    '.mgb-lfcap{left:6px;top:5px;font-size:.78rem;padding:1px 10px}',
+    /* 三周目の答え合わせ：注記の札が、葉と札の絵に重ならないようにする */
+    '.mgb-leafview.mgb-hasnote svg{bottom:auto;height:calc(100% - 40px)}',
+    '.mgb-leafview.mgb-hasnote~.mgb-panel h3{display:none}',
+    '.mgb-leafview .mgb-note{bottom:3px;right:3px;left:3px;max-width:none}',
+    '.mgb-ends{font-size:.76rem;line-height:1.2}',
+    /* 穂肥：上＝手持ち、下＝入れる */
+    '.mgb-td{grid-template-rows:minmax(0,1fr) auto;gap:5px;padding:1px 4px 2px}',
+    '.mgb-put{max-height:30vh}',
+    '.mgb-put .mgb-inbox,.mgb-put .mgb-scroll{flex:0 1 auto}',
+    '.mgb-mat{min-height:48px;padding:3px 6px 3px 4px}',
+    '.mgb-ret{min-height:44px}.mgb-row{padding:1px 4px 1px 2px}.mgb-mat .mgb-pic{width:32px;height:32px}.mgb-mat{grid-template-columns:32px minmax(0,1fr)}',
+    '.mgb-box{padding:4px 5px;gap:3px}',
+    '.mgb-boxhead h3{font-size:.92rem}',
+    '.mgb-sum{font-size:.8rem}',
+    '.mgb-empty{font-size:.8rem;line-height:1.35;padding:4px 8px;min-height:0}',
+    '.mgb-rows{gap:5px}',
+    /* 空に願う：札ふたつを一画面に */
+    '.mgb-rit{gap:6px;padding-left:8px;padding-right:8px;padding-bottom:6px;touch-action:pan-y;overscroll-behavior:contain}',
+    '.mgb-rit p{font-size:.86rem;line-height:1.3}',
+    '.mgb-ritopts{gap:8px}',
+    '.mgb-ritopt{min-height:64px;padding:4px 12px;gap:12px;border-width:2px}',
+    '.mgb-ritopt .mgb-pic{flex:0 0 auto;width:clamp(56px,11vh,88px);height:clamp(56px,11vh,88px);min-height:0}',
+    '.mgb-cal{width:88px;right:6px;bottom:6px}',
+    '}'
   ].join('\n');
   let st0 = document.getElementById('mgb-style');
   if (!st0) { st0 = document.createElement('style'); st0.id = 'mgb-style'; document.head.append(st0); }
@@ -4500,7 +4741,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     if (o && o.chip) el.append(chip);
     const W = ctx.weather, F = ctx.forecast;
     if (W && W.sky && (!o || o.now !== false)) wxs.append(h('div', { class: 'chip mgb-wx' }, h('i', { html: wxSvg(W.sky, W.temp) }), h('span', null, h('small', null, 'いまの空'), W.text || '')));
-    if (F && F.text && (!o || o.fc !== false)) wxs.append(h('div', { class: 'chip mgb-wx' }, h('i', { html: wxSvg(F.sky, F.temp) }), h('span', null, h('small', null, 'この先の見込み'), F.text)));
+    if (F && F.text && (!o || o.fc !== false)) wxs.append(h('div', { class: 'chip mgb-wx' }, h('i', { html: wxSvg(F.sky, F.temp) }), h('span', null, h('small', null, h('span', { class: 'mgb-lg' }, 'この先の見込み'), h('span', { class: 'mgb-sm' }, 'この先')), F.text)));
     el.append(wxs); parent.append(el);
     return { el, chip, pad: () => el.offsetHeight + 8 };
   }
@@ -4511,6 +4752,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
   // ------------------------------------------------------------------
   function open(host, ctx, o, partial) {
     const frame = UI.mg(host, { id: o.id, title: o.title, goal: o.goal, guide: o.guide });
+    frame.root.classList.add('mgb-root', 'mgb-id-' + o.id);
     if (o.erg) frame.root.classList.add('mgb-ergroot');      // 10.12 の人間工学（押せる大きさ・読める大きさ）
     try { window.__mgb = { id: o.id }; } catch (e) { /* 検証用の覗き窓（無くても動く） */ }
     const inner = new AbortController(), cleanups = [];
@@ -4580,7 +4822,8 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
           const k = Math.min(1, l.t * 7), y = l.y - 34 * smooth(l.t), px = l.px * (0.7 + 0.3 * k);
           g.globalAlpha = l.t > 0.7 ? (1 - l.t) / 0.3 : 1; g.lineJoin = 'round';
           g.font = '700 ' + Math.round(px) + 'px ' + FM(); g.textAlign = 'center'; g.textBaseline = 'middle';
-          g.strokeStyle = C('kami'); g.lineWidth = 6; g.strokeText(l.s, l.x, y); g.fillStyle = l.col; g.fillText(l.s, l.x, y); g.globalAlpha = 1;
+          let lx = l.x, ly = y; const cw = g.canvas.clientWidth; if (cw && cw < 520) { const hw = g.measureText(l.s).width / 2 + 5; lx = hw * 2 >= cw ? cw / 2 : clamp(lx, hw, cw - hw); ly = Math.max(y, px * 0.7); }      // せまい舞台では、飛ぶ文字が左右に切れないよう寄せる
+          g.strokeStyle = C('kami'); g.lineWidth = 6; g.strokeText(l.s, lx, ly); g.fillStyle = l.col; g.fillText(l.s, lx, ly); g.globalAlpha = 1;
         }
       }
     };
@@ -4601,12 +4844,13 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     else s = '<path d="M96 52 q14 -22 28 0 M150 52 q14 -22 28 0" fill="none" stroke="' + ai + '" stroke-width="5" stroke-linecap="round"/>' + hand(184, 54);
     return '<svg viewBox="0 0 320 124" xmlns="http://www.w3.org/2000/svg">' + s + (cap ? '<text x="160" y="118" text-anchor="middle" font-size="13" font-weight="700" fill="' + C('usuzumi') + '">' + cap + '</text>' : '') + '</svg>';
   }
+  const slim = () => { try { return window.matchMedia('(max-width:700px)').matches; } catch (e) { return false; } };      // スマホ（たて持ち）の幅か
   const note = (parent, t) => { const n = h('div', { class: 'mgb-note' }, t); parent.append(n); return n; };
   // 動きを減らす設定（prefers-reduced-motion）のときは、揺れ・粒・ゆらぎを止める
   const calm = () => { try { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { return false; } };
   // 上の帯に足す、日ごとに変わる空の札（きょうの空／あすの空の気配）
-  function dayChip(top, label) {
-    const ic = h('i'), tx = h('span'), el = h('div', { class: 'chip mgb-wx' }, ic, h('span', null, h('small', null, label), tx));
+  function dayChip(top, label, short) {
+    const ic = h('i'), tx = h('span'), el = h('div', { class: 'chip mgb-wx' }, ic, h('span', null, short ? h('small', null, h('span', { class: 'mgb-lg' }, label), h('span', { class: 'mgb-sm' }, short)) : h('small', null, label), tx));
     (top.el.querySelector('.mgb-wxs') || top.el).append(el);
     let key = '';
     return { el, set(sky, temp, text) { const k = sky + '|' + temp + '|' + text; if (k === key) return; key = k; ic.innerHTML = wxSvg(sky, temp); tx.textContent = text; } };
@@ -4786,6 +5030,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     const wrap = h('div', { class: 'mgb-fill' }); S.body.append(wrap);
     const cv = S.canvas(wrap), g = cv.ctx, fx = makeFx(g);
 
+    // せまい舞台（スマホ）では列の間が指のはらい幅に近くなるので、列を少し広げ（G の laneW）、列のあいだの草は まん中に寄せる（判定は同じ。となりの稲までの間を取る）
     (function build() {
       const add = (type, off, zr) => { const p = { type, off, zr, seed: 1 + ((R() * 9999) | 0), out: false, t: 0, hold: 0, torn: false, dir: 1, by: '', eat: R() < 0.86 }; plants.push(p); return p; };
       // 稲の列にまぎれた「そっくりな草」
@@ -4799,13 +5044,13 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       const take = minRow => { const i = slots.findIndex(s => s.r >= minRow); return i < 0 ? null : slots.splice(i, 1)[0]; };
       for (let i = 0; i < nO; i++) { const s = take(2); if (s) add('omo', s.o, s.r * GAP + GAP / 2); }
       for (let i = inl; i < nH; i++) { const s = take(3); if (s) add('hie', s.o + (R() - 0.5) * 0.1, s.r * GAP + GAP / 2); }
-      for (let i = 1; i < nK; i++) { const s = take(1); if (s) add('kona', s.o + (R() - 0.5) * 0.3, s.r * GAP + GAP / 2 + (R() - 0.5) * 0.05); }
+      for (let i = 1; i < nK; i++) { const s = take(1); if (s) add('kona', s.o + (R() - 0.5) * (cv.w < 520 ? 0.04 : 0.3), s.r * GAP + GAP / 2 + (R() - 0.5) * 0.05); }
       riceN = plants.filter(p => p.type === 'rice').length;
       plants.sort((a, b) => b.zr - a.zr);                         // 奥（あとから来る）を先に描く
     })();
     const lastZ = Math.max.apply(null, plants.map(p => p.zr));
     const leafC = leafColor((ctx.signs && ctx.signs.leaf) || 4);
-    const G = () => { const w = cv.w, hh = cv.h, laneW = Math.min(w * 0.3, 250), H0 = clamp(Math.min(hh * 0.3, laneW * 0.85), 62, 150); return { w, hh, cx: w / 2, laneW, H0, yT: 8 + H0 * 0.4, yB: hh + H0 * 0.16 }; };
+    const G = () => { const w = cv.w, hh = cv.h, laneW = Math.min(w * (w < 520 ? 0.4 : 0.3), 250), H0 = clamp(Math.min(hh * 0.3, Math.min(w * 0.3, 250) * 0.85), 62, 150); return { w, hh, cx: w / 2, laneW, H0, yT: 8 + H0 * 0.4, yB: hh + H0 * 0.16 }; };
     const at = (p, q) => { const z = pos - p.zr, k = clamp(z, 0, 1.3), s = 0.42 + 0.72 * Math.pow(k, 1.15); return { z, s, x: q.cx + p.off * q.laneW * (0.52 + 0.58 * k), y: q.yT + (q.yB - q.yT) * Math.pow(k, 1.45), H: q.H0 * s }; };
     const seen = z => z > 0.04 && z < 1.12;
     try { window.__mgb.probe = () => { const q = G(); return plants.filter(p => !p.out && seen(pos - p.zr)).map(p => { const a = at(p, q); return { type: p.type, x: a.x, y: a.y - (p.type === 'kona' ? 6 : a.H * 0.35), z: a.z, torn: p.torn }; }); }; } catch (e) { /* 検証用 */ }
@@ -5132,7 +5377,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         else if (wa > 0.5) dryF = Math.max(0, dryF - dd * 1.1);
         if (dayI() !== lastDay) { lastDay = dayI(); if (isOpen && !rainNow && wa < 0.12) S.sfx('step'); }
         sky.set(rainNow ? 'rain' : 'sun', hot ? 'hot' : 'normal', rainNow ? '雨' : hot ? '晴れ・暑い' : '晴れ');
-        setChip(ctx.reveal ? '田植えから ' + d + '日目・' + (isOpen ? '水を抜いている' : '水を張っている') : isOpen ? (rainNow ? '水を抜いている（雨で乾かない）' : '水を抜いている') : '水を張っている');
+        setChip(ctx.reveal ? (slim() ? '' : '田植えから ') + d + '日目・' + (isOpen ? '水を抜いている' : '水を張っている') : isOpen ? (rainNow ? (slim() ? '抜いている（雨で乾かない）' : '水を抜いている（雨で乾かない）') : '水を抜いている') : '水を張っている');
         if (isOpen && wa < 0.12) {
           if (rainNow) once('rain', '雨だ。田が、また湿っていく。');
           else if (dryF >= 14) { if (!said.d14) shake(4); once('d14', 'ひびが深い。葉の先が、巻いてきた。', 'pale'); }
@@ -5247,7 +5492,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     const gapText = () => { const d = Math.abs(guess - actual); return d === 0 ? '色見本は、ぴったり合っていた。' : d === 1 ? '色見本は、ひとつ ずれていた。' : d === 2 ? '色見本は、ふたつ ずれていた。' : '色見本は、' + d + 'つも ずれていた。'; };
     const fmt = u => String(u);
     const narrow = () => { try { return window.matchMedia('(max-width:800px)').matches; } catch (e) { return false; } };   // せまい画面では上下にならぶ
-    const setPhase = p => { phase = p; phaseT = performance.now(); S.rest(); };
+    const setPhase = p => { phase = p; phaseT = performance.now(); root.dataset.ph = p; S.rest(); };
 
     // 葉の絵。look＝葉だけ／hide＝葉はかくれて、りんかくと札だけ／check＝葉と札をならべる
     const cap = h('div', { class: 'mgb-lfcap' });
@@ -5308,7 +5553,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       main.textContent = 'つぎへ'; main.disabled = false;
       S.frame.info('葉と札の色を見くらべたら「つぎへ」');
       S.sfx(d === 0 ? 'good' : 'pop'); S.say(gapText(), d === 0 ? 'proud' : 'normal');
-      if (ctx.reveal) note(view, '葉の色は、稲が吸った窒素の目安。色見本では ' + actual + ' に近い。');
+      if (ctx.reveal) { note(view, '葉の色は、稲が吸った窒素の目安。色見本では ' + actual + ' に近い。'); view.classList.add('mgb-hasnote'); }
     }
 
     // ---- 穂肥：左＝手持ち、右＝入れる ----
@@ -5335,7 +5580,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         haveEl.replaceChildren(haveScroll);
       }
       // 右：入れる（ここにならんだものが、田に入る）
-      if (!list.length) putEl.replaceChildren(h('div', { class: 'mgb-empty' }, keys.length ? h('span', null, 'まだ空。', h('br'), '手持ちの素材をタップすると、ここへ移る。', h('br'), '空のままなら、何も入れない。') : '入れるものが ない。'));
+      if (!list.length) putEl.replaceChildren(h('div', { class: 'mgb-empty' }, keys.length ? h('span', null, 'まだ空。', h('span', { class: 'mgb-lg' }, h('br'), '手持ちの素材をタップすると、ここへ移る。', h('br')), '空のままなら、何も入れない。') : '入れるものが ない。'));
       else {
         const rows = h('div', { class: 'mgb-rows' });
         list.forEach(t => {
@@ -5351,7 +5596,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
           };
           const ret = h('button', { type: 'button', class: 'mgb-ret', 'aria-label': MAT[k].name + ' を手持ちへもどす', onclick: () => {
             if (!S.live() || phase !== 'td') return; const i = list.indexOf(t); if (i >= 0) list.splice(i, 1); S.sfx('tap'); S.touch(); paintTd();
-          } }, h('div', { class: 'mgb-pic', html: art('material', k) }), h('div', null, h('b', null, MAT[k].name), h('span', null, '← タップでもどす')));
+          } }, h('div', { class: 'mgb-pic', html: art('material', k) }), h('div', null, h('b', null, MAT[k].name), h('span', null, h('span', { class: 'mgb-lg' }, '← タップでもどす'), h('span', { class: 'mgb-sm' }, '← もどす'))));
           const row = h('div', { class: 'mgb-row' + (newRow === k ? ' mgb-new' : ''), 'data-put': k }, ret, h('div', { class: 'mgb-stepper' }, minus, h('div', { class: 'mgb-qbox' }, kg, q), plus));
           rows.append(row); upd();
         });
@@ -5364,13 +5609,13 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       const l = tdList(), sum = l.reduce((a, t) => a + t.units, 0);
       sumEl.textContent = l.length ? l.length + '種類・あわせて ' + fmt(sum) + 'かご' : '空（何も入れない）';
       main.textContent = l.length ? 'これで決める' : '入れずに決める';
-      S.frame.info(l.length ? '＋−で量を決める。もどすときは「入れる」の素材をタップ' : keys.length ? '手持ちの素材をタップすると、「入れる」へ移る' : '手持ちがない。このまま決める');
+      S.frame.info(l.length ? (slim() ? '＋−で量を決める。素材をタップで、もどす' : '＋−で量を決める。もどすときは「入れる」の素材をタップ') : keys.length ? '手持ちの素材をタップすると、「入れる」へ移る' : '手持ちがない。このまま決める');
     }
     function tdStep() {
       setPhase('td');
-      S.frame.setGoal('穂が出るまえの田。入れるものを、' + (narrow() ? '下' : '右') + 'の「入れる」へ移そう。');
-      haveEl = h('div', { style: { display: 'flex', flexDirection: 'column', flex: '1 1 0', minHeight: '0' } });
-      putEl = h('div', { style: { display: 'flex', flexDirection: 'column', flex: '1 1 0', minHeight: '0' } });
+      S.frame.setGoal(slim() ? '穂が出るまえの田。入れるものを、下へ移そう。' : '穂が出るまえの田。入れるものを、' + (narrow() ? '下' : '右') + 'の「入れる」へ移そう。');
+      haveEl = h('div', { class: 'mgb-inbox' });
+      putEl = h('div', { class: 'mgb-inbox' });
       sumEl = h('span', { class: 'mgb-sum' });
       const have = h('div', { class: 'mgb-box mgb-have' }, h('div', { class: 'mgb-boxhead' }, h('h3', null, '手持ち'), h('small', null, 'タップすると「入れる」へ')), haveEl);
       const put = h('div', { class: 'mgb-box mgb-put' }, h('div', { class: 'mgb-boxhead' }, h('h3', null, '入れる'), sumEl), putEl);
@@ -5466,7 +5711,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     // ---- 稲刈り ----
     function startReap() {
       if (!S.live()) return;
-      cal.remove(); top.el.remove(); mainBtn.remove(); autoBtn.remove(); cv.resize();
+      cal.remove(); top.el.remove(); mainBtn.remove(); autoBtn.remove();
       const cols = cv.w > 800 ? 7 : cv.w > 520 ? 5 : 4, rows = cv.w > 520 ? 2 : 3;
       let total = cols * rows; if (ctx.fast) total = Math.round(total * 0.7);
       clumps = [];
@@ -5476,6 +5721,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       S.frame.info('根もとを、横にスパッとはらう');
       S.say(hitStorm && lodge > 0.3 ? '稲が、ねてしまった。それでも刈ろう。' : 'よし、田が乾いた。刈ろう。', hitStorm && lodge > 0.3 ? 'sad' : 'normal');
       S.frame.addBtn('残りはおまかせ', 'primary', () => { if (!S.live() || auto) return; S.sfx('tap'); auto = true; pen = null; restAuto(); });
+      cv.resize();      // 足元のボタンを入れ替えたあとの舞台の大きさで測りなおす（先に測ると、絵と指の位置がずれる）
       try { window.__mgb.probe = () => { const q = RG(); return clumps.filter(c => !c.cut).map(c => ({ x: q.X(c), y: q.Y(c), ph: q.ph, cw: q.cw, r: c.r })); }; } catch (e) { /* 検証用 */ }
     }
     const RG = () => {
@@ -5508,7 +5754,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       });
       if (n && pen) {      // ひとふりで刈れた株数
         pen.n = (pen.n || 0) + n; const m = pen.n; S.sfx(m >= 3 ? 'good' : 'crack'); S.shake(wrap, Math.min(7, 2 + m));
-        if (m >= 2) { const col = m >= 4 ? C('kohaku') : C('ai'), px = Math.min(30, 18 + m * 2); if (pen.lab && pen.lab.t < 1) { pen.lab.s = 'スパッ ' + m + '株'; pen.lab.t = Math.min(pen.lab.t, 0.2); pen.lab.x = lx; pen.lab.col = col; pen.lab.px = px; } else pen.lab = fx.label(lx, ly - 30, 'スパッ ' + m + '株', col, px); }
+        if (m >= 2) { const col = m >= 4 ? C('kohaku') : C('ai'), px = Math.min(30, 18 + m * 2); if (slim()) lx = clamp(lx, 96, q.w - 96); if (pen.lab && pen.lab.t < 1) { pen.lab.s = 'スパッ ' + m + '株'; pen.lab.t = Math.min(pen.lab.t, 0.2); pen.lab.x = lx; pen.lab.col = col; pen.lab.px = px; } else pen.lab = fx.label(lx, ly - 30, 'スパッ ' + m + '株', col, px); }
       }
     }
     S.drag(cv.canvas, {
@@ -5669,7 +5915,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     const wrap = h('div', { class: 'mgb-fill mgb-erg' }); S.body.append(wrap);
     const cv = S.canvas(wrap), g = cv.ctx, fx = makeFx(g);
     const top = topBar(wrap, ctx, { chip: true, now: false, fc: false }), chip = top.chip;
-    const next = dayChip(top, 'あすの空の気配'); next.el.style.visibility = 'hidden';
+    const next = dayChip(top, 'あすの空の気配', 'あす'); next.el.style.visibility = 'hidden';
     const setChip = s => { if (s !== chipText) { chipText = s; chip.textContent = s; } };
     const shake = px => { if (!RM) S.shake(wrap, px); };
     const NB = ctx.fast || cv.w < 520 ? 4 : 6;      // 束の数（せまい画面では少なく。ひと束の幅を 48px より広く保つ）
@@ -5679,7 +5925,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     S.frame.info('地面の束をタップして、稲架に掛ける');
     const G = () => {
       const w = cv.w, hh = cv.h, pad = top.pad(), nh = noteEl ? noteEl.offsetHeight + 10 : 0, gy = Math.min(hh * 0.9, hh - nh - 14), x0 = w * 0.08, x1 = w * 0.92, sp = (x1 - x0) / NB;
-      const L = Math.min((gy - pad - 70) * 0.62, sp * 1.5), poleY = gy - L / 0.8;
+      const L = Math.max(30, Math.min((gy - pad - (slim() ? 44 : 70)) * 0.62, sp * 1.5)), poleY = gy - L / 0.8;
       return { w, hh, pad, gy, x0, x1, sp, L, poleY, X: i => x0 + (i + 0.5) * sp, markY: pad + 12 };
     };
     // 束：tie=(x,y) から ang の向きに、長さ L。穂が先
@@ -5765,7 +6011,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
           else if (m < 17.5) once('m2', 'わらの色が、あせてきた。');
           else if (m < 21) once('m1', '束が、少し軽くなった。');
           if (takeBtn.disabled && !auto && dayF >= 0.4) takeBtn.disabled = false;
-          setChip('干して ' + (d + 1) + '日目・' + SKYJ[sk] + (ctx.reveal ? '・籾の水分 ' + m.toFixed(1) + '%' : ''));
+          setChip('干して ' + (d + 1) + '日目・' + SKYJ[sk] + (ctx.reveal ? (slim() ? '・水分 ' : '・籾の水分 ') + m.toFixed(1) + '%' : ''));
           if (auto && (m <= 16.2 || dayF >= N - 0.5)) take(false);
           else if (dayF >= N) { dayF = N; take(true); }
         }
@@ -6046,6 +6292,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     const G = () => {
       const w = cv.w, hh0 = cv.h, hh = hh0 - (noteEl ? noteEl.offsetHeight + 10 : 0), pad = top.pad(), ah = hh - pad, vert = w < hh * 1.15;
       if (vert) { const lh = clamp(ah * 0.2, 84, 116), Rm = Math.max(40, Math.min(w * 0.4, (ah - lh - 16) * 0.47)); return { w, hh, pad, vert, cx: w * 0.47, cy: pad + (ah - lh) * 0.5, Rm, lad: { x: 8, y: hh - lh, w: w - 16, h: lh - 6 }, nk: { x: w - Math.max(46, w * 0.13), y: hh - lh - 26, s: clamp(w * 0.11, 36, 70) } }; }
+      if (w < 520) { const Rm = Math.max(40, Math.min(w * 0.27, ah * 0.45)), lx = Math.min(w * 0.31 + Rm + 12, w - 118); return { w, hh, pad, vert, slim: true, cx: Math.min(w * 0.31, lx - Rm - 6), cy: pad + ah * 0.5, Rm, lad: { x: lx, y: pad + 2, w: w - lx - 4, h: Math.min(ah * 0.66, 5 * 34) }, nk: { x: lx + (w - lx - 4) / 2, y: hh - 22, s: clamp(ah * 0.16, 30, 44) } }; }
       const Rm = Math.max(40, Math.min(w * 0.27, ah * 0.46));
       return { w, hh, pad, vert, cx: w * 0.36, cy: pad + ah * 0.5, Rm, lad: { x: w * 0.7, y: pad + ah * 0.04, w: Math.min(w * 0.27, 250), h: ah * 0.6 }, nk: { x: w * 0.83, y: hh - 30, s: clamp(Math.min(w * 0.1, ah * 0.2), 40, 96) } };
     };
@@ -6123,8 +6370,8 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         g.restore();
       });
       // 杵（指の先）
-      const hx = held ? px : cx + Rm * 0.92, hy = held ? py : cy - Rm * 0.6, hr = Rm * 0.15 * (1 + pound * 0.25);
-      g.lineCap = 'round'; g.strokeStyle = mix('tsuchi', 'kinari', 0.25); g.lineWidth = Rm * 0.1; line(g, hx, hy, Math.min(w - 8, hx + Rm * 0.55), hy - Rm * 0.6);
+      const flip = q.slim && !held ? -1 : 1, hx = held ? px : cx + flip * Rm * 0.92, hy = held ? py : cy - Rm * 0.6, hr = Rm * 0.15 * (1 + pound * 0.25);      // せまい舞台では、休んでいる杵を左へ（右の札に重ねない）
+      g.lineCap = 'round'; g.strokeStyle = mix('tsuchi', 'kinari', 0.25); g.lineWidth = Rm * 0.1; line(g, hx, hy, clamp(hx + flip * Rm * 0.55, 8, w - 8), hy - Rm * 0.6);
       g.fillStyle = mix('kinari', 'tsuchi', 0.3); g.strokeStyle = mix('tsuchi', 'sumi', 0.3); g.lineWidth = 3; g.beginPath(); g.arc(hx, hy, hr, 0, 6.3); g.fill(); g.stroke();
       // ぬかの山
       const nk = q.nk, f = Math.pow(clamp(po, 0, 1), 0.7), f2 = ov / 0.6;
@@ -6146,11 +6393,11 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
           text(g, s[1], x + cw / 2, y + 22 + r * 2 + 8, clamp(cw * 0.2, 13, 16), on ? C('ai') : C('usuzumi'));
           if (i < 4) text(g, '›', x + cw, y + 10 + r, 16, C('sen'));
         } else {
-          const rh = L.h / 5, y = L.y + i * rh, r = clamp(rh * 0.26, 12, 20);
-          if (on) { g.fillStyle = C('kami'); g.strokeStyle = C('ai'); g.lineWidth = 3; rrect(g, L.x, y + 3, L.w, rh - 6, 12); g.fill(); g.stroke(); }
-          g.fillStyle = col; g.strokeStyle = mix(col, 'sumi', 0.4); g.lineWidth = 2; g.beginPath(); g.ellipse(L.x + 16 + r, y + rh / 2, r * 1.15, r * 0.72, -0.3, 0, 6.3); g.fill(); g.stroke();
-          text(g, s[1], L.x + 30 + r * 2.3, y + rh / 2, clamp(rh * 0.3, 15, 20), on ? C('ai') : C('usuzumi'), 'left');
-          if (on) text(g, '◀', L.x + L.w - 18, y + rh / 2, 14, C('ai'));
+          const rh = L.h / 5, y = L.y + i * rh, r = q.slim ? clamp(rh * 0.3, 8, 12) : clamp(rh * 0.26, 12, 20);
+          if (on) { g.fillStyle = C('kami'); g.strokeStyle = C('ai'); g.lineWidth = 3; rrect(g, L.x, y + (q.slim ? 1 : 3), L.w, rh - (q.slim ? 2 : 6), 12); g.fill(); g.stroke(); }
+          g.fillStyle = col; g.strokeStyle = mix(col, 'sumi', 0.4); g.lineWidth = 2; g.beginPath(); g.ellipse(L.x + (q.slim ? 8 : 16) + r, y + rh / 2, r * 1.15, r * 0.72, -0.3, 0, 6.3); g.fill(); g.stroke();
+          text(g, s[1], L.x + (q.slim ? 14 : 30) + r * 2.3, y + rh / 2, q.slim ? 13 : clamp(rh * 0.3, 15, 20), on ? C('ai') : C('usuzumi'), 'left');
+          if (on && !q.slim) text(g, '◀', L.x + L.w - 18, y + rh / 2, 14, C('ai'));
         }
       });
       fx.draw(dt);
@@ -6382,7 +6629,19 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     '.mgc-pic{position:relative;width:100%;height:100%;isolation:isolate}',
     '.mgc-pic svg{position:relative;width:100%;height:100%;display:block;overflow:visible}',
     '.mgc-lab{position:absolute;left:50%;top:100%;margin-top:3px;transform:translateX(-50%);font-size:14px;line-height:17px;font-weight:700;color:var(--sumi);text-align:center;white-space:nowrap;background:var(--kami);border-radius:6px;padding:0 4px}',
-    '.mgc-narrow .mgc-lab{font-size:13px;margin-top:1px}',
+    '.mgc-narrow .mgc-lab{font-size:13px;margin-top:1px;line-height:15px}',
+    /* せまい舞台（スマホ）：円盤に乗る分子の名前は、絵の上に出す（回している指の下に入らないように） */
+    '.mgc-narrow .mgc-seat .mgc-lab{top:auto;bottom:100%;margin:0 0 7px;transform:translateX(-42%)}',
+    '.mgc-narrow .mgc-top{left:6px;right:6px;gap:5px}',
+    '.mgc-narrow .mgc-phase{padding:0 8px;min-width:0}',
+    '.mgc-narrow .mgc-dots{gap:3px}',
+    '.mgc-narrow .mgc-dots i{width:10px;height:10px}',
+    '.mgc-narrow .mgc-dots i.mgc-dn{width:13px;height:13px}',
+    '.mgc-narrow .mgc-route,.mgc-narrow .mgc-combo{font-size:13px}',
+    '.mgc-narrow .mgc-lane{left:4px;right:4px}',
+    '.mgc-narrow .mgc-cu.mgc-off{margin-top:calc(var(--ci) / -2 + 7px)}',
+    '.mgc-narrow .mgc-enz{padding:1px 6px;font-size:13px}',
+    '.mgc-narrow .mgc-judge{font-size:14px;padding:0 7px}',
     '.mgc-narrow .mgc-under text.mgc-arc{letter-spacing:0}',
     '.mgc-t{font-family:var(--font-maru);font-weight:700;fill:var(--sumi)}',
     '.mgc-tw{font-family:var(--font-maru);font-weight:700;fill:#fff}',
@@ -6473,6 +6732,13 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     '.mgc-res-facts .mgc-head{padding-left:0;font-family:var(--font-maru);font-weight:700;color:var(--usuzumi);font-size:13px}',
     '.mgc-res-facts .mgc-head::before{display:none}',
     '.mgc-res.mgc-tight .mgc-res-facts{max-height:34%;overflow:auto;touch-action:pan-y}',
+    /* スマホ：札ぜんたいを 縦に送る。図は 文字が読める大きさのまま（はみ出すぶんは 図の中で横に送る）。「とじる」は いつも下に見えている */
+    '.mgc-res.mgc-phone{display:block;overflow-x:hidden;overflow-y:auto;touch-action:pan-y;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:8px 8px 0}',
+    '.mgc-phone .mgc-res-top{margin-bottom:6px;gap:4px 10px}',
+    '.mgc-phone .mgc-res-big b{font-size:1.7rem}',
+    '.mgc-phone .mgc-res-fig{overflow-x:auto;overflow-y:hidden;touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch;margin-bottom:6px}',
+    '.mgc-res.mgc-phone .mgc-res-facts{max-height:none;overflow:visible;margin-bottom:6px}',
+    '.mgc-phone .mgc-res-foot{position:sticky;bottom:0;z-index:1;background:var(--kami);border-top:1.5px solid var(--sen);margin:0 -8px;padding:5px 8px 7px}',
     '.mgc-res-foot{flex:none;display:flex;align-items:center;gap:10px}',
     '.mgc-res-foot span{flex:1 1 0;min-width:0;font-size:13px;color:var(--usuzumi);font-weight:700}',
     '.mgc-res-foot .btn{flex:none;margin-left:auto}',
@@ -6551,12 +6817,12 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
   // 組。8拍ひとまとまり。cyc＝来る窒素と、その手を打つ拍（.5 は裏拍）
   const SETS = {
     A: { name: 'ゆっくり', ivl: 0.62, sub: 'NH4+ が 1つ。そのまま 回路へ', route: 'NH4+ の道', cyc: [{ ion: 'nh4', at: [0, 2, 4, 6] }] },
-    B: { name: 'つづけて', ivl: 0.62, sub: 'NH4+ が 2つ。そのまま 回路へ', route: 'NH4+ の道 ×2', cyc: [{ ion: 'nh4', at: [0, 1, 2, 3] }, { ion: 'nh4', at: [4, 5, 6, 7] }] },
-    C: { name: 'NO3- の道', ivl: 0.62, sub: '先に 還元を2回。それから 回路へ', route: 'NO3- の道（先に 還元 ×2）', cyc: [{ ion: 'no3', at: [0, 1, 2, 3, 4, 5] }],
+    B: { name: 'つづけて', ivl: 0.62, sub: 'NH4+ が 2つ。そのまま 回路へ', route: 'NH4+ の道 ×2', r2: 'NH4+ ×2', cyc: [{ ion: 'nh4', at: [0, 1, 2, 3] }, { ion: 'nh4', at: [4, 5, 6, 7] }] },
+    C: { name: 'NO3- の道', ivl: 0.62, sub: '先に 還元を2回。それから 回路へ', route: 'NO3- の道（先に 還元 ×2）', r2: 'NO3- の道', cyc: [{ ion: 'no3', at: [0, 1, 2, 3, 4, 5] }],
       say: ['NO3- が来た。このままでは使えない。先に2回 還元して、NH4+ にする。', 'pout'] },
-    D: { name: '裏拍', ivl: 0.62, sub: 'NH4+ が 2つ。回して すぐ渡す', route: 'NH4+ の道 ×2（裏拍）', cyc: [{ ion: 'nh4', at: [0, 1, 2, 2.5] }, { ion: 'nh4', at: [4, 5, 6, 6.5] }],
+    D: { name: '裏拍', ivl: 0.62, sub: 'NH4+ が 2つ。回して すぐ渡す', route: 'NH4+ の道 ×2（裏拍）', r2: 'NH4+ ×2 裏拍', cyc: [{ ion: 'nh4', at: [0, 1, 2, 2.5] }, { ion: 'nh4', at: [4, 5, 6, 6.5] }],
       say: ['こんどは 裏の拍がまじる。二度目に回したら、すぐ渡す。', 'idea'] },
-    E: { name: 'はやく', ivl: 0.52, sub: 'NO3- と NH4+。還元は すばやく2回', route: 'NO3- の道 → NH4+ の道', cyc: [{ ion: 'no3', at: [0, 0.5, 1, 2, 3, 3.5] }, { ion: 'nh4', at: [4, 5, 6, 7] }],
+    E: { name: 'はやく', ivl: 0.52, sub: 'NO3- と NH4+。還元は すばやく2回', route: 'NO3- の道 → NH4+ の道', r2: 'NO3- → NH4+', cyc: [{ ion: 'no3', at: [0, 0.5, 1, 2, 3, 3.5] }, { ion: 'nh4', at: [4, 5, 6, 7] }],
       say: ['さいごは はやい。NO3- と NH4+ が つづけて来る。', 'normal'] }
   };
   const TAPPIC = (x, c) => `<circle cx="${x}" cy="30" r="22" style="fill:var(--${c});stroke:var(--sumi);stroke-width:3"/>`;
@@ -6743,9 +7009,9 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         strip.style.display = hasStrip ? '' : 'none';
         const sH = hasStrip ? (strip.offsetHeight || 20) + 5 : 2;
         const laneY = H - sH - laneH, bBot = laneY - 15, bh = Math.max(120, bBot - top0), cy = top0 + bh / 2;
-        const ci = narrow ? 28 : Math.round(clamp((W - 20) / 22, 32, 40));
+        const ci = narrow ? 26 : Math.round(clamp((W - 20) / 22, 32, 40));
         lane.style.top = laneY + 'px'; lane.style.height = laneH + 'px';
-        stage.style.setProperty('--ci', ci + 'px'); stage.style.setProperty('--cf', (narrow ? 14 : 17) + 'px'); stage.style.setProperty('--lp', (ci / 2 + 7) + 'px');
+        stage.style.setProperty('--ci', ci + 'px'); stage.style.setProperty('--cf', (narrow ? 14 : 17) + 'px'); stage.style.setProperty('--lp', (ci / 2 + (narrow ? 4 : 7)) + 'px');
         let pw, ph, cx, xK, yK, xO, yO, P, Q, rzX, arcs;
         if (!narrow) {
           pw = Math.round(clamp(W * 0.14, 96, 150));
@@ -6855,9 +7121,11 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         el.style.left = clamp(x, bw / 2 + 4, Math.max(bw / 2 + 4, W - bw / 2 - 4)) + 'px'; el.style.top = Math.max(bh + 2, y) + 'px';
         return el;
       }
-      const zpt = z => z === 'disc' ? { x: G.cx, y: G.cy - R * 0.25 } : z === 'root' ? { x: N.root.x, y: G.P.y + 24 } : { x: N.O.x, y: N.O.y - u * 0.5 };
+      const zpt = z => z === 'disc' ? (narrow ? { x: G.cx, y: G.cy - R - 30 } : { x: G.cx, y: G.cy - R * 0.25 }) : z === 'root' ? { x: N.root.x, y: G.P.y + 24 } : { x: N.O.x, y: N.O.y - u * 0.5 };
+      // 判定の文字。せまい舞台では、円盤の判定を 円盤の左上（根の札の見出し）に出す：回している指の下にも、上に出る酵素の名前の上にも重ならない
+      const jpt = z => narrow && z === 'disc' ? { x: N.root.x + 4, y: G.P.y + 24 } : zpt(z);
       function bubble(z, html, ms, cls) { const p = zpt(z), b = place1(h('div', { class: 'mgc-bub ' + (cls || ''), html: chem(html) }), p.x, p.y); setTimeout(() => b.remove(), ms || 1400); }
-      function judge(z, text, cls) { const p = zpt(z), j = place1(h('div', { class: 'mgc-judge mgc-' + cls }, text), p.x, p.y - 4); setTimeout(() => j.remove(), 720); }
+      function judge(z, text, cls) { const p = jpt(z), j = place1(h('div', { class: 'mgc-judge mgc-' + cls }, text), p.x, p.y - 4); setTimeout(() => j.remove(), 720); }
       function burst(z) { const q = Z[z], el = h('div', { class: 'mgc-fx mgc-burst' }); el.style.left = (q.x - q.d / 2) + 'px'; el.style.top = (q.y - q.d / 2) + 'px'; el.style.width = el.style.height = q.d + 'px'; stage.append(el); setTimeout(() => el.remove(), 420); }
       function banner(bigHtml, small, ms, tag) {
         if (!G) return;
@@ -6873,14 +7141,15 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         const A = ACT[a];
         if (!A.enz || !G) return;
         if (enzEl) enzEl.remove(); clearTimeout(enzTimer);
-        const el = h('div', { class: 'mgc-enz' }, A.enz, A.sub ? h('small', null, A.sub) : null);
+        const el = h('div', { class: 'mgc-enz' }, A.enz, A.sub && !(narrow && A.zone === 'root') ? h('small', null, A.sub) : null);
         stage.append(el);
         const bw = el.offsetWidth, bh = el.offsetHeight, P = G.P;
         let x, y;
-        if (A.zone === 'root') { x = P.x + P.w / 2; y = P.y + P.h + bh / 2 + 4; if (y + bh / 2 > G.bBot + 6) y = P.y - bh / 2 - 2; }
-        else if (a === 'gs') { x = G.cx; y = G.cy - R - 16; }
-        else if (a === 'gogat') { x = G.cx; y = G.cy + R + 16; }
-        else if (narrow) { x = N.K.x; y = (N.K.y + N.O.y) / 2 + 2; }
+        if (A.zone === 'root') { x = P.x + P.w / 2; y = P.y + P.h + bh / 2 + 4; if (narrow || y + bh / 2 > G.bBot + 6) y = P.y - bh / 2 - 2; }
+        else if (a === 'gs') { x = G.cx + (narrow ? 8 : 0); y = G.cy - R - 16; }
+        else if (a === 'gogat' && !narrow) { x = G.cx; y = G.cy + R + 16; }
+        else if (a === 'gogat') { x = G.cx + 8; y = G.cy - R - 16; }
+        else if (narrow) { x = N.K.x; y = N.K.y + u / 2 + 8; }
         else { x = (N.K.x + N.O.x) / 2; y = N.K.y - u / 2 - bh / 2 - 8; }
         el.style.left = clamp(x, bw / 2 + 4, Math.max(bw / 2 + 4, W - bw / 2 - 4)) + 'px'; el.style.top = clamp(y, 26 + bh / 2, Math.max(26 + bh / 2, G.laneY - bh / 2 - 2)) + 'px';
         under.querySelectorAll('.mgc-arc').forEach(t => t.classList.toggle('mgc-on', t.getAttribute('data-arc') === a));
@@ -6889,7 +7158,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       }
       function setCombo(n) {
         combo = n; if (n > maxCombo) maxCombo = n;
-        comboEl.textContent = n >= 2 ? 'コンボ ×' + n : '';
+        comboEl.textContent = n >= 2 ? (narrow ? 'コンボ×' : 'コンボ ×') + n : '';
         comboEl.classList.toggle('mgc-on', n >= 2);
         if (n >= 2) reAnim(comboEl, 'mgc-pop');
         if (n === 8 && !auto) once('combo', () => say('ツグミ', 'のってきた！ 回路が どんどん回っている。', 'laugh'));
@@ -7029,7 +7298,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         S.bDemo = asAuto ? 1 : LEAD; S.bBridge = S.demo ? S.bDemo + 8 : S.bDemo; S.bPlay = S.demo ? S.bBridge + 2 : S.bDemo; S.bEnd = S.bPlay + 9;
         stage.dataset.set = ORDER[i];
         Array.prototype.forEach.call(dotsEl.children, (d, j) => { d.className = j < i ? 'mgc-did' : j === i ? 'mgc-dn' : ''; });
-        routeEl.innerHTML = chem(def.route);
+        routeEl.innerHTML = chem(narrow && def.r2 || def.route);
         buildCues(asAuto ? 'play' : 'demo');
         setPhase('lead');
         if (!asAuto) {
@@ -7223,17 +7492,17 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         timers.forEach(clearTimeout); timers.clear();
         pend.splice(0).forEach(o => clearTimeout(o.id));
         f.root.classList.add('mgc-done');
-        const rr = f.root.getBoundingClientRect(), tall = rr.width / Math.max(1, rr.height) < 1.15;
+        const rr = f.root.getBoundingClientRect(), tall = rr.width / Math.max(1, rr.height) < 1.15, phone = rr.width < 520;
         const btn = UI.btn('とじる', 'primary', () => { sfx('tap'); finish(false); });
         const hint = h('span');
-        const card = h('div', { class: 'mgc-res mg-result' + (rr.height < 560 ? ' mgc-tight' : '') },
+        const card = h('div', { class: 'mgc-res mg-result' + (phone ? ' mgc-phone' : rr.height < 560 ? ' mgc-tight' : '') },
           h('div', { class: 'mgc-res-top' },
             h('div', { class: 'mgc-res-big' }, '届けたアミノ酸', h('b', null, String(res.delivered)), 'こ'),
             h('div', { class: 'mgc-res-chips' },
               h('span', { class: 'chip' }, h('span', { html: chem('還元した NO3- ' + res.no3Used + ' こ' + (rr.width < 520 ? '' : '（1こにつき 二拍 よけいにかかる）')) })),
               maxCombo >= 2 ? h('span', { class: 'chip' }, '最大コンボ ×' + maxCombo) : null,
               hits > 0 ? h('span', { class: 'chip' }, 'ぴったり ' + perfect + ' / ' + hits) : null)),
-          h('div', { class: 'mgc-res-fig', html: recapSVG(tall) }),
+          h('div', { class: 'mgc-res-fig', html: recapSVG(tall || phone) }),
           h('ul', { class: 'mgc-res-facts' },
             h('li', { class: 'mgc-head' }, '入試でも問われること'),
             h('li', { html: chem('イネが吸った <b>NH4+</b> の多くは、<b>根</b>で アミノ酸に同化されてから 地上部へ運ばれる。') }),
@@ -7242,9 +7511,16 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
           h('div', { class: 'mgc-res-foot' }, hint, btn));
         f.root.append(card);
         // 図の文字が小さくなりすぎるときは、図を大きめにして枠の中で送れるようにする
-        const fig = card.querySelector('.mgc-res-fig'), sv = fig.querySelector('svg'), vw = tall ? 440 : 1100, vh = tall ? 712 : 384;
+        const fig = card.querySelector('.mgc-res-fig'), sv = fig.querySelector('svg'), vw = tall || phone ? 440 : 1100, vh = tall || phone ? 712 : 384;
+        if (phone) {
+          const sw = Math.max(fig.clientWidth, 374);        // 図の文字が 11px を下回らない大きさ（0.85倍）
+          sv.style.width = sw + 'px'; sv.style.height = Math.round(sw * vh / vw) + 'px';
+          fig.scrollLeft = Math.max(0, (sw - fig.clientWidth) / 2);
+          hint.textContent = sw > fig.clientWidth + 2 ? '下へ送れる。図は 横にも動く' : '下へ送れる';
+        } else {
         const cw = fig.clientWidth, chh = fig.clientHeight, fit = Math.min(cw / vw, chh / vh), sc = Math.max(fit, Math.min(cw / vw, tall ? 0.8 : 0.7));
         if (sc > fit * 1.02) { sv.style.width = Math.floor(vw * sc) + 'px'; sv.style.height = Math.floor(vh * sc) + 'px'; sv.style.margin = '0 auto'; fig.classList.add('mgc-scroll'); hint.textContent = '図は 指で動かせる'; }
+        }
         sfx('bell');
         say('ツグミ', 'アミノ酸を ' + res.delivered + ' こ 届けた。' + (res.delivered > 0 ? '葉の色が濃くなった。' : '') + '吸った窒素は、こうして稲の体になるんだ。', res.delivered >= 3 ? 'proud' : 'normal');
       }
@@ -7330,6 +7606,8 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     '.mgd-bomb i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--aka);opacity:.28;pointer-events:none}',
     '.mgd-bomb span{position:relative;pointer-events:none}',
     '.mgd-bomb em{font-style:normal;letter-spacing:.2em;margin-left:.5em}',
+    '.mgd-bomb b,.mgd-bomb small{font:inherit}',
+    '.mgd-opt .mgd-s2{display:none}',
     /* 注記（三周目だけ） */
     '.mgd-note{position:absolute;left:10px;right:10px;bottom:8px;margin:0 auto;max-width:560px;font-size:.82rem;line-height:1.4;color:var(--sumi);background:var(--kami);border:2px dashed var(--sen);border-radius:10px;padding:4px 10px;pointer-events:none;z-index:2;text-align:center}',
     /* 結果の札 */
@@ -7370,7 +7648,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     '.mgd-mark::before{font-size:9px;margin-right:2px;vertical-align:1px}',
     '.mgd-mark.g::before{content:"\\25CF"}.mgd-mark.b::before{content:"\\25B2"}',
     /* 田に放す：種類ごとの札（左＝戻す、右＝田へ） */
-    '.mgd-sps{display:grid;grid-template-columns:repeat(auto-fit,minmax(204px,1fr));gap:8px;overflow:auto;min-height:0;align-content:start;padding:3px}',
+    '.mgd-sps{display:grid;grid-template-columns:repeat(auto-fit,minmax(204px,1fr));gap:8px;overflow:auto;min-height:0;align-content:start;padding:3px;touch-action:pan-y;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}',
     '.mgd-iki.side .mgd-sps{grid-template-columns:minmax(0,1fr)}',
     '.mgd-sp{display:grid;grid-template-columns:58px minmax(0,1fr);gap:8px;min-width:0;border-radius:14px}',
     '.mgd-sps.nudge{outline:3px solid var(--kohaku);outline-offset:-1px;border-radius:16px;animation:mgd-nudge 1.1s ease-in-out infinite}',
@@ -7426,9 +7704,74 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     '.mgd-opt b{grid-column:1;grid-row:1}.mgd-opt em{grid-column:2;grid-row:1;margin:0;padding:2px 8px}',
     '.mgd-opt span,.mgd-opt small{grid-column:1 / -1;text-align:left}',
     '.mgd-opt.lack span{display:none}',
-    '.mgd-bomb{padding-left:12px;padding-right:12px}',
-    '.mgd-fuda-card{padding:10px 12px 8px}',
+    '.mgd-bomb{line-height:1.15}',
+    '.mg-foot .btn.mgd-bomb{padding-left:8px;padding-right:8px}',
+    '.mg-foot .btn.mgd-auto.mgd-tight{padding-left:9px;padding-right:9px}',
+    /* 薬のボタン：名前の下に小さく「長押し」。2つ持っていっても「おまかせ」と一段に並ぶ（足元が二段になって田が低くならないように） */
+    '.mgd-bomb>span{display:grid;grid-template-columns:auto auto;align-items:center;column-gap:5px}',
+    '.mgd-bomb b{grid-column:1;grid-row:1}',
+    '.mgd-bomb small{grid-column:1;grid-row:2;font-size:11px;font-weight:500}',
+    '.mgd-bomb .mgd-pa{display:none}',
+    '.mgd-bomb em{grid-column:2;grid-row:1 / span 2;margin-left:0;letter-spacing:.05em;font-size:12px}',
+    '.mgd-fuda{padding:6px}',
+    '.mgd-fuda-card{padding:8px 12px 0;gap:5px;touch-action:pan-y;-webkit-overflow-scrolling:touch}',
+    '.mgd-fuda h3{font-size:1rem}',
+    '.mgd-row{padding-top:4px;row-gap:2px}',
+    '.mgd-row .num{font-size:1.12rem}',
+    '.mgd-fuda p{font-size:12px;line-height:1.4}',
+    /* 「とじる」は、札が長くても いつも下に見えている */
+    '.mgd-fuda .mgd-tap{position:sticky;bottom:0;align-self:stretch;width:auto;margin:2px 0 0;padding:9px 24px;min-height:44px;font-size:.95rem;box-shadow:0 0 0 6px var(--kami),0 8px 0 6px var(--kami);z-index:1}',
+    /* 手段をえらぶ：低い舞台（iPhone SE など）では2列に詰めて、送らずに5つとも見せる。うちわは上に一行 */
+    '.mgd-pick.mgd-two{gap:4px;padding:2px 8px 6px;overflow:hidden}',
+    '.mgd-pick.mgd-two h3{display:none}',
+    '.mgd-pick.mgd-two>p{font-size:12px;line-height:1.25;flex:none}',
+    '.mgd-two .mgd-opts{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto;grid-auto-rows:minmax(0,1fr);gap:5px;flex:1 1 auto}',
+    '.mgd-two .mgd-opt{display:grid;grid-template-columns:40px minmax(0,1fr);grid-template-rows:auto auto;align-content:center;align-items:center;justify-content:stretch;column-gap:6px;row-gap:1px;min-height:0;padding:3px 5px;border-width:2px;overflow:hidden;text-align:left}',
+    '.mgd-two .mgd-opt.on{box-shadow:inset 0 0 0 1px var(--ai)}',
+    '.mgd-two .mgd-opt>div{display:contents}',
+    '.mgd-two .mgd-opt canvas{width:40px;height:30px;grid-column:1;grid-row:1 / span 2}',
+    '.mgd-two .mgd-opt b{grid-column:2;grid-row:1;font-size:14px;line-height:1.2}',
+    '.mgd-two .mgd-opt em{grid-column:2;grid-row:2;justify-self:start;margin:0;padding:1px 7px;font-size:12px;border-width:1.5px}',
+    '.mgd-two .mgd-opt span,.mgd-two .mgd-opt small{grid-column:1 / -1;font-size:12px;line-height:1.25;text-align:left}',
+    '.mgd-two .mgd-opt .mgd-s1,.mgd-two .mgd-opt.lack .mgd-s2{display:none}',
+    '.mgd-two .mgd-opt .mgd-s2{display:block}',
+    '.mgd-two .mgd-opt:not(.lack) small{display:none}',
+    '.mgd-two.mgd-roomy .mgd-opt:not(.lack) .mgd-s1,.mgd-two.mgd-roomy .mgd-opt:not(.lack) small{display:block}',
+    '.mgd-two.mgd-roomy .mgd-opt:not([data-method=none]) .mgd-s2{display:none}',
+    '.mgd-two.mgd-roomy .mgd-opt{row-gap:3px;padding:5px 7px}',
+    '.mgd-two.mgd-roomy .mgd-opt span,.mgd-two.mgd-roomy .mgd-opt small{line-height:1.35}',
+    '.mgd-two .mgd-opt[data-method=none]{grid-column:1 / -1;grid-template-columns:40px auto minmax(0,1fr);padding:2px 5px;min-height:42px}',
+    '.mgd-two .mgd-opt[data-method=none] canvas{grid-row:1}',
+    '.mgd-two .mgd-opt[data-method=none] b{grid-column:2;grid-row:1}',
+    '.mgd-two .mgd-opt[data-method=none] em{grid-column:3;grid-row:1;justify-self:end}',
+    '.mgd-two .mgd-opt[data-method=none] .mgd-s2{grid-column:1 / -1;grid-row:2;display:none}',
+    /* 田に放す：種類の札を2列に（左＝戻す、右＝田へ）。多いときは欄の中を指で送る */
+    '.mgd-sps{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;padding:2px}',
+    '.mgd-sp{grid-template-columns:44px minmax(0,1fr);gap:3px}',
+    '.mgd-sp-back,.mgd-sp-go{min-height:44px;border-radius:10px}',
+    '.mgd-sp-back{font-size:11px;padding:1px}',
+    '.mgd-sp-back b{font-size:13px}',
+    '.mgd-sp-go{padding:1px 3px 1px 2px;gap:3px}',
+    '.mgd-sp-go canvas{width:30px;height:25px}',
+    '.mgd-sp-go b{font-size:13px}',
+    '.mgd-sp-go b.long{font-size:12px}',
+    '.mgd-sp-go .num{font-size:12px}',
+    '.mgd-sp .mgd-mark{font-size:11px}',
+    /* 低い舞台：かごを詰めて、舞台（小川・草むら・田）を広く */
+    '.mgd-low .mgd-kago{padding:3px 4px 4px;gap:3px}',
+    '.mgd-low .mgd-kago-h{font-size:12px;line-height:1.2;padding:0 3px}',
+    '.mgd-low .mgd-kago-h b{font-size:13px}',
+    '.mgd-low .mgd-kago-h .num{font-size:13px}',
+    '.mgd-low .mgd-slots{gap:4px;flex:none}',
+    '.mgd-low .mgd-slot{flex-direction:row;justify-content:flex-start;gap:2px;min-height:40px;height:40px;padding:1px;border-radius:9px;font-size:11px;line-height:1.15;text-align:left;overflow:hidden}',
+    '.mgd-low .mgd-slot canvas{width:28px;height:22px}',
+    '.mgd-low .mgd-slot{position:relative}',
+    '.mgd-low .mgd-slot .mgd-mark{font-size:0;line-height:0;position:absolute;left:2px;top:3px}',
+    '.mgd-low .mgd-slot .mgd-mark::before{font-size:9px;line-height:1;margin:0}',
+    '.mgd-low .mgd-slot .mgd-mark.g::before{content:"\\25CF"}.mgd-low .mgd-slot .mgd-mark.b::before{content:"\\25B2"}',
+    '.mgd-iki.mgd-low.mgd-han:not(.side) .mgd-field{flex:1 0 112px}',
     '}',
+    '@media (max-width:520px) and (max-height:600px){.mgd-row>canvas.mgd-hills{max-height:62px;object-fit:contain}}',
     '@media (prefers-reduced-motion:reduce){.mgd-fuda-card,.mgd-slot.pop,.mgd-kago.full,.mgd-sps.nudge{animation:none}}'
   ].join('\n');
   let st0 = document.getElementById('mgd-style');
@@ -7709,9 +8052,11 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
   // 1. 虫追い — 世界（数だけの模型。単位は「マス」＝株の間隔）
   // ==================================================================
   const PEST_T = 36, PEST_T_FAST = 24;
-  const PEST_KILL = { mild: 0.6, strong: 0.97 }, PEST_ALLY = { mild: 0.45, strong: 1 };   // 薬ひとまきで消える割合（虫／味方）
+  const PEST_KILL = { mild: 0.6, strong: 0.97 }, PEST_ALLY = { mild: 0.5, strong: 0.96 };   // 薬ひとまきで消える割合（虫／味方。味方は田じゅうで、弱い薬＝およそ半分、強い薬＝ほぼ全部）
+  const PEST_NEAR = 2.3, PEST_FLEE = { spider: 2.6, frog: 3.2, dragonfly: 5 };          // まいた所からこの近さ（マス）までの味方は その場で落ち、遠いものは田の外へ逃げる／逃げる速さ（マス/秒）
   // 難しさ（test/f3/sim.js で確かめた値）：うちわだけ＝上手でも半分ほど／油＋合鴨＝8割弱／薬をまけば9割以上
-  const PEST_TUNE = { k: 1.4, cap: 700, drain: 0.055, fr: 0.95, fiv: 0.75, linger: { mild: 9, strong: 7 }, midSpd: 0.75, midThink: 0.6 };
+  const PEST_TUNE = { k: 1.4, base: 0.85, cap: 700, drain: 0.055, fr: 1.0, fiv: 0.75, linger: { mild: 9, strong: 7 }, midSpd: 0.75, midThink: 0.6 };
+  // base=虫の数の土台（第8便：もとからいる味方を 6→2〜3 匹にしたぶん、base 2.4→0.85・fr 0.95→1.0 にして、前と同じ難しさに。test/m1/d_sim.js で前後を比べた）
   // k=虫の数の倍率、drain=小さい虫1匹が1秒に吸う量（株の元気 1 に対して）、fr・fiv=うちわの届く広さ・間、linger=薬が田に残る秒数
   const ALLY_NAME = { spider: 'クモ', frog: 'カエル', dragonfly: 'トンボ' };
   function makeWorld(o) {
@@ -7721,9 +8066,9 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     const has = { oil: ms0.indexOf('oil') >= 0, ducks: ms0.indexOf('ducks') >= 0, mild: ms0.indexOf('mild') >= 0, strong: ms0.indexOf('strong') >= 0 || ms0.indexOf('pesticide') >= 0 };
     const ext = o.ext || { x0: -1.3, y0: -1.3, x1: cols + 1.3, y1: rows + 1.3 };
     const rel = o.rel || {}, relPests = (rel.eaters || 0) + (rel.stink || 0);            // 田に放した生き物（10.12）
-    const W = { cols, rows, M, T, t: 0, done: false, has, risk, ext, hills: [], live: [], bugs: [], allies: [], ducks: [], drops: [], oil: [], ev: [], warn: [], mist: null,
+    const W = { cols, rows, M, T, t: 0, done: false, has, risk, ext, hills: [], live: [], bugs: [], allies: [], gone: [], ducks: [], drops: [], oil: [], ev: [], warn: [], mist: null, allyStop: 0,
       left: { mild: has.mild ? 3 : 0, strong: has.strong ? 3 : 0 }, botSpd: 1, botBombs: 0,
-      st: { killed: 0, bombs: 0, by: { mild: 0, strong: 0 }, alliesLost: 0, combo: 0, comboT: 0, best: 0, spawned: 0, picks: 0, hillsDead: 0 },
+      st: { killed: 0, bombs: 0, by: { mild: 0, strong: 0 }, alliesLost: 0, alliesFled: 0, lostBy: { spider: 0, frog: 0, dragonfly: 0 }, combo: 0, comboT: 0, best: 0, spawned: 0, picks: 0, hillsDead: 0 },
       p: { x: cols / 2, y: rows / 2, tx: cols / 2, ty: rows / 2, cd: 0, r: PEST_TUNE.fr, iv: PEST_TUNE.fiv, lr: 0, ls: 0, swing: 0, face: 1, trail: 0 } };
     for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
       const bl = []; for (let k = 0; k < 9; k++) bl.push([k / 9 * TAU + R() * 0.5, 0.7 + R() * 0.3, k % 3 === 0 ? 1 : 0]);
@@ -7732,7 +8077,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     W.live = W.hills.slice();
     const TU = Object.assign({}, PEST_TUNE, o.tune || {});
     W.p.r = TU.fr; W.p.iv = TU.fiv;
-    const total = Math.min(TU.cap, Math.round(cols * rows * (2.4 + 7 * risk) * TU.k * (o.fast ? 0.72 : 1) * (1 + Math.min(0.4, 0.04 * relPests))));   // 放した害虫のぶん、虫が少し多い
+    const total = Math.min(TU.cap, Math.round(cols * rows * (TU.base + 7 * risk) * TU.k * (o.fast ? 0.72 : 1) * (1 + Math.min(0.4, 0.04 * relPests))));   // 放した害虫のぶん、虫が少し多い
     W.total = total;
 
     // ---- 虫の来かた（波）。どの辺から来るかは 1.2 秒前に矢印で知らせる ----
@@ -7766,7 +8111,9 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       W.allies.push(a); return a;
     }
     const inField = () => [0.6 + R() * (cols - 1.2), 0.6 + R() * (rows - 1.2)];
-    ['spider', 'frog', 'dragonfly', 'spider', 'frog', 'dragonfly'].forEach(k => { const q = inField(); addAlly(k, Math.round(q[0]), Math.round(q[1])); });
+    // 放さなくても田にもとからいる天敵は、少しだけ（クモ1・カエル1。もう1匹は出たり出なかったり＝平均 2.5 匹。rules の NAT_ALLIES と同じ）。トンボは、放したときだけ
+    const nat = ['spider', 'frog']; if (R() < 0.5) nat.push(R() < 0.5 ? 'spider' : 'frog');
+    nat.forEach(k => { const q = inField(); addAlly(k, Math.round(q[0]), Math.round(q[1])); });
     for (let i = 0; i < (rel.frog || 0); i++) { const q = inField(); addAlly('frog', Math.round(q[0]), Math.round(q[1])); }       // 放したカエル・クモは、最初から田にいる
     for (let i = 0; i < (rel.spider || 0); i++) { const q = inField(); addAlly('spider', Math.round(q[0]), Math.round(q[1])); }
     for (let i = 0; i < (rel.dragonfly || 0); i++) { const q = inField(); addAlly('dragonfly', q[0], q[1]); }
@@ -7803,8 +8150,9 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     }
     function dropAt(x, y) {
       const p = W.p; let type = R() < 0.4 ? 'size' : R() < 0.58 ? 'speed' : 'ally';
+      if (type === 'ally' && (W.allyStop >= 2 || (W.allyStop === 1 && R() < 0.5))) type = p.lr <= p.ls ? 'size' : 'speed';   // 強い薬のあとは、その日は味方が来ない。弱い薬のあとは半分
       if (type === 'ally' && W.allies.length >= 10) type = 'size';
-      if (type === 'size' && p.lr >= 5) type = 'speed'; if (type === 'speed' && p.ls >= 5) type = W.allies.length >= 10 ? 'size' : 'ally';
+      if (type === 'size' && p.lr >= 5) type = 'speed'; if (type === 'speed' && p.ls >= 5) type = (W.allies.length >= 10 || W.allyStop >= 2) ? 'size' : 'ally';
       W.drops.push({ x: clamp(x, 0.3, cols - 0.3), y: clamp(y, 0.3, rows - 0.3), type, ttl: 6, max: 6, kind: ['spider', 'frog', 'dragonfly'][(R() * 3) | 0] });
       W.ev.push({ k: 'drop' });
     }
@@ -7819,12 +8167,39 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     W.latched = () => { let n = 0; for (const hl of W.live) n += hl.n; return n; };
     let mistId = 0;
     W.bombsLeft = () => W.left.mild + W.left.strong;
+    // 薬は田じゅうに効く：強い薬＝味方はほぼ全部、弱い薬＝およそ半分が いなくなる。まいた所に近いものは その場で落ち、遠いものは田の外へ逃げていく（合鴨は別）
+    function sprayAllies(kind) {
+      const ox = W.p.x, oy = W.p.y, list = W.allies.filter(a => !a.dead);
+      for (let i = list.length - 1; i > 0; i--) { const j = (R() * (i + 1)) | 0, x = list[i]; list[i] = list[j]; list[j] = x; }
+      let n;
+      if (kind === 'strong') { n = 0; for (let i = 0; i < list.length; i++) if (R() < PEST_ALLY.strong) n++; }
+      else { const half = list.length * PEST_ALLY.mild; n = Math.floor(half) + (R() < half - Math.floor(half) ? 1 : 0); }
+      for (let i = 0; i < n; i++) {
+        const a = list[i], d = Math.hypot(a.x - ox, a.y - oy); a.dead = true;
+        W.st.alliesLost++; W.st.lostBy[a.kind]++;
+        const q = { kind: a.kind, x: a.x, y: a.y, wx: a.x, wy: a.y, t: -Math.min(0.25, d / W.mist.max * 0.6), ang: a.ang || 0, hop: 0 };
+        if (d <= PEST_NEAR) { q.mode = 'fall'; q.dur = 1.5; }
+        else {                                                   // 逃げる向き：まいた所から遠ざかる側の、近い畦へ
+          const ax = (a.x - ox) / d, ay = (a.y - oy) / d;
+          const outs = [[ext.x0 - 0.9, a.y + ay * 1.5], [ext.x1 + 0.9, a.y + ay * 1.5], [a.x + ax * 1.5, ext.y0 - 0.9], [a.x + ax * 1.5, ext.y1 + 0.9]];
+          let best = outs[0], bs = 1e9;
+          for (const e of outs) { const ex = e[0] - a.x, ey = e[1] - a.y, ed = Math.hypot(ex, ey) || 1, sc = ed - 3 * (ex / ed * ax + ey / ed * ay); if (sc < bs) { bs = sc; best = e; } }
+          q.mode = 'flee'; q.tx = best[0]; q.ty = best[1]; q.ang = Math.atan2(q.ty - a.y, q.tx - a.x); q.dur = Math.hypot(q.tx - a.x, q.ty - a.y) / PEST_FLEE[a.kind];
+          W.st.alliesFled++;
+        }
+        W.gone.push(q);
+      }
+      W.allies = W.allies.filter(a => !a.dead);
+      if (kind === 'strong') { W.allyStop = 2; for (const q of W.drops) if (q.type === 'ally') q.type = W.p.lr <= W.p.ls ? 'size' : 'speed'; }   // 落ちている「味方の札」も、別の札に
+      else if (W.allyStop < 1) W.allyStop = 1;
+    }
     W.bomb = kind => {                                           // 弱い薬＝虫も味方も半分ほど。強い薬＝ほぼ全部
       if (kind !== 'mild' && kind !== 'strong') kind = W.left.strong > 0 ? 'strong' : 'mild';
       if (!(W.left[kind] > 0) || W.done || (W.mist && W.mist.t < 2.6)) return false;
       W.left[kind]--; W.st.bombs++; W.st.by[kind]++;
       W.mist = { kind, id: ++mistId, dur: TU.linger[kind], x: W.p.x, y: W.p.y, t: 0, r: 0, max: Math.hypot(ext.x1 - ext.x0, ext.y1 - ext.y0) + 2 };
       W.ev.push({ k: 'bomb', kind });
+      sprayAllies(kind);
       return true;
     };
 
@@ -7891,7 +8266,6 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       // 天敵
       for (const a of W.allies) {
         if (a.dead) continue;
-        if (ms && a.mist !== ms.id && Math.hypot(a.x - ms.x, a.y - ms.y) <= ms.r) { a.mist = ms.id; if (R() >= (ms.kind === 'strong' ? PEST_ALLY.strong : PEST_ALLY.mild)) continue; a.dead = true; st.alliesLost++; W.ev.push({ k: 'allydie', x: a.x, y: a.y, kind: a.kind }); continue; }
         a.cd -= dt; if (a.eat > 0) a.eat -= dt;
         if (a.kind === 'spider') {
           if (a.cd <= 0) { const b = nearestBug(a.x, a.y, 0.78, true); if (b) { a.ex = b.x; a.ey = b.y; kill(b, 'ally'); a.cd = 1.0; a.eat = 0.3; } else a.cd = 0.1; }
@@ -7910,6 +8284,19 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
           if (dd > 0.05) { const want = Math.atan2(ey, ex); let da = want - a.ang; while (da > Math.PI) da -= TAU; while (da < -Math.PI) da += TAU; a.ang += clamp(da, -5 * dt, 5 * dt); const v = (a.tb ? 3.0 : 1.6) * dt; a.x += Math.cos(a.ang) * v; a.y += Math.sin(a.ang) * v; }
           if (a.tb && dd < 0.35 && a.cd <= 0) { a.ex = a.tb.x; a.ey = a.tb.y; kill(a.tb, 'ally'); a.tb = null; a.cd = 0.75; a.eat = 0.2; const q = inField(); a.tx = q[0]; a.ty = q[1]; }
         }
+      }
+      // いなくなる味方（落ちる／田の外へ逃げる）。もう虫は食べない
+      for (let i = W.gone.length - 1; i >= 0; i--) {
+        const q = W.gone[i], t0 = q.t; q.t += dt;
+        if (q.t <= 0) continue;
+        if (t0 <= 0) W.ev.push({ k: q.mode === 'fall' ? 'allydie' : 'allyflee', x: q.x, y: q.y, kind: q.kind });
+        if (q.mode === 'flee') {
+          const ex = q.tx - q.x, ey = q.ty - q.y, dd = Math.hypot(ex, ey);
+          let v = PEST_FLEE[q.kind];
+          if (q.kind === 'frog') { q.hop += dt / 0.3; if (q.hop >= 1) q.hop -= 1; v *= q.hop < 0.72 ? 1.39 : 0; }   // ぴょん、ぴょんと跳ぶ
+          const m = Math.min(dd, v * dt); if (dd > 1e-6) { q.x += ex / dd * m; q.y += ey / dd * m; }
+          if (dd <= 0.02 || q.t > q.dur + 1.2) W.gone.splice(i, 1);
+        } else if (q.t >= q.dur) W.gone.splice(i, 1);
       }
       // 合鴨
       for (const dk of W.ducks) {
@@ -7962,7 +8349,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       let hp = 0, saved = 0; for (const hl of W.hills) { hp += hl.hp; if (hl.hp >= 0.34) saved++; }
       const kinds = { spider: 0, frog: 0, dragonfly: 0 }; for (const a of W.allies) if (!a.dead) kinds[a.kind]++;
       const used = []; if (has.oil) used.push('oil'); if (W.st.by.mild > 0) used.push('mild'); if (W.st.by.strong > 0) used.push('strong');   // 選んだだけで、まかなかった薬は入れない
-      return { methods: used, method: W.st.bombs > 0 ? 'pesticide' : has.oil ? 'oil' : 'none', skill: +clamp(hp / W.hills.length, 0, 1).toFixed(2), bombs: W.st.bombs, alliesLost: W.st.alliesLost,
+      return { methods: used, method: W.st.bombs > 0 ? 'pesticide' : has.oil ? 'oil' : 'none', skill: +clamp(hp / W.hills.length, 0, 1).toFixed(2), bombs: W.st.bombs, alliesLost: W.st.alliesLost, alliesFled: W.st.alliesFled,
         ducks: has.ducks, bombsBy: { mild: W.st.by.mild, strong: W.st.by.strong }, killed: W.st.killed, hills: W.hills.length, hillsSaved: saved, alliesLeft: kinds.spider + kinds.frog + kinds.dragonfly, allies: kinds };
     };
     return W;
@@ -7982,11 +8369,11 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
   const PITEM = (window.Rules && window.Rules.PEST_ITEMS) || {}, ECON0 = (window.Rules && window.Rules.ECON) || {};
   const PKEYS = ['none', 'oil', 'ducks', 'mild', 'strong'];
   const METHODS = {
-    none: { name: 'うちわ', sub: '近くの虫を、うちわで払う。', tip: '虫の多いところへ。光る札は、消えるまえに拾う' },
-    oil: { name: (PITEM.abura && PITEM.abura.name) || '菜種油', sub: '歩いたあとに油の膜がのこる。膜の上の虫は、動きがにぶって落ちる。', shop: '行商人', cost: (PITEM.abura && PITEM.abura.cost) || ECON0.oil || 100, tip: '歩いたあとに、油の膜。虫の通り道に引いておく' },
-    ducks: { name: '合鴨', sub: '合鴨が泳ぎまわって、虫を食べる。', shop: '村', cost: ECON0.ducks || 300, tip: '合鴨のいないところを、助けに行こう' },
-    mild: { name: (PITEM.kusuriA && PITEM.kusuriA.name) || '弱い薬', sub: '「まく」を長押しで、田じゅうにまく。3回まで。', shop: '行商人', cost: (PITEM.kusuriA && PITEM.kusuriA.cost) || ECON0.mild || 300, tip: '薬のボタンを長押しすると、田じゅうにまく' },
-    strong: { name: (PITEM.kusuriB && PITEM.kusuriB.name) || '強い薬', sub: '「まく」を長押しで、田じゅうにまく。3回まで。', shop: '行商人', cost: (PITEM.kusuriB && PITEM.kusuriB.cost) || ECON0.strong || 500, tip: '薬のボタンを長押しすると、田じゅうにまく' }
+    none: { name: 'うちわ', sub: '近くの虫を、うちわで払う。', short: '近くの虫を払う。', tip: '虫の多いところへ。光る札は、消えるまえに拾う' },
+    oil: { name: (PITEM.abura && PITEM.abura.name) || '菜種油', sub: '歩いたあとに油の膜がのこる。膜の上の虫は、動きがにぶって落ちる。', short: '歩いたあとに油の膜。上の虫は落ちる。', shop: '行商人', cost: (PITEM.abura && PITEM.abura.cost) || ECON0.oil || 100, tip: '歩いたあとに、油の膜。虫の通り道に引いておく' },
+    ducks: { name: '合鴨', sub: '合鴨が泳ぎまわって、虫を食べる。', short: '泳ぎまわって、虫を食べる。', shop: '村', cost: ECON0.ducks || 300, tip: '合鴨のいないところを、助けに行こう' },
+    mild: { name: (PITEM.kusuriA && PITEM.kusuriA.name) || '弱い薬', sub: '「まく」を長押しで、田じゅうにまく。3回まで。', short: '長押しで田じゅうにまく。3回まで。', shop: '行商人', cost: (PITEM.kusuriA && PITEM.kusuriA.cost) || ECON0.mild || 300, tip: '薬のボタンを長押しすると、田じゅうにまく' },
+    strong: { name: (PITEM.kusuriB && PITEM.kusuriB.name) || '強い薬', sub: '「まく」を長押しで、田じゅうにまく。3回まで。', short: '長押しで田じゅうにまく。3回まで。', shop: '行商人', cost: (PITEM.kusuriB && PITEM.kusuriB.cost) || ECON0.strong || 500, tip: '薬のボタンを長押しすると、田じゅうにまく' }
   };
   function methodIcon(g, w, hh, key) {
     const cx = w / 2, cy = hh / 2, s = hh;
@@ -8054,12 +8441,12 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     const V = () => view(W.cols, W.rows);
 
     // ---- 手段をえらぶ（いくつでも重ねて。持っていないものは薄く見せる） ----
-    const cards = {};
+    const cards = {}; let two = false;                        // two＝スマホの幅（2列に詰めて、送らずに5つとも見せる）
     function paint(k) {
       const c = cards[k]; if (!c) return;
       const on = k === 'none' || sel[k];
       c.el.classList.toggle('on', on); if (!fixed(k) && own[k]) c.el.setAttribute('aria-pressed', on ? 'true' : 'false');
-      c.chk.textContent = k === 'none' ? '✓ いつも持っている' : !own[k] ? '持っていない' : fixed(k) ? '✓ もう田にいる' : on ? (k === 'ducks' ? '✓ 田に放す' : '✓ 持っていく') : 'タップで選ぶ';
+      c.chk.textContent = k === 'none' ? '✓ いつも持っている' : !own[k] ? '持っていない' : fixed(k) ? (two ? '✓ 田にいる' : '✓ もう田にいる') : on ? (k === 'ducks' ? '✓ 田に放す' : '✓ 持っていく') : 'タップで選ぶ';
     }
     const pick = h('div', { class: 'mgd-pick' }, h('h3', null, 'どうやって追い払う？'), h('p', null, 'いくつでも重ねて選べる。決めたら「これで行く」。'),
       h('div', { class: 'mgd-opts' }, PKEYS.map(k => {
@@ -8068,10 +8455,13 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         const el = h('button', { class: 'mgd-opt' + (has ? '' : ' lack') + (fixed(k) ? ' fix' : ''), type: 'button', 'data-method': k, disabled: !has, onclick: () => {
           if (!S.live() || phase !== 'pick' || fixed(k) || !has) return;
           sel[k] = !sel[k]; S.sfx('tap'); S.touch(); paint(k); pickInfo();
-        } }, miniCanvas(104, 78, (g2, w, hh) => methodIcon(g2, w, hh, k)), h('div', null, h('b', null, m.name), h('span', null, m.sub), note ? h('small', null, note) : null, chk));
+        } }, miniCanvas(104, 78, (g2, w, hh) => methodIcon(g2, w, hh, k)), h('div', null, h('b', null, m.name), h('span', { class: 'mgd-s1' }, m.sub), h('span', { class: 'mgd-s2' }, m.short || m.sub), note ? h('small', null, note) : null, chk));
         cards[k] = { el, chk }; return el;
       })));
     PKEYS.forEach(paint);
+    const fitPick = () => { const r = S.body.getBoundingClientRect(), tw = r.width > 0 && r.width < 520; if (tw !== two) { two = tw; pick.classList.toggle('mgd-two', two); PKEYS.forEach(paint); } pick.classList.toggle('mgd-roomy', two && r.height >= 340); };   // roomy＝2列でも高さに余裕があるとき（ふつうのスマホ）は、説明を元の長さで
+    fitPick();
+    if (window.ResizeObserver) { const ro = new ResizeObserver(() => { if (phase === 'pick') fitPick(); }); ro.observe(S.body); S.clean(() => ro.disconnect()); }
     function pickInfo() { const c = chosen(); S.frame.info(c.length ? 'うちわ ＋ ' + c.map(k => METHODS[k].name).join('・') : 'うちわだけで行く'); }
     wrap.append(pick);
 
@@ -8088,9 +8478,10 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       if (phase !== 'pick') return;
       phase = 'play'; pick.remove(); goBtn.remove();
       const ms = chosen(), drugs = ms.filter(k => k === 'mild' || k === 'strong');
+      autoBtn.classList.add('mgd-auto'); if (drugs.length > 1) autoBtn.classList.add('mgd-tight');
       drugs.forEach(k => {                                     // 薬のボタン（長押し）。弱い薬と強い薬を両方持っていけば、2つに分かれる
         const fill = h('i'), pp = h('em', null, '●●●');
-        const btn = h('button', { class: 'btn mgd-bomb' + (k === 'mild' ? ' mild' : ''), type: 'button', 'data-bomb': k }, fill, h('span', null, (drugs.length > 1 ? METHODS[k].name : '薬をまく') + '（長押し）', pp));
+        const btn = h('button', { class: 'btn mgd-bomb' + (k === 'mild' ? ' mild' : ''), type: 'button', 'data-bomb': k }, fill, h('span', null, h('b', null, drugs.length > 1 ? METHODS[k].name : '薬をまく'), h('small', null, h('span', { class: 'mgd-pa' }, '（'), '長押し', h('span', { class: 'mgd-pa' }, '）')), pp));
         bombUI[k] = { btn, fill, pips: pp };
         S.frame.foot.insertBefore(btn, autoBtn);
         const down = e => { if (!S.live() || auto || W.left[k] <= 0 || (W.mist && W.mist.t < 2.6)) return; endHold(); holding = k; hold = 0; try { btn.setPointerCapture(e.pointerId); } catch (_) { /* なくてもよい */ } e.preventDefault(); };
@@ -8110,11 +8501,13 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     }
 
     S.drag(cv.canvas, {
-      down(p) { aim(p); }, move(p) { aim(p); }
+      down(p, e) { aim(p, e); }, move(p, e) { aim(p, e); }
     });
-    function aim(p) {
+    function aim(p, e) {
       if (!S.live() || phase !== 'play' || auto || S.paused()) return;
-      const v = V(); W.setTarget((p.x - v.ox) / v.cell, (p.y - v.oy) / v.cell); S.touch();
+      // スマホの指は、ツグミと近くの虫・味方をかくしてしまう。せまい舞台では、指の少し上へツグミを出す（下の端に近いほど ずれを小さくして、いちばん下の株にも届く）
+      const lift = e && e.pointerType === 'touch' && cv.w < 520 ? Math.min(34, Math.max(0, cv.h - p.y) * 0.5) : 0;
+      const v = V(); W.setTarget((p.x - v.ox) / v.cell, (p.y - lift - v.oy) / v.cell); S.touch();
       if (!moved) { moved = true; S.frame.info(tipText); }
     }
 
@@ -8146,6 +8539,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         } else if (e.k === 'bomb') {
           S.sfx('thud'); shake = 0.5; flash = 0.5;
         } else if (e.k === 'allydie') { puff(e.x, e.y, 5, alpha('usuzumi', 0.8), 0.9, 0.9); }
+        else if (e.k === 'allyflee') { puff(e.x, e.y, 3, C('awa'), 1.4, 0.4); }
         else if (e.k === 'wave') { if (!auto && W.t > 1) S.sfx('step'); }
       }
       evs.length = 0;
@@ -8172,9 +8566,10 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         g2.fillStyle = COL.water; rrect(g2, ox - cell * 0.2, 1, W.cols * cell + cell * 0.4, hh - 2, 8); g2.fill();
         for (const hl of W.hills) drawHill(g2, ox + hl.x * cell, oy + hl.y * cell * 0.5, cell * 0.36, hl.bl, hl.hp, c1, c2, hl.hp < 0.34);
       });
+      hillVis.classList.add('mgd-hills');
       const allyVis = miniCanvas(380, 46, (g2, w, hh) => {
         const list = []; ['spider', 'frog', 'dragonfly'].forEach(k => { for (let i = 0; i < kinds[k]; i++) list.push([k, false]); });
-        const lostN = Math.min(st.alliesLost, 12); for (let i = 0; i < lostN; i++) list.push([['spider', 'frog', 'dragonfly'][i % 3], true]);
+        let lostN = 0; ['spider', 'frog', 'dragonfly'].forEach(k => { for (let i = 0; i < st.lostBy[k] && lostN < 12; i++, lostN++) list.push([k, true]); });
         const step = Math.min(42, (w - 20) / Math.max(1, list.length));
         list.forEach((q, i) => { const x = 22 + i * step, y = hh / 2 + 2; if (q[0] === 'spider') drawSpider(g2, x, y, 80, 0, q[1]); else if (q[0] === 'frog') drawFrog(g2, x, y + 3, 78, 0, q[1]); else drawDragonfly(g2, x, y, 66, -0.5, 0, q[1]); });
         if (!list.length) text(g2, 'いない', w / 2, hh / 2, 14, C('usuzumi'));
@@ -8276,6 +8671,28 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         const a = ms.t < 0.6 ? top : ms.t < 2.6 ? lerp(top, rest, (ms.t - 0.6) / 2) : rest * clamp((ms.dur - ms.t) / 1.5, 0, 1);
         g.fillStyle = alpha(strong ? mix('kami', 'usuzumi', 0.18) : 'kami', a); g.beginPath(); g.arc(X(ms.x), Y(ms.y), ms.r * s, 0, TAU); g.fill();
         if (ms.t < 0.6) { g.strokeStyle = alpha('awa', 0.9); g.lineWidth = s * 0.14; g.beginPath(); g.arc(X(ms.x), Y(ms.y), ms.r * s, 0, TAU); g.stroke(); }
+      }
+      // 薬で いなくなる味方：近くのものは ひっくり返って落ち、遠いものは畦のむこうへ逃げる（けむりの上に描く。見たままだけ）
+      for (const q of W.gone) {
+        if (q.t <= 0) { if (q.kind === 'spider') { drawWeb(g, X(q.wx), Y(q.wy), 0.78 * s, 0.5); drawSpider(g, X(q.x), Y(q.y), s, 0, false); } else if (q.kind === 'frog') drawFrog(g, X(q.x), Y(q.y), s, 0, false); else drawDragonfly(g, X(q.x), Y(q.y), s, q.ang, t, false); continue; }
+        const qx = X(q.x), qy = Y(q.y);
+        if (q.kind === 'spider') drawWeb(g, X(q.wx), Y(q.wy), 0.78 * s, 0.5 * clamp(1 - q.t / 1.5, 0, 1));          // 巣だけが、しばらく残る
+        if (q.mode === 'fall') {
+          const u = clamp(q.t / 0.3, 0, 1), fade = clamp((q.dur - q.t) / 0.5, 0, 1), sink = smooth(u) * s * 0.12;
+          g.save(); g.globalAlpha = fade;
+          g.strokeStyle = alpha('awa', 0.8 * (1 - clamp(q.t / 0.8, 0, 1))); g.lineWidth = 2; g.beginPath(); g.ellipse(qx, qy + s * 0.12, s * (0.2 + 0.35 * clamp(q.t / 0.8, 0, 1)), s * (0.08 + 0.12 * clamp(q.t / 0.8, 0, 1)), 0, 0, TAU); g.stroke();   // 水の輪
+          g.translate(qx, qy + sink); g.rotate(Math.PI * smooth(u));                                                // ひっくり返る
+          if (q.kind === 'spider') drawSpider(g, 0, 0, s, 0, u > 0.5); else if (q.kind === 'frog') drawFrog(g, 0, 0, s, 0, u > 0.5); else drawDragonfly(g, 0, 0, s, q.ang, 0, u > 0.5);
+          g.restore();
+        } else {
+          g.save(); g.globalAlpha = clamp((q.dur + 0.3 - q.t) / 0.3, 0, 1) * clamp(Math.hypot(q.tx - q.x, q.ty - q.y) / 0.5, 0, 1);
+          g.strokeStyle = alpha('kami', 0.9); g.lineWidth = Math.max(2, s * 0.05); g.lineCap = 'round';                // あわてて走る線
+          for (const k of [-1, 0, 1]) { const bx = qx - Math.cos(q.ang) * s * 0.34 - Math.sin(q.ang) * k * s * 0.12, by = qy - Math.sin(q.ang) * s * 0.34 + Math.cos(q.ang) * k * s * 0.12; line(g, bx, by, bx - Math.cos(q.ang) * s * (0.22 - Math.abs(k) * 0.07), by - Math.sin(q.ang) * s * (0.22 - Math.abs(k) * 0.07)); }
+          if (q.kind === 'spider') drawSpider(g, qx, qy, s, q.t + 0.01, false);
+          else if (q.kind === 'frog') drawFrog(g, qx, qy, s, q.hop < 0.72 ? Math.sin(q.hop / 0.72 * Math.PI) : 0, false);
+          else drawDragonfly(g, qx, qy, s, q.ang, t, false);
+          g.restore();
+        }
       }
       // 粒
       for (let i = parts.length - 1; i >= 0; i--) { const q = parts[i]; q.life -= dt; if (q.life <= 0) { parts.splice(i, 1); continue; } q.x += q.vx * dt; q.y += q.vy * dt; q.vx *= 0.94; q.vy *= 0.94; g.globalAlpha = clamp(q.life / q.max * 1.5, 0, 1); g.fillStyle = q.col; g.beginPath(); g.arc(X(q.x), Y(q.y), Math.max(1.5, q.r * s), 0, TAU); g.fill(); }
@@ -8437,8 +8854,9 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         const k = n ? 2 + Math.round(3 * r.power) : 0, cx = w * 0.78;
         g2.fillStyle = C('kami'); g2.strokeStyle = C('sumi'); g2.lineWidth = 2.2; g2.beginPath(); g2.ellipse(cx, base - 5, 30, 7, 0, 0, TAU); g2.fill(); g2.stroke();
         for (let i = 0; i < k; i++) drawNo3(g2, cx - (k - 1) * 5 + i * 10, base - 9 - (i % 2) * 3, 3.6, 0);
-        text(g2, '元肥ひと山', w * 0.28, hh - 12, 13, C('usuzumi'));
-        text(g2, n ? '雷雨で降ったぶん' : '降らなかった', cx, hh - 12, 13, C('usuzumi'));
+        const fpx = cv.w < 520 ? 15 : 13;                       // スマホでは札の絵が縮むので、字を大きめに描く（縮んでも 11px を下回らない）
+        text(g2, '元肥ひと山', w * 0.28, hh - 12, fpx, C('usuzumi'));
+        text(g2, n ? '雷雨で降ったぶん' : '降らなかった', cx, hh - 12, fpx, C('usuzumi'));
       });
       const card = h('div', { class: 'mgd-fuda-card' }, h('h3', null, '稲妻　おわり'),
         row('落ちた稲妻', n, '本'),
@@ -8566,9 +8984,9 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
   const SEASON0 = { otama: ['taue'], kaeru: ['nakaboshi', 'hogoe'], kumo: ['taue', 'nakaboshi', 'hogoe'], yago: ['taue', 'nakaboshi'], tombo: ['nakaboshi', 'hogoe'], tanishi: ['taue', 'nakaboshi'], zarigani: ['taue', 'nakaboshi'], hebi: ['nakaboshi', 'hogoe'], batta: ['hogoe'], inago: ['hogoe'], kamemushi: ['hogoe'] };
   const SEASONS = ['taue', 'nakaboshi', 'hogoe'];
   const inSeason = (k, sec) => ((CR[k] && Array.isArray(CR[k].season)) ? CR[k].season : SEASON0[k] || SEASONS).indexOf(sec) >= 0;
-  const EATS = { otama: '藻を食べる', kaeru: '虫を食べる', kumo: '虫を食べる', yago: '虫を食べる', tombo: '虫を食べる', tanishi: '藻を食べる', zarigani: '苗を切る', hebi: 'カエルを食べる', batta: '稲を食べる', inago: '稲を食べる', kamemushi: '稲を吸う' };   // 三周目だけ出す印
+  const EATS = { otama: '藻を食べる', kaeru: '虫を食べる', kumo: '虫を食べる', yago: '虫を食べる', tombo: '虫を食べる', tanishi: '藻や泥を食べる', zarigani: '苗を切る', hebi: 'カエルを食べる', batta: '稲を食べる', inago: '稲を食べる', kamemushi: '稲を吸う' };   // 三周目だけ出す印
   const GOOD = k => (CR[k] ? !!CR[k].good : ['otama', 'kaeru', 'kumo', 'yago', 'tombo', 'tanishi'].indexOf(k) >= 0);
-  const REVEAL1 = { otama: 'オタマジャクシは、藻を食べて育ち、やがてカエルになる。', kaeru: 'カエルは、虫を食べる（天敵）。', kumo: 'クモは、虫を食べる（天敵）。', yago: 'ヤゴは、トンボの子。水の中で小さな虫を食べる。', tombo: 'トンボは、飛びながら虫を食べる（天敵）。', tanishi: 'タニシは、藻や草の芽を食べる。', zarigani: 'ザリガニは、苗を切り、タニシやオタマジャクシ、ヤゴを食べる。', hebi: 'ヘビは、カエルを食べる（食物連鎖）。', batta: 'バッタは、稲の葉を食べる。', inago: 'イナゴは、稲の葉を食べる。', kamemushi: 'カメムシは、穂の汁を吸う。' };
+  const REVEAL1 = { otama: 'オタマジャクシは、藻を食べて育ち、やがてカエルになる。', kaeru: 'カエルは、虫を食べる（天敵）。', kumo: 'クモは、虫を食べる（天敵）。', yago: 'ヤゴは、トンボの子。水の中で小さな虫を食べる。', tombo: 'トンボは、飛びながら虫を食べる（天敵）。', tanishi: 'タニシは、水面の藻や泥の有機物を食べ、ふんは稲の肥料になる。苗を食べるジャンボタニシ（外来種）とは、別の貝。', zarigani: 'ザリガニは、苗を切り、タニシやオタマジャクシ、ヤゴを食べる。', hebi: 'ヘビは、カエルを食べる（食物連鎖）。', batta: 'バッタは、稲の葉を食べる。', inago: 'イナゴは、稲の葉を食べる。', kamemushi: 'カメムシは、穂の汁を吸う。' };
   const revealNote = (keys, fallback) => { const ks = KEYS.filter(k => keys.indexOf(k) >= 0); return (ks.length ? ks : fallback || []).map(k => REVEAL1[k]).join(''); };
   const KAGO_MAX = 8;
 
@@ -8840,8 +9258,8 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     const kago = h('div', { class: 'mgd-kago' }, h('div', { class: 'mgd-kago-h' }, h('b', null, title), sub, cnt));
     const wrap = h('div', { class: 'mgd-iki ' + (extraClass || '') }, field, kago);
     S.body.append(wrap);
-    const o = { wrap, field, kago, cnt, sub, side: false };
-    const relayout = () => { const r = S.body.getBoundingClientRect(), sd = r.width >= 700 && r.width > r.height * 1.6; if (sd !== o.side) { o.side = sd; wrap.classList.toggle('side', sd); if (o.cv) o.cv.resize(); } };
+    const o = { wrap, field, kago, cnt, sub, side: false, low: false };   // low＝スマホの低い舞台（かごを詰めて、舞台を広く）
+    const relayout = () => { const r = S.body.getBoundingClientRect(), sd = r.width >= 700 && r.width > r.height * 1.6, low = !sd && r.width > 0 && r.width < 520 && r.height < 330; if (sd !== o.side || low !== o.low) { o.side = sd; o.low = low; wrap.classList.toggle('side', sd); wrap.classList.toggle('mgd-low', low); if (o.cv) o.cv.resize(); } };
     relayout();
     o.cv = S.canvas(field);
     if (window.ResizeObserver) { const ro = new ResizeObserver(() => { if (!S.ended()) relayout(); }); ro.observe(S.body); S.clean(() => ro.disconnect()); }
@@ -8912,9 +9330,9 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     measure();
     const quota = () => {
       const q = {}, i = cv.w < 520 ? 1 : 0; IN.forEach(k => { q[k] = (IKI_QUOTA[k] || [1, 1])[i]; });
-      if (i) for (let n = 0; n < 6; n++) {                     // せまい画面の小川は、4匹まで（多い種類から1匹ずつへらす）
+      if (i) for (let n = 0; n < 8; n++) {                     // せまい画面の小川は、4匹まで（多い種類から1匹ずつへらす）
         const ks = IN.filter(k => HOME[k] === 'stream'); let sum = 0, big = null; ks.forEach(k => { sum += q[k]; if (!big || q[k] > q[big]) big = k; });
-        if (sum <= 4 || !big || q[big] <= 1) break; q[big]--;
+        if (sum <= (cv.h < 190 ? 3 : 4) || !big || q[big] <= 1) break; q[big]--;   // 低い舞台（iPhone SE など）は、3匹まで
       }
       return q;
     };
@@ -9497,7 +9915,21 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     '@keyframes mge-poke{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}',
     '@keyframes mge-pokex{0%,100%{transform:translateX(0)}50%{transform:translateX(7px)}}',
     '@keyframes mge-ring{0%,100%{box-shadow:0 0 0 0 var(--kohaku)}50%{box-shadow:0 0 0 5px var(--kohaku)}}',
+    /* スマホの低い舞台：つまみを いちばん下に一列（まえの空気｜循環｜うしろの空気） */
+    '.mge-compact .mge-air{gap:1px}',
+    '.mge-compact .mge-air>small{font-size:12px;line-height:14px;white-space:nowrap}',
+    '.mge-compact .mge-two{gap:2px}',
+    '.mge-compact .mge-b{min-width:44px;min-height:44px;font-size:13px;padding:0;border-radius:10px;white-space:nowrap}',
+    '.mge-compact .mge-b[aria-pressed="true"]{box-shadow:none}',
+    '.mge-compact .mge-step{gap:3px}',
+    '.mge-compact .mge-step .mge-b{font-size:22px}',
+    '.mge-compact .mge-val{padding:0 1px;gap:1px;border-radius:10px}',
+    '.mge-compact .mge-val b{font-size:14px}',
+    '.mge-compact .mge-pips{gap:2px}.mge-compact .mge-pips i{width:6px;height:4px}',
     '@media (max-width:560px){',
+    '.mge-fuda{padding:4px}',
+    '.mge-cfoot{position:sticky;bottom:0;background:var(--kami);box-shadow:0 0 0 6px var(--kami),0 8px 0 6px var(--kami);z-index:1}',
+    '.mge-card h3{font-size:1rem}',
     '.mge-b{font-size:14px;border-radius:12px}',
     '.mge-rate{padding:1px 7px;gap:4px}.mge-rate b{font-size:19px}',
     '.mge-card{padding:10px 10px 8px;gap:6px}',
@@ -9702,6 +10134,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
 
   // 槽の中の位置（水の箱に対する割合）。p＝流れ方向の進み
   const SPOT = { an: { p: 0.27, v: 0.33 }, nito: { p: 0.66, v: 0.33 }, nuku: { p: 0.46, v: 0.7 } };
+  const SPOT_C = { an: { p: 0.2, v: 0.55 }, nito: { p: 0.8, v: 0.55 }, nuku: { p: 0.5, v: 0.72 } };   // せまく低い舞台（スマホ）：三者を横にひらいて、名前が重ならないようにする
   const NAMES = { an: 'アン', nito: 'ニト', nuku: 'ヌク' };
   const RATE = 1.6, D0 = 3.2;                               // 町から来る駒（こ/秒）、槽ひとつを通る秒数（循環なしのとき）
 
@@ -9765,36 +10198,49 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     const okBtn = frame.addBtn('これで決める', 'primary', () => { if (state !== 0 || !started || auto) return; sfx('tap'); finish(); });
 
     // ---- 配置（画面の大きさから毎回計算。駒は割合で持つので、向きを変えても崩れない） ----
-    let L = null;
+    let L = null, SPT = SPOT;
     function layout() {
       const w = cv.w, hh = cv.h, narrow = w < 520;
-      const top = 20, bandH = 58, ctrlH = 68;
+      // スマホの低い舞台（compact）：つまみを槽の外へ出して、いちばん下に一列でならべる（槽の水の高さを取りもどす）
+      const compact = narrow && hh < 340, rowH = compact ? 62 : 0;
+      scene.classList.toggle('mge-compact', compact);
+      SPT = compact ? SPOT_C : SPOT;
+      const top = 20, bandH = compact ? 16 : 58, ctrlH = compact ? 0 : 68;
       const townW = clamp(w * 0.085, 30, 84), lakeW = clamp(w * 0.19, 68, 190), gap = clamp(w * 0.016, 6, 16);
       const tx0 = townW + gap, tx1 = w - lakeW - gap, tw = (tx1 - tx0 - gap) / 2;
-      const tankBot = hh - bandH - 2;
-      let tankTop = top + clamp(hh * 0.2, 62, 120);
+      const tankBot = hh - bandH - 2 - rowH;
+      let tankTop = top + (compact ? 57 : clamp(hh * 0.2, 62, 120));
       const maxH = Math.max(230, tw * 1.45 + ctrlH);
       if (tankBot - tankTop > maxH) tankTop = tankBot - maxH;
       const T = [0, 1].map(i => {
         const x = tx0 + i * (tw + gap), t = { x, y: tankTop, w: tw, h: tankBot - tankTop };
-        t.W = { x: x + 4, y: tankTop + 8, w: tw - 8, h: Math.max(60, t.h - 8 - ctrlH - 6) };
+        t.W = { x: x + 4, y: tankTop + 8, w: tw - 8, h: Math.max(compact ? 40 : 60, t.h - 8 - ctrlH - 6) };
         return t;
       });
       const ps = clamp(tw * 0.085, 13, 24);                   // 槽の中の駒の大きさ
-      const ss = clamp(Math.min(tw * 0.3, T[0].W.h * 0.33), 32, 84);   // 精霊の大きさ
+      const ss = clamp(Math.min(tw * 0.3, T[0].W.h * 0.33), compact ? 26 : 32, 84);   // 精霊の大きさ
       // 湖（駒を下から積む）
-      const lk = { x: w - lakeW, y: tankTop + 30, w: lakeW, h: hh - tankTop - 34 };
+      const lakeBot = hh - rowH - (compact ? 2 : 0);
+      const lk = { x: w - lakeW, y: tankTop + 30, w: lakeW, h: lakeBot - tankTop - 34 };
       let cell = 22;
       for (; cell > 8; cell--) { if (Math.floor((lk.w - 10) / cell) * Math.floor((lk.h - 16) / cell) >= 100) break; }
       lk.cell = cell; lk.cols = Math.max(1, Math.floor((lk.w - 10) / cell));
       const bandY = tankBot + bandH / 2 + 1;
-      L = { w, h: hh, narrow, top, tankTop, tankBot, townW, lakeW, gap, tw, T, ps, ss, lk, bandY, bandH, groundY: tankTop + 10, ctrlH };
+      L = { w, h: hh, narrow, compact, lakeBot, top, tankTop, tankBot, townW, lakeW, gap, tw, T, ps, ss, lk, bandY, bandH, groundY: tankTop + 10, ctrlH };
       // DOM の部品を置く
       const m = narrow ? 4 : clamp(tw * 0.08, 10, 26);
-      T.forEach((t, i) => { const st = airBox[i].style; st.left = Math.round(t.x + m) + 'px'; st.width = Math.round(t.w - m * 2) + 'px'; st.top = Math.round(t.y + t.h - ctrlH - 2) + 'px'; });
-      const span = T[1].x + T[1].w - T[0].x, sw = Math.min(span - (narrow ? 40 : 110), 330);
-      const ss2 = stepBox.style; ss2.left = Math.round(T[0].x + (span - sw) / 2) + 'px'; ss2.width = Math.round(sw) + 'px'; ss2.top = Math.round(bandY - 25) + 'px'; ss2.height = '50px';
-      stepBox.style.gridTemplateColumns = narrow ? '48px minmax(0,1fr) 48px' : '';
+      const airW = 92, rowY = hh - rowH + 1;
+      T.forEach((t, i) => {
+        const st = airBox[i].style;
+        if (compact) { st.left = (i ? Math.round(w - 4 - airW) : 4) + 'px'; st.width = airW + 'px'; st.top = rowY + 'px'; }
+        else { st.left = Math.round(t.x + m) + 'px'; st.width = Math.round(t.w - m * 2) + 'px'; st.top = Math.round(t.y + t.h - ctrlH - 2) + 'px'; }
+        airBox[i].firstChild.textContent = compact ? (i ? 'うしろの空気' : 'まえの空気') : '空気を';
+      });
+      const span = T[1].x + T[1].w - T[0].x, sw = compact ? w - 8 - airW * 2 - 12 : Math.min(span - (narrow ? 40 : 110), 330);
+      const ss2 = stepBox.style;
+      if (compact) { ss2.left = (4 + airW + 6) + 'px'; ss2.width = Math.round(sw) + 'px'; ss2.top = (rowY + 16) + 'px'; ss2.height = '44px'; }
+      else { ss2.left = Math.round(T[0].x + (span - sw) / 2) + 'px'; ss2.width = Math.round(sw) + 'px'; ss2.top = Math.round(bandY - 25) + 'px'; ss2.height = '50px'; }
+      stepBox.style.gridTemplateColumns = compact ? '44px minmax(0,1fr) 44px' : narrow ? '48px minmax(0,1fr) 48px' : '';
       stepBox.querySelector('.mge-val span').textContent = sw < 250 ? '循環' : '循環（うしろ→まえ）';
       rateLabel.textContent = narrow ? '除去率' : 'この設定の除去率';
       const rs = rateEl.style; rs.right = '6px'; rs.top = (top + 2) + 'px';
@@ -9887,9 +10333,9 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       const air = airOf(pc.ti);
       const near = sp => { const d = (p - sp.p) / 0.2; return Math.exp(-d * d) * 0.82; };
       // はたらく精霊のそばを通る（NH4+ はアンへ、NO2- はアンからニトへ、NO3- は起きているヌクへ）
-      if (air && pc.k === 'nh4' && p < SPOT.an.p + 0.06) y = lerp(y, W.y + SPOT.an.v * W.h, near(SPOT.an));
-      else if (air && pc.k === 'no2') y = lerp(y, W.y + SPOT.nito.v * W.h, Math.max(near(SPOT.an), near(SPOT.nito)));
-      else if (denitOK(pc.ti) && (pc.k === 'no3' || pc.k === 'no2') && p < SPOT.nuku.p + 0.06) y = lerp(y, W.y + SPOT.nuku.v * W.h, near(SPOT.nuku));
+      if (air && pc.k === 'nh4' && p < SPT.an.p + 0.06) y = lerp(y, W.y + SPT.an.v * W.h, near(SPT.an));
+      else if (air && pc.k === 'no2') y = lerp(y, W.y + SPT.nito.v * W.h, Math.max(near(SPT.an), near(SPT.nito)));
+      else if (denitOK(pc.ti) && (pc.k === 'no3' || pc.k === 'no2') && p < SPT.nuku.p + 0.06) y = lerp(y, W.y + SPT.nuku.v * W.h, near(SPT.nuku));
       const surf = W.y + 7;                                 // 入口と出口は、水面ちかくを越えていく
       if (p > 0.88) y = lerp(y, surf, smooth((p - 0.88) / 0.16));
       if (p < 0.14 && !pc.ret) y = lerp(surf, y, smooth((p + 0.1) / 0.24));
@@ -9914,7 +10360,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         const a = { x: pc.fx * L.w, y: pc.fy * L.h }, b = slotXY(pc.slot), u = pc.u, c = { x: (a.x + b.x) / 2, y: L.lk.y - 14 };
         return { x: (1 - u) * (1 - u) * a.x + 2 * u * (1 - u) * c.x + u * u * b.x, y: (1 - u) * (1 - u) * a.y + 2 * u * (1 - u) * c.y + u * u * b.y };
       }
-      if (pc.st === 'eat') { const W = L.T[1].W; return { x: lerp(pc.fx * L.w, W.x + SPOT.nito.p * W.w, pc.u), y: lerp(pc.fy * L.h, W.y + SPOT.nito.v * W.h, pc.u) }; }
+      if (pc.st === 'eat') { const W = L.T[1].W; return { x: lerp(pc.fx * L.w, W.x + SPT.nito.p * W.w, pc.u), y: lerp(pc.fy * L.h, W.y + SPT.nito.v * W.h, pc.u) }; }
       return { x: 0, y: 0 };
     }
     function stepSim(dt) {
@@ -9930,9 +10376,9 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
           const ty = tankXY(pc).y / L.h; pc.sy = pc.sy == null ? ty : lerp(pc.sy, ty, 1 - Math.exp(-dt * 11));   // 急に跳ばない
           const air = airOf(pc.ti), cross = q => prev < q && pc.p >= q;
           if (air) {
-            if (pc.k === 'nh4' && cross(SPOT.an.p)) { pc.k = 'no2'; work(pc, 'an'); }
-            if (pc.k === 'no2' && cross(SPOT.nito.p)) { pc.k = 'no3'; work(pc, 'nito'); }
-          } else if (denitOK(pc.ti) && (pc.k === 'no3' || pc.k === 'no2') && cross(SPOT.nuku.p)) {
+            if (pc.k === 'nh4' && cross(SPT.an.p)) { pc.k = 'no2'; work(pc, 'an'); }
+            if (pc.k === 'no2' && cross(SPT.nito.p)) { pc.k = 'no3'; work(pc, 'nito'); }
+          } else if (denitOK(pc.ti) && (pc.k === 'no3' || pc.k === 'no2') && cross(SPT.nuku.p)) {
             const q = posOf(pc); work(pc, 'nuku');
             pc.k = 'n2'; pc.st = 'rise'; pc.nx = q.x / L.w; pc.ny = q.y / L.h; pc.cnt = false;
             if (popT <= 0) { sfx('pop'); popT = 0.22; }
@@ -10013,10 +10459,11 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       // 湖
       const lk = L.lk, green = clamp(counts.lake / 70, 0, 1);
       g.fillStyle = mix(mix('mizu', 'kami', 0.15), mix('wakaba', 'koke', 0.4), green * 0.7);
-      g.beginPath(); g.moveTo(lk.x, hh); g.lineTo(lk.x, lk.y);
+      const lb = L.lakeBot;
+      g.beginPath(); g.moveTo(lk.x, lb); g.lineTo(lk.x, lk.y);
       for (let i = 0; i <= 8; i++) { const x = lk.x + lk.w * i / 8; g.lineTo(x, lk.y + (still ? 0 : Math.sin(tNow * 1.6 + i * 1.3) * 2)); }
-      g.lineTo(w, hh); g.closePath(); g.fill();
-      g.strokeStyle = C('sumi'); g.lineWidth = 2.5; g.beginPath(); g.moveTo(lk.x, hh); g.lineTo(lk.x, lk.y);
+      g.lineTo(w, lb); g.closePath(); g.fill();
+      g.strokeStyle = C('sumi'); g.lineWidth = 2.5; g.beginPath(); if (L.compact) g.moveTo(w, lb); g[L.compact ? 'lineTo' : 'moveTo'](lk.x, lb); g.lineTo(lk.x, lk.y);
       for (let i = 0; i <= 8; i++) { const x = lk.x + lk.w * i / 8; g.lineTo(x, lk.y + (still ? 0 : Math.sin(tNow * 1.6 + i * 1.3) * 2)); }
       g.stroke();
       for (let i = 0; i < lake.length; i++) { if (!lake[i]) continue; const q = slotXY(i); drawPiece(g, lake[i], q.x, q.y, lk.cell * 0.96); }
@@ -10057,7 +10504,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         if (tk.flash > 0) { g.strokeStyle = alpha('kohaku', tk.flash); g.lineWidth = 6; rrect(g, t.x - 3, t.y - 3, t.w + 6, t.h + 6, 14); g.stroke(); }
         // 精霊（両方の槽に、みんないる。酸素のあるなしで、起きる者が替わる）
         ['an', 'nito', 'nuku'].forEach(k => {
-          const sp = SPOT[k], awake = k === 'nuku' ? !air : air, hungry = k === 'nuku' && !air && i === 1 && S.a1;
+          const sp = SPT[k], awake = k === 'nuku' ? !air : air, hungry = k === 'nuku' && !air && i === 1 && S.a1;
           const x = W.x + sp.p * W.w, s = L.ss * (1 + tk.pulse[k] * 0.16);
           const y = W.y + sp.v * W.h + (awake && !still ? Math.sin(tNow * 3 + i + sp.p * 9) * 2.5 : 0);
           g.save();
@@ -10071,12 +10518,12 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         });
         // 槽の名前（空気のあるなしで、呼び名が変わる）
         const nm = i ? 'うしろ' : 'まえ';
-        const label = fitText(g, air ? [nm + '：好気槽（酸素あり）', nm + '：好気槽', '好気槽'] : [nm + '：無酸素槽（酸素なし）', nm + '：無酸素槽', '無酸素槽'], t.w - 8, 14);
-        plate(g, label, t.x + t.w / 2, t.y - 15, 14, air ? C('sanka') : C('kangen'), '#fff', t.w);
+        const label = fitText(g, air ? [nm + '：好気槽（酸素あり）', nm + '：好気槽', '好気槽'] : [nm + '：無酸素槽（酸素なし）', nm + '：無酸素槽', '無酸素槽'], t.w - (L.compact ? 14 : 8), L.compact ? 12 : 14);
+        plate(g, label, t.x + t.w / 2, t.y - (L.compact ? 13 : 15), L.compact ? 12 : 14, air ? C('sanka') : C('kangen'), '#fff', t.w);
         // いま、この槽で起こること
         const hungryTank = !air && i === 1 && S.a1;
         const cap = air ? ['硝化  NH4+ → NO2- → NO3-', '硝化 NH4+→NO3-', '硝化'] : hungryTank ? ['脱窒は すすまない（有機物が足りない）', '有機物が足りない', '脱窒 ×'] : ['脱窒  NO3- → N2', '脱窒 NO3-→N2', '脱窒'];
-        chemText(g, fitText(g, cap, W.w - 10, 13), t.x + t.w / 2, W.y + 18, 13, C('sumi'), 'center', alpha('kami', 0.85));
+        chemText(g, fitText(g, cap, W.w - 10, L.compact ? 12 : 13), t.x + t.w / 2, W.y + (L.compact ? 13 : 18), L.compact ? 12 : 13, C('sumi'), 'center', alpha('kami', 0.85));
       });
 
       // 駒
@@ -10089,15 +10536,15 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       for (const e of fx) { g.strokeStyle = alpha('kohaku', 1 - e.t / 0.4); g.lineWidth = 2.5; g.beginPath(); g.arc(e.x * w, e.y * hh, L.ps * (0.6 + e.t * 2.4), 0, TAU); g.stroke(); }
 
       // 空（凡例と、空へ帰った N2 の数）
-      const ly = L.top + 13; let lx = 8;
+      const ly = L.top + (L.compact ? 7 : 13); let lx = 8;
       [['nh4', 'NH4+'], ['no2', 'NO2-'], ['no3', 'NO3-'], ['n2', 'N2']].forEach(a => {
         drawPiece(g, a[0], lx + 7, ly, 15); lx += 17;
         lx += chemText(g, a[1], lx, ly + 1, 13, C('sumi'), 'left') + (L.narrow ? 8 : 14);
       });
-      const skyTxt = '空へ ' + counts.sky + 'こ', sx = (T0.x + T1.x + T1.w) / 2, sy = L.narrow ? ly + 22 : ly + 2;
+      const skyTxt = '空へ ' + counts.sky + 'こ', sx = (T0.x + T1.x + T1.w) / 2, sy = L.compact ? ly + 15 : L.narrow ? ly + 22 : ly + 2, sf = L.compact ? 13 : 14;
       const sxx = L.narrow ? sx : Math.max(sx, lx + chemWidth(g, skyTxt, 14) / 2 + 26);
-      drawPiece(g, 'n2', sxx - chemWidth(g, skyTxt, 14) / 2 - 12, sy, 16);
-      chemText(g, skyTxt, sxx + 4, sy + 1, 14, C('sumi'), 'center', alpha('kami', 0.7));
+      drawPiece(g, 'n2', sxx - chemWidth(g, skyTxt, sf) / 2 - 12, sy, sf + 2);
+      chemText(g, skyTxt, sxx + 4, sy + 1, sf, C('sumi'), 'center', alpha('kami', 0.7));
     }
 
     // ---- 進行 ----
@@ -10184,7 +10631,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
           chemEl('p', 'mge-s', '設定：' + setText(S))),
         h('div', { class: 'mge-row' }, h('b', null, '湖へ出た窒素'), h('span', { class: 'num', 'data-k': 'out' }, String(mp.out), h('small', null, '/ 20こ')), mp.c, chemEl('p', 'mge-s', mp.txt)),
         rows.length > 1 ? h('div', { class: 'mge-row' }, h('b', null, 'ためした設定'), h('span'), h('div', { class: 'mge-tried' }, [].concat.apply([], rows))) : null,
-        footBar(7000, 'つぎへ', next)));
+        footBar(frame.root.clientWidth < 520 ? 12000 : 7000, 'つぎへ', next)));
       frame.root.append(box);
     }
     function showReflect(res) {
@@ -10342,7 +10789,15 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
 .ks-foot{display:flex;gap:8px;align-items:center;justify-content:flex-end;padding:6px 12px 10px;flex-wrap:wrap}
 .ks-foot .info{margin-right:auto;flex:1 1 150px;min-width:0;color:var(--usuzumi);font-size:.9rem}
 .ks-narrow .ks-foot{padding:4px 12px 8px}
-.ks-narrow .ks-foot .info{flex-basis:110px;font-size:.82rem;line-height:1.35}
+.ks-narrow .ks-foot .info{flex-basis:70px;font-size:.82rem;line-height:1.35}
+/* 指での操作：中で縦に流す箱は pan-y を明示。長押しでメニューや文字選択を出さない */
+.ks-body,.ks-who-body,.ks-spcard,.ks-rv-main,.ks-rv-side,.ks-rw-side .ks-note{touch-action:pan-y}
+.ks-root button,.ks-sp,.ks-soil-cv,.ks-range{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.ks-narrow .ks-spcard{left:4px;right:4px;bottom:4px;max-height:calc(100% - 8px);font-size:.94rem;grid-template-columns:48px minmax(0,1fr) auto}
+.ks-narrow .ks-spcard .ks-ic{width:48px;height:48px}
+.ks-narrow .ks-spcard dl{grid-template-columns:minmax(0,1fr);gap:0}
+.ks-narrow .ks-spcard dt{margin-top:4px}
+.ks-narrow .ks-spcard .x{position:sticky;top:0;z-index:1;align-self:start}
 .ks-narrow .ks-foot .btn{padding:6px 14px;min-height:48px}
 .ks-narrow .ks-ctl .btn{padding:4px 10px;font-size:.84rem}
 .ks-narrow .ks-ctl .ks-play{min-width:5.4em}
@@ -10443,6 +10898,23 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
 .ks-ctl .ks-play{min-width:6.4em}
 .ks-range{flex:1 1 160px;min-width:120px;width:auto;height:48px;margin:0;accent-color:var(--ai);touch-action:pan-y}
 .ks-port .ks-range{flex:1 1 100%;width:100%}
+/* せまい画面（スマホ）の巻き戻し：断面と操作を一画面におさめる。操作の帯は、下へ読み進めても画面の下に残る */
+.ks-who-s{display:none}
+.ks-narrow .ks-rw{display:flex;flex-direction:column;gap:4px;height:auto}
+.ks-narrow .ks-rw-main,.ks-narrow .ks-rw-view,.ks-narrow .ks-rw-view > .ks-soil{display:contents}
+.ks-narrow .ks-rw .ks-soil-note{order:0;font-size:.86rem;line-height:1.35;padding:2px 8px}
+.ks-narrow .ks-rw .ks-soil-cv{order:1;flex:none;height:var(--ks-cv-h,240px)}
+.ks-narrow .ks-rw .ks-ctl{order:2;position:sticky;top:0;bottom:0;z-index:6;background:var(--kami);gap:2px 5px;padding:2px 0 3px;margin:0 -2px;justify-content:space-between;box-shadow:0 -6px 6px -6px rgba(0,0,0,.18)}
+.ks-narrow .ks-rw .ks-legend{order:3}
+.ks-rw-slot:empty{display:none}
+.ks-narrow .ks-rw .ks-rw-slot{order:3;display:flex}
+.ks-rw-slot .ks-range{flex:1 1 auto;width:100%;height:44px}
+.ks-narrow .ks-rw .ks-rw-side{order:4}
+.ks-narrow .ks-rw .ks-range{height:40px;min-width:0}
+.ks-narrow .ks-rw .ks-ctl .btn{min-height:44px;min-width:44px;padding:2px 8px;font-size:.8125rem;flex:1 1 auto;white-space:nowrap}
+.ks-narrow .ks-rw .ks-ctl .ks-play{min-width:4.6em}
+.ks-narrow .ks-who-l{display:none}
+.ks-narrow .ks-who-s{display:inline}
 .ks-note{padding:10px 12px;font-size:1rem;line-height:1.55}
 .ks-note h3{font-size:1rem;margin-bottom:2px}
 .ks-note p{margin:0}
@@ -10546,7 +11018,15 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
 .ks-rv-side{display:flex;flex-direction:column;gap:8px;min-height:0;min-width:0;overflow-y:auto}
 .ks-port .ks-rv-main{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(340px,1fr) auto;overflow-y:auto}
 .ks-port .ks-rv-side{overflow:visible}
-.ks-narrow .ks-rv-main{grid-template-rows:minmax(400px,1fr) auto}
+/* スマホの「この一手で」：見どころ＋断面で、ちょうど一画面。札と理由は、その下（縦に流す） */
+.ks-narrow .ks-rv-main{display:flex;flex-direction:column;gap:4px;overflow-y:auto;padding:0 10px}
+.ks-narrow .ks-rv-view,.ks-narrow .ks-rv-view > .ks-soil{display:contents}
+.ks-narrow .ks-rv-main .ks-soil-note{order:0;flex:none;font-size:.86rem;line-height:1.35;padding:2px 8px}
+.ks-narrow .ks-rv-main .ks-soil-cv{order:1;flex:none;height:var(--ks-cv-h,260px)}
+.ks-narrow .ks-rv-main .ks-legend{order:2;flex:none}
+.ks-narrow .ks-rv-side{order:3;flex:none}
+.ks-narrow .ks-rv-head{padding:6px 10px 2px;gap:2px 8px}
+.ks-narrow .ks-rv-head h2{font-size:1rem}
 .ks-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
 .ks-port .ks-tiles{grid-template-columns:repeat(4,minmax(0,1fr))}
 .ks-narrow .ks-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -10584,6 +11064,8 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
 .ks-yl-stack i{display:block;height:100%;min-width:0;box-sizing:border-box}
 .ks-yl-stack i + i{border-left:1.5px solid var(--kami)}
 .ks-yl-stack .got{background:var(--kogane)}
+.ks-yl-stack .gain,.ks-yl-row .sw.gain,.ks-yl-row .tr i.gain{background:color-mix(in srgb,var(--kogane) 50%,#fff)}
+.ks-yl-gain{margin-top:8px;padding-top:8px;border-top:2px dashed var(--sen)}
 .ks-yl-ends{display:flex;justify-content:space-between;gap:8px;font-size:.8125rem;color:var(--usuzumi);margin:2px 0 8px}
 .ks-yl-rows{display:grid;gap:5px}
 .ks-yl-row{display:grid;grid-template-columns:18px 7.2em minmax(60px,1fr) minmax(8.6em,auto);gap:2px 8px;align-items:center;font-size:.86rem;min-width:0}
@@ -10657,6 +11139,22 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
 .ks-tc-bar i + i{border-left:1.5px solid var(--kami)}
 .ks-tc-key{display:flex;flex-wrap:wrap;gap:2px 10px;font-size:.8125rem;color:var(--usuzumi);margin-top:3px}
 .ks-tc-key span{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.ks-tc-key span.long{display:inline;white-space:normal}
+/* 本編から呼ばれる部品（一枚札・周の比較）は ks-root の外に置かれる。スマホの幅では、画面の幅で切り替える */
+@media (max-width:560px){
+.ks-tc{grid-template-columns:minmax(0,1fr)}
+.ks-tc-title{padding:8px 10px 4px}
+.ks-tc-title b{font-size:1.35rem}
+.ks-tc-stats{padding:6px 10px;gap:6px}
+.ks-tc-stat{padding:4px 8px}
+.ks-tc-stat b{font-size:1.3rem}
+.ks-tc-fate{padding:2px 10px 6px}
+.ks-tc-foot{padding:4px 10px 6px;flex-wrap:wrap;gap:0 8px}
+.ks-tc-gods{grid-template-columns:repeat(3,minmax(0,1fr))}
+.ks-row{grid-template-columns:4.4em minmax(0,1fr) 6.2em;gap:4px}
+.ks-diff{font-size:.8125rem}
+.ks-cmp-gods{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 .ks-tc-key i{display:inline-block;width:12px;height:12px;border-radius:3px;border:1.5px solid var(--sumi);box-sizing:border-box}
 .ks-tc-gods{display:grid;grid-template-columns:repeat(auto-fit,minmax(60px,1fr));gap:4px;padding:4px 10px 8px}
 .ks-tc-god{display:grid;justify-items:center;text-align:center;font-size:.8125rem;line-height:1.25;min-width:0}
@@ -11030,8 +11528,9 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       const vOx = dry ? G.soil + G.ox + 0.035 : G.soil + G.ox * 0.5;        // 水を抜くと、酸化層の下（土の中）まで下りる
       if (k === 'an') return { u: sm ? 0.25 : 0.33, v: vOx };
       if (k === 'nito') return { u: sm ? 0.6 : 0.56, v: vOx };
-      if (k === 'nuku') return { u: sm ? 0.68 : 0.72, v: G.soil + G.ox + (sm ? 0.1 : 0.13) };
-      return { u: sm ? 0.23 : 0.16, v: G.soil + G.ox + (sm ? 0.1 : 0.13) };
+      const low = sm && C.h < 250 && !!o.labels;   // 背の低いスマホ：下の二人を少し上げ、名札が絵の外へ出ないようにする
+      if (k === 'nuku') return { u: sm ? (low ? 0.71 : 0.68) : 0.72, v: G.soil + G.ox + (sm ? (low ? 0.075 : 0.1) : 0.13) };
+      return { u: sm ? (low ? 0.33 : 0.23) : 0.16, v: G.soil + G.ox + (sm ? (low ? 0.075 : 0.1) : 0.13) };
     };
     // いまの様子（はたらける条件）。rest=はたらけない
     function spState(k) {
@@ -11775,8 +12274,9 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         { rice: s2.damage > s1.damage ? -1 : 1 });
       if (s2.sg !== s1.sg) {
         const alone = s2.damage === s1.damage;      // 籾の傷みも一緒に変わるときは、向きは合計で決まる
-        if (s1.sg >= 1.18 && s2.sg < s1.sg) add('塩水が濃すぎると、よい籾まで浮いてしまい、残る籾が足りなくなる。少しうすめれば、苗は足りる。');
-        else if (s2.sg > s1.sg) add('中身の詰まった籾は重く、濃い液にも沈む。真水より泥水、泥水より塩水のほうが濃くできるので、きびしく選べる。沈んだ籾は芽と根の出だしがよく、苗がそろう。' + (s2.sg >= 1.18 ? 'ただし濃くしすぎると、残る籾が足りなくなる。' : ''), alone ? { rice: 1 } : null);
+        if (s1.sg > 1.135 && s2.sg < s1.sg) add('塩水が濃すぎると（塩よっつ以上。比重 1.13 を超える）、よい籾まで浮いてしまい、残る籾が足りなくなる。濃いほど足りなくなる' + (s2.sg > 1.135 ? '。うすめたぶん、足りない籾は減る。' : '。塩みっつ（比重 1.13、うるちの基準）までうすめれば、苗は足りる。'));
+        else if (s2.sg > s1.sg && s1.sg >= 1.125) add('塩みっつ（比重 1.13）が、うるちの基準。それより濃くすると、よい籾まで浮いてしまい、残る籾が足りなくなる。濃くするほど、足りなくなる（塩むっつで2割）。');
+        else if (s2.sg > s1.sg) add('中身の詰まった籾は重く、濃い液にも沈む。真水より泥水、泥水より塩水のほうが濃くできるので、きびしく選べる。沈んだ籾は芽と根の出だしがよく、苗がそろう。' + (s2.sg > 1.135 ? 'ただし塩みっつ（比重 1.13）より濃くすると、よい籾まで浮いて、残る籾が足りなくなる。' : ''), alone ? { rice: 1 } : null);
         else add('うすい液では、中身の詰まっていない軽い籾も沈んで残る。そういう籾は芽と根の出だしが弱く、苗がそろいにくい。', alone ? { rice: -1 } : null);
       }
       mark();
@@ -11930,16 +12430,17 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         const n = (d, k) => clamp((d.released || {})[k] || 0, 0, 6);
         const ch = ks => ks.some(k => n(bd, k) !== n(od, k));
         let t = '';
-        if (ch(['kaeru', 'kumo', 'tombo'])) t += 'カエルやクモ、トンボは、虫を食べる天敵。田にいると、病気や虫の害が出にくくなる（薬をまくと、天敵も一緒にいなくなる）。';
+        if (ch(['kaeru', 'kumo', 'tombo'])) t += 'カエルやクモ、トンボは、虫を食べる天敵。クモやカエルは、放さなくても田に少しはいる。放すと、そこに加わって、病気や虫の害が出にくくなる（薬をまくと、放した分も、もとからいた分も、一緒にいなくなる）。';
         if (ch(['otama', 'yago'])) t += 'オタマジャクシはカエルに、ヤゴはトンボになって虫を食べる。この計算では、1匹がカエルの半分ぶんの働き。';
         if (ch(['hebi'])) t += 'ヘビはカエルを食べる（食物連鎖）。1匹がカエル2匹ぶんを食べ、虫を食べる者が減る。';
         if (ch(['zarigani'])) t += 'ザリガニ（アメリカザリガニは外来種）は、オタマジャクシとヤゴを1匹ずつ、タニシを2匹食べ、苗も切る（1匹でとれ高 −2%）。';
         if (other) { const c2 = relOf(other).chain; if (c2 && ch(['hebi', 'zarigani', 'kaeru', 'otama', 'yago', 'tanishi'])) t += 'こちらの田では、' + c2; }
         if (ch(['batta', 'inago'])) t += 'バッタやイナゴは、稲の葉を食べる。葉が減ると光合成が減り、とれ高が落ちる。';
         if (ch(['kamemushi'])) t += 'カメムシは穂の汁を吸い、米に黒い点をつける（斑点米）。とれ高よりも、米の値に響く。';
-        if (ch(['tanishi'])) t += 'タニシは藻や草の芽を食べ、ふんは肥料になる。この計算では、葉を食べる虫の害をほんの少し軽くする。';
+        if (ch(['tanishi'])) t += 'タニシは、水面の藻や泥の有機物を食べ、ふんが稲の肥料になる（1匹でとれ高 ＋0.5%、多くても ＋3%）。薬をまくと、タニシもいなくなる。';
         if (base && other) {
           if (Math.abs((other.wildLoss || 0) - (base.wildLoss || 0)) >= 0.001) t += '田にもとからいる虫に食べられる分は ' + fx((base.wildLoss || 0) * 100, 1) + '% → ' + fx((other.wildLoss || 0) * 100, 1) + '%。';
+          if (Math.abs((other.snailGain || 0) - (base.snailGain || 0)) >= 0.0005) t += 'タニシによるとれ高の増えは ' + gainTxt(base.snailGain) + ' → ' + gainTxt(other.snailGain) + '。';
           if (Math.abs((other.bugLoss || 0) - (base.bugLoss || 0)) >= 0.001) t += '放した虫によるとれ高の減りは ' + fx((base.bugLoss || 0) * 100, 1) + '% → ' + fx((other.bugLoss || 0) * 100, 1) + '%。';
           if (Math.abs((other.pestLoss || 0) - (base.pestLoss || 0)) >= 0.001) t += '病気・虫によるとれ高の減りは ' + fx((base.pestLoss || 0) * 100, 1) + '% → ' + fx((other.pestLoss || 0) * 100, 1) + '%。';
           const m1 = base.money || {}, m2 = other.money || {};
@@ -11997,7 +12498,9 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         add(t, n2 > n1 + 0.01 ? { rice: 1, air: 1 } : n2 < n1 - 0.01 ? { rice: -1, air: -1 } : null);
       }
       mark();
-      if (pestOf(bd).key !== pestOf(od).key) add('病気や虫は、窒素をとりすぎて葉がやわらかくなった稲に出やすい。手段は重ねて使える。' + pestHow(od) + (base && other ? '病気・虫によるとれ高の減りは ' + pct(base.pestLoss) + ' → ' + pct(other.pestLoss) + '。' : ''));
+      if (pestOf(bd).key !== pestOf(od).key) add('病気や虫は、窒素をとりすぎて葉がやわらかくなった稲に出やすい。手段は重ねて使える。' + pestHow(od) + (base && other ? '病気・虫によるとれ高の減りは ' + pct(base.pestLoss) + ' → ' + pct(other.pestLoss) + '。'
+        + (Math.abs((other.wildLoss || 0) - (base.wildLoss || 0)) >= 0.0005 ? '田にもとからいる虫に食べられる分は ' + fx((base.wildLoss || 0) * 100, 1) + '% → ' + fx((other.wildLoss || 0) * 100, 1) + '%（薬は田の虫を減らすが、放さなくても田にいたクモやカエルも一緒に減らす）。' : '')
+        + (Math.abs((other.snailGain || 0) - (base.snailGain || 0)) >= 0.0005 ? '薬はタニシにも効く。タニシによるとれ高の増えは ' + gainTxt(base.snailGain) + ' → ' + gainTxt(other.snailGain) + '。' : '') : ''));
       mark();
       if (!!bd.netBought !== !!od.netBought) add('水路の網は、被覆肥料の殻が湖へ流れ出るのを止める。窒素の流れは変わらない。');
       mark();
@@ -12166,11 +12669,12 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     const p = pestOf(d);
     let t = p.names.length ? 'うちわに加えて、' + p.names.join('と') + 'を使った。' : 'うちわで追った。';
     if (p.oil) t += '油は水面に膜をはり、落ちた虫の気門をふさぐ（江戸時代からの注油駆除）。害を3割ほど減らすが、水の生き物にも少し響く。';
-    if (p.mild) t += '弱い薬は、虫の害を半分ほどにする。田のクモやカエルも半分ほどいなくなり、水にも少し流れる。';
-    if (p.strong) t += '強い薬は、虫の害をほとんど消す。けれど田の天敵もいなくなり、水路から湖へ流れて魚や貝に響き、里の評判も少し落ちる。';
+    if (p.mild) t += '弱い薬は、虫の害を半分ほどにする。田のクモやカエル（放した分も、もとからいた分も）やタニシも半分ほどいなくなり、水にも少し流れる。';
+    if (p.strong) t += '強い薬は、虫の害をほとんど消す。けれど田の天敵（放した分も、もとからいた分も）もタニシもいなくなり、水路から湖へ流れて魚や貝に響き、里の評判も少し落ちる。';
     if (!p.spray) t += '薬なしでは、油や合鴨を重ねて、うまく追っても、害の半分近くは残る。';
     return t;
   }
+  const gainTxt = v => (v || 0) > 0 ? '＋' + fx(v * 100, 1) + '%' : 'なし';
   function relOf(r) {
     const rel = (r && (r.released || (r.decisions || {}).released)) || {}, CR = (window.Rules && Rules.CREATURES) || {};
     const n = k => clamp(rel[k] || 0, 0, 6), nm = k => (CR[k] && CR[k].name) || k;
@@ -12178,12 +12682,16 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     const frogsRaw = n('kaeru') + 0.5 * Math.max(0, n('otama') - zari);
     const frogs = Math.max(0, frogsRaw - 2 * hebi);
     const allies = frogs + n('kumo') + 0.7 * n('tombo') + 0.5 * Math.max(0, n('yago') - zari);
-    const snails = Math.max(0, n('tanishi') - 2 * zari);
+    const pmR = ((r && r.decisions) || {}), pmL = Array.isArray(pmR.pestMethods) ? pmR.pestMethods : (pmR.pest === 'pesticide' ? ['strong'] : []);
+    const sprayKeep = (r && r.sprayKeep != null) ? r.sprayKeep : (pmL.indexOf('strong') >= 0 ? 0 : pmL.indexOf('mild') >= 0 ? 0.5 : 1);   // 薬は田の生き物みんなに効く（強い薬 0／弱い薬 0.5／なし 1。rules.js と同じ）
+    const snailsRaw = Math.max(0, n('tanishi') - 2 * zari);          // ザリガニに食べられたあと
+    const snails = snailsRaw * sprayKeep;                              // 薬のあとに残った分（とれ高に効くのはこの数）
+    const snailGain = Math.min(0.03, 0.005 * snails);                  // タニシ：1匹で +0.5%、最大 +3%（rules.js と同じ）
     const allyKeys = ['kaeru', 'otama', 'kumo', 'tombo', 'yago'].filter(k => n(k) > 0);
-    const o = { n, zari, hebi, frogsRaw, frogs, allies, snails, eaters: n('batta') + n('inago'), stink: n('kamemushi'), allyKeys,
+    const o = { n, zari, hebi, frogsRaw, frogs, allies, snails, snailsRaw, snailGain, sprayKeep, natAllies: (r && r.natAllies != null) ? r.natAllies : 2.5, eaters: n('batta') + n('inago'), stink: n('kamemushi'), allyKeys,
       allyNames: allyKeys.map(nm).join('・'),
       frogsEaten: frogsRaw - frogs,                                              // ヘビに食べられた分（カエル何匹ぶんか）
-      otamaEaten: Math.min(n('otama'), zari), yagoEaten: Math.min(n('yago'), zari), snailsEaten: n('tanishi') - snails };
+      otamaEaten: Math.min(n('otama'), zari), yagoEaten: Math.min(n('yago'), zari), snailsEaten: n('tanishi') - snailsRaw };
     // 食物連鎖で起きたことを、数のとおりに
     let c = '';
     if (hebi > 0 && o.frogsEaten > 0) c += 'ヘビ（' + hebi + ' 匹）が、カエル' + (n('otama') > 0 && n('kaeru') === 0 ? '（オタマジャクシが育ったもの）' : '') + 'を ' + fx(o.frogsEaten, 1).replace(/\.0$/, '') + ' 匹ぶん食べた' + (frogs <= 0 ? '。虫を食べるカエルは、田に残らなかった。' : '。');
@@ -12216,9 +12724,10 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     const sd = (E.SEED && r.plan && E.SEED[r.plan.seedSG]) || { shortage: 0 };
     const pan = (1 - (EP.deepPanicle == null ? 0.97 : EP.deepPanicle)) * (s.deepFrac || 0);
     const pest = r.pestLoss || 0, bug = r.bugLoss || 0, wild = r.wildLoss || 0, hand = r.handLoss || 0, obst = r.obstLoss || 0, gasL = r.gasLoss || 0, duckL = r.duckLoss || 0, PF = (window.Rules && Rules.PEST_FROM) || 0.12;
-    const early = (d.finalDrainDay != null && d.finalDrainDay < 105) ? clamp(1 - r.yieldKg / Math.max(1, (s.yieldKg || r.yieldKg) * (1 - pest) * (1 - bug) * (1 - wild) * (1 - hand) * (1 - obst) * (1 - gasL) * (1 - duckL)), 0, 1) : 0;
     const rel = r.released || d.released || {}, nRel = k => clamp(rel[k] || 0, 0, 6);
-    const RO = relOf(r), PO = pestOf(d), allies = RO.allies, eaters = RO.eaters;   // 天敵は、食物連鎖のあとに残った分（rules.js と同じ）
+    const RO = relOf(r), PO = pestOf(d), allies = RO.allies, eaters = RO.eaters;
+    const snailGain = r.snailGain != null ? r.snailGain : RO.snailGain;   // タニシで増えた分（とれ高に (1 + snailGain) を掛ける。rules.js と同じ）
+    const early = (d.finalDrainDay != null && d.finalDrainDay < 105) ? clamp(1 - r.yieldKg / Math.max(1, (s.yieldKg || r.yieldKg) * (1 - pest) * (1 - bug) * (1 - wild) * (1 - hand) * (1 - obst) * (1 - gasL) * (1 - duckL) * (1 + snailGain)), 0, 1) : 0;   // 天敵は、食物連鎖のあとに残った分（rules.js と同じ）
     const nRisk = Math.max(s.blastRisk || 0, (((s.uptakeByStage || {}).mid || 0) - 2.95) / 1.8);   // 窒素のとりすぎだけで決まる分（rules.js と同じ式）
     const nCold = daily.filter(x => (x.tOff || 0) <= (EP.coldFrom == null ? -2.5 : EP.coldFrom) && x.day >= 5 && x.day < (EP.heading || 75)).length;
     const deep = (s.deepFrac || 0) > 0.5, md = d.midDrain || {}, typh = r.weather && r.weather.plan && r.weather.plan.typhoon != null;
@@ -12244,7 +12753,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       { key: 'bug', name: '放した虫', loss: bug,
         why: (eaters > 0 ? '田に放したバッタ・イナゴ（' + eaters + ' 匹）が、稲の葉を食べた。葉が減ると、光合成が減る。' + (nRel('kamemushi') > 0 ? 'カメムシは穂の汁を吸った。' : '')
           : (nRel('kamemushi') > 0 ? (bug > 0 ? '田に放したカメムシが、穂の汁を吸った。米の値にも響く（売り値のわけ）。' : '放したカメムシの害は、とれ高には出なかった。米の値に響く（売り値のわけ）。') : (RO.zari > 0 ? '' : '葉を食べる虫は、放していない。')))
-          + (RO.zari > 0 ? 'ザリガニ（' + RO.zari + ' 匹）が、苗を切った。' + (RO.snailsEaten > 0 ? 'タニシも ' + RO.snailsEaten + ' 匹 食べられた。' : '') : '') + (RO.snails > 0 && bug > 0 ? 'タニシ（' + RO.snails + ' 匹）が、害をほんの少し軽くした。' : '') },
+          + (RO.zari > 0 ? 'ザリガニ（' + RO.zari + ' 匹）が、苗を切った。' + (RO.snailsEaten > 0 ? 'タニシも ' + RO.snailsEaten + ' 匹 食べられた。' : '') : '') },
       { key: 'gas', name: 'ガスわき', loss: gasL,
         why: gasL > 0 ? '分解しやすい有機物（わら・米ぬか・若い草など）を、水の下にたくさん入れた。微生物が酸素を使いきって土が強く還元され、硫化水素や有機酸が出て、根が傷んだ。' + ((s.dryDays || 0) >= 5 ? '中干しで土に空気が入り、害は半分ですんだ。' : '中干しで土が乾かなかったので、ガスが抜けなかった。') + '冬のうちにすき込んでおけば、春までに分解が進む。'
           : ((r.gasLoad || 0) > 1.5 ? '分解しやすい有機物は入ったが、根が傷むほどではなかった。' : '根を傷めるほどの有機物は、水の下に入っていない。') },
@@ -12252,15 +12761,15 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         why: obst > 0 ? '分解のおそい、かたいもの（枝・流木など）が土に残り、苗が根づきにくかった。' + (((d.winterBasal || []).length) ? '冬にすき込んだ分は、春までに少しくずれている。' : '') : 'かたいものは、土に残っていない。' },
       { key: 'wild', name: '田の虫', loss: wild,
         why: (() => {
-          const eff = allies * PO.allyKeep;   // 薬のあとに残った天敵
-          let t = '田には、もとから葉を食べる虫がいる。';
-          if (eff > 0 || d.ducks) t += (eff > 0 ? RO.allyText : '') + (eff > 0 && d.ducks ? 'と' : '') + (d.ducks ? '合鴨' : '') + 'が虫を食べて、食べられる葉が減った。';
+          const eff = allies * PO.allyKeep;   // 薬のあとに残った、放した天敵（rules.js：(allies + natAllies) × sprayKeep）
+          let t = '田には、もとから葉を食べる虫がいる。それを食べるクモやカエルも、放さなくても田に少しはいる。';
+          if (eff > 0 || d.ducks) t += (eff > 0 ? RO.allyText : '') + (eff > 0 && d.ducks ? 'と' : '') + (d.ducks ? '合鴨' : '') + 'も虫を食べて、食べられる葉がさらに減った。';
           else if (allies > 0) t += RO.allyText + 'は、強い薬でいなくなった。';
-          else if (RO.allyKeys.length) t += RO.chainAlly + '虫を食べる者が、田に残らなかった。';
-          else t += '天敵も合鴨もいなかったので、そのまま食べられた。';
+          else if (RO.allyKeys.length) t += RO.chainAlly + '放した天敵は、田に残らなかった。';
+          else if (!PO.strong) t += '天敵を放さず、合鴨もいなかったので、虫を食べてくれたのは、もとからいる分だけ。';
           if (eff > 0) t += RO.chainAlly;
-          if (PO.strong) t += '強い薬は、田の虫も大きく減らした。';
-          else if (PO.mild) t += '弱い薬は、田の虫を少し減らした' + (allies > 0 ? 'が、放した天敵も半分ほどいなくなった。' : '。');
+          if (PO.strong) t += '強い薬は、田の虫を大きく減らした。けれど薬をまくと、もとからいたクモやカエルも' + (allies > 0 ? '、放した天敵も' : '') + 'いなくなる。';
+          else if (PO.mild) t += '弱い薬は、田の虫を少し減らした。けれど、もとからいたクモやカエルも' + (allies > 0 ? '、放した天敵も' : '') + '、半分ほどいなくなった。';
           return t;
         })() },
       { key: 'salt', name: '塩害', loss: salt,
@@ -12272,7 +12781,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     ];
     const X = [
       { key: 'seedY', name: '苗のそろい', loss: seedY, why: '種籾えらびがゆるく（比重 ' + fx(sg, 2) + '）、中身の軽い籾もまじった。' },
-      { key: 'short', name: '籾が足りない', loss: sd.shortage || 0, why: '塩水が濃すぎて、残る籾が足りなくなった。' },
+      { key: 'short', name: '籾が足りない', loss: sd.shortage || 0, why: '塩水が濃すぎて（比重 ' + fx(sg, 2) + '）、よい籾まで浮き、残る籾が足りなくなった。塩みっつ（比重 1.13）が、うるちの基準。' },
       { key: 'dens', name: '株がまばら', loss: clamp(1 - (den.yMul == null ? 1 : den.yMul), 0, 1), why: '株の間隔が広く、穂の数が少なめ。' },
       { key: 'pan', name: '深水の茎数', loss: pan, why: '深水は茎が増えにくく、穂の数が少しだけ減る。' },
       { key: 'hand', name: '踏んだ稲', loss: hand, why: '草取りのときに、稲まで抜いたり踏んだりした。' },
@@ -12283,9 +12792,15 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     const all = F.concat(X);
     all.forEach(x => { x.loss = clamp(x.loss, 0, 0.95); x.w = -Math.log(1 - x.loss); });
     const keep = all.reduce((a, x) => a * (1 - x.loss), 1), sumW = all.reduce((a, x) => a + x.w, 0);
-    const potential = r.yieldKg / Math.max(0.05, keep), lost = Math.max(0, potential - r.yieldKg);
+    // 見込み × （減った分の掛け算）×（1 + タニシ）＝ 実った分。減った分と、増えた分を分けて返す
+    const potential = r.yieldKg / Math.max(0.05, keep * (1 + snailGain)), afterLoss = potential * keep, lost = Math.max(0, potential - afterLoss), gained = Math.max(0, r.yieldKg - afterLoss);
     all.forEach((x, i) => { x.kg = sumW > 0 ? lost * x.w / sumW : 0; x.idx = i; });
-    return { potential, actual: r.yieldKg, lost, factors: all };
+    const nSn = RO.n('tanishi'), fmtN = v => fx(v, 1).replace(/\.0$/, '');
+    const gains = nSn > 0 ? [{ key: 'snail', name: 'タニシ', gain: snailGain, kg: gained,
+      why: RO.snails > 0
+        ? 'タニシ（' + fmtN(RO.snails) + ' 匹' + (RO.sprayKeep < 1 ? '。弱い薬で半分ほどになった' : '') + '）が、水面の藻や泥の有機物を食べ、ふんが稲の肥料になった。とれ高 ＋' + fx(snailGain * 100, 1) + '%。' + (RO.snailsEaten > 0 ? 'ザリガニに ' + RO.snailsEaten + ' 匹 食べられた残り。' : '')
+        : (RO.snailsRaw > 0 ? '薬で、タニシもいなくなった。薬は、虫だけでなく田の生き物みんなに効く。' : 'タニシ（' + nSn + ' 匹）は、ザリガニにみんな食べられた。') }] : [];
+    return { potential, actual: r.yieldKg, lost, gained, snailGain, factors: all, gains };
   }
   // ------------------------------------------------------------------
   // 売り値を決めたもの：米 1kg の値（基準 × 味 × 評判 × 乾き具合 × 精米 × 斑点米）と、売った目方（とれ高 × 精米の歩留まり）
@@ -12329,8 +12844,11 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       const fa = a.factors.find(x => x.key === k), fb = b.factors.find(x => x.key === k);
       const la = fa ? fa.loss : 0, lb = fb ? fb.loss : 0;
       if (Math.abs(lb - la) < 0.005) return;
-      box.append(h('span', { class: lb > la ? 'up' : 'dn' }, h('b', null, (fa || fb).name), ' −' + fx(la * 100, 0) + '% → −' + fx(lb * 100, 0) + '%'));
+      const dg = fx(la * 100, 0) === fx(lb * 100, 0) ? 1 : 0;   // 丸めると同じ数になるときは、小数1けたまで出す
+      box.append(h('span', { class: lb > la ? 'up' : 'dn' }, h('b', null, (fa || fb).name), ' −' + fx(la * 100, dg) + '% → −' + fx(lb * 100, dg) + '%'));
     });
+    // タニシで増えた分（減った分の札とは向きが逆。増えれば緑）
+    if (Math.abs((b.snailGain || 0) - (a.snailGain || 0)) >= 0.0025) { box.append(h('span', { class: (b.snailGain || 0) > (a.snailGain || 0) ? 'dn' : 'up' }, h('b', null, 'タニシ'), ' ' + gainTxt(a.snailGain) + ' → ' + gainTxt(b.snailGain))); box._ksGain = true; }
     return box.childNodes.length ? box : null;
   }
 
@@ -12459,7 +12977,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       gods.append(h('div', { class: 'ks-cg' + (la !== lb ? ' chg' : '') }, ic(art('god', k, lb)), h('div', null, h('b', null, G0.name), txt)));
     });
     const lc = lossChips(base, other);
-    if (lc) wrap.append(h('div', { class: 'ks-row', style: { gridTemplateColumns: 'minmax(0,1fr)' } }, h('div', { class: 'lab' }, 'とれ高を減らしたもの', h('small', null, o.baseLabel + ' → ' + o.otherLabel + '（変わったものだけ）'))), lc);
+    if (lc) wrap.append(h('div', { class: 'ks-row', style: { gridTemplateColumns: 'minmax(0,1fr)' } }, h('div', { class: 'lab' }, 'とれ高を減らしたもの' + (lc._ksGain ? '・増やしたもの' : ''), h('small', null, o.baseLabel + ' → ' + o.otherLabel + '（変わったものだけ）'))), lc);
     wrap.append(h('div', { class: 'ks-row', style: { gridTemplateColumns: 'minmax(0,1fr)' } }, h('div', { class: 'lab' }, '見守りの機嫌')), gods);
     el.replaceChildren(wrap);
     return wrap;
@@ -12524,10 +13042,17 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
             h('p', { class: 'ks-cap', style: { margin: 0 } }, o.note || (base ? '札の数字は、この一手を変える前との差（窒素は kg／田1枚）。' : '窒素は kg／田1枚。')))),
         h('div', { class: 'ks-foot' }, dayInfo, again, ok));
       host.append(root);
-      sizeClasses(root, sc);
+      let rvSize = null;
+      sizeClasses(root, sc, () => { if (rvSize) rvSize(); });
       const view = createSoil(viewBox, { reveal: true, labels: true, result: other, cardHost: root });
       sc.add(() => view.destroy());
       view.note(why.watch);
+      rvSize = () => {
+        if (!root.classList.contains('ks-narrow')) return;
+        const main = root.querySelector('.ks-rv-main'), nt = viewBox.querySelector('.ks-soil-note'), ntH = nt && !nt.hidden ? nt.offsetHeight + 4 : 0;
+        viewBox.style.setProperty('--ks-cv-h', clamp(main.clientHeight - ntH - 4, 180, 440) + 'px');
+      };
+      rvSize();
       let stopPlay = null, closeT = [];
       function start() {
         if (done) return;
@@ -12663,9 +13188,9 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       const good = relKeys.filter(k => CR[k].good), badK = relKeys.filter(k => !CR[k].good);
       addFree(12, '田に放した生き物',
         relKeys.map(k => CR[k].name + ' ' + Math.min(6, rel[k]) + ' 匹').join('、') + '。' +
-        (good.length ? [['kaeru', 'kumo', 'tombo'].some(k => rel[k] > 0) ? ['kaeru', 'kumo', 'tombo'].filter(k => rel[k] > 0).map(k => CR[k].name).join('・') + 'は虫を食べる天敵。' : '', ['otama', 'yago'].some(k => rel[k] > 0) ? ['otama', 'yago'].filter(k => rel[k] > 0).map(k => CR[k].name).join('・') + 'は、育つと虫を食べる（' + [rel.otama > 0 ? 'カエルの子' : '', rel.yago > 0 ? 'トンボの子' : ''].filter(Boolean).join('、') + '）。' : '', rel.tanishi > 0 ? 'タニシは藻や草の芽を食べる。' : ''].join('') : '') +
+        (good.length ? [['kaeru', 'kumo', 'tombo'].some(k => rel[k] > 0) ? ['kaeru', 'kumo', 'tombo'].filter(k => rel[k] > 0).map(k => CR[k].name).join('・') + 'は虫を食べる天敵。' : '', ['otama', 'yago'].some(k => rel[k] > 0) ? ['otama', 'yago'].filter(k => rel[k] > 0).map(k => CR[k].name).join('・') + 'は、育つと虫を食べる（' + [rel.otama > 0 ? 'カエルの子' : '', rel.yago > 0 ? 'トンボの子' : ''].filter(Boolean).join('、') + '）。' : '', rel.tanishi > 0 ? (relOf(result).snails > 0 ? 'タニシは水面の藻や泥の有機物を食べ、ふんが稲の肥料になる（とれ高 ＋' + fx(((result.snailGain != null ? result.snailGain : relOf(result).snailGain) || 0) * 100, 1) + '%）。' : relOf(result).snailsRaw > 0 ? '薬で、タニシもいなくなった。' : '') : ''].join('') : '') +
         relOf(result).chain +
-        (['batta', 'inago', 'kamemushi'].some(k => rel[k] > 0) ? [['batta', 'inago'].some(k => rel[k] > 0) ? ['batta', 'inago'].filter(k => rel[k] > 0).map(k => CR[k].name).join('・') + 'は稲の葉を食べる。' : '', rel.kamemushi > 0 ? 'カメムシは穂の汁を吸って、米に黒い点をつける。' : ''].join('') : '') + (badK.length && (result.bugLoss || 0) > 0 ? '放した生き物の差し引きで、とれ高が ' + fx((result.bugLoss || 0) * 100, 1) + '% 減った。' : '') +
+        (['batta', 'inago', 'kamemushi'].some(k => rel[k] > 0) ? [['batta', 'inago'].some(k => rel[k] > 0) ? ['batta', 'inago'].filter(k => rel[k] > 0).map(k => CR[k].name).join('・') + 'は稲の葉を食べる。' : '', rel.kamemushi > 0 ? 'カメムシは穂の汁を吸って、米に黒い点をつける。' : ''].join('') : '') + (badK.length && (result.bugLoss || 0) > 0 ? '葉を食べる虫やザリガニで、とれ高が ' + fx((result.bugLoss || 0) * 100, 1) + '% 減った。' : '') +
         '田の生き物は、土の中の窒素の動きは変えないが、稲の育ちと米の値に響く。',
         'いま：放した生き物が、田でくらしている', []);
     }
@@ -12866,7 +13391,8 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     ensureCss();
     ctx = ctx || {};
     const Rl = window.Rules, result = ctx.result, fast = !!ctx.fast, signal = ctx.signal;
-    const out = { prediction: null, tried: [], zukan: [], next: null, quiz: null };   // quiz＝入試に挑戦の正答数（挑戦しなければ null）
+    const out = { prediction: null, tried: [], zukan: [], next: null, quiz: null };
+    if (ctx.assim) out.assim = ctx.assim;   // 「稲の中へ」は、稲作の途中（分げつ期）で遊んでいる。感想戦では、その結果をふりかえる（遊んでいなければ、ここで遊べる）   // quiz＝入試に挑戦の正答数（挑戦しなければ null）
     return new Promise(resolve => {
       const sc = scope(); let stepSc = scope(), done = false, cur = -1, nextHook = null;
       const sayAs = (who, text, mood) => { try { if (ctx.say) ctx.say(who, text, mood || 'normal'); } catch (e) { /* 語りがなくても進む */ } };
@@ -12944,7 +13470,13 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         const nextStopBtn = UI.btn('場面 ›', 'ghost', () => { UI.sfx('tap'); const s = stops.find(x => x.day > day) || stops[stops.length - 1]; jump(s.day); });
         prevBtn.setAttribute('aria-label', '前の場面へ'); nextStopBtn.setAttribute('aria-label', '次の場面へ');
         const slider = h('input', { class: 'ks-range', type: 'range', min: 0, max: last, step: 1, value: 0, 'aria-label': '田植えからの日数' });
-        slider.addEventListener('input', () => jump(+slider.value));
+        // 指：つまみの上から縦に流したとき、触れた所へ日が飛ばないようにする（横に引いたとき・その場で離したときだけ動かす。マウスとキーは今までどおり）
+        let tg = null;
+        slider.addEventListener('pointerdown', e => { tg = e.pointerType === 'touch' ? { v0: +slider.value, x: e.clientX, y: e.clientY, go: false } : null; });
+        slider.addEventListener('pointermove', e => { if (tg && !tg.go && Math.abs(e.clientX - tg.x) > 6 && Math.abs(e.clientX - tg.x) > Math.abs(e.clientY - tg.y)) { tg.go = true; jump(+slider.value); } });
+        slider.addEventListener('pointerup', () => { const g = tg; tg = null; if (g && !g.go) jump(+slider.value); });
+        slider.addEventListener('pointercancel', () => { const g = tg; tg = null; if (g && !g.go) slider.value = g.v0; });   // 縦のスクロールに変わった → もとの日のまま
+        slider.addEventListener('input', () => { if (tg && !tg.go) return; jump(+slider.value); });
         const noteTitle = h('h3', null, ''), noteText = h('p', null, ''), noteCast = h('div', null);
         const mk = () => { const i = h('i'); return { bar: h('div', { class: 'meter' }, i), i, num: h('span', { class: 'num' }, '') }; };
         const tRice = mk(), tAir = mk(), tLake = mk();
@@ -12955,16 +13487,29 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
             h('span', { class: 'cap' }, 'この日までの合計（窒素 kg／田1枚）'),
             h('span', null, '稲へ'), tRice.bar, tRice.num, h('span', null, '空へ'), tAir.bar, tAir.num, h('span', null, '湖へ'), tLake.bar, tLake.num));
         const ctl = h('div', { class: 'ks-ctl' }, slider, playBtn, speedBtn, prevBtn, nextStopBtn);
+        const sliderSlot = h('div', { class: 'ks-rw-slot' });   // 背の低いスマホでは、日数のつまみをここ（凡例の下）へ移す
         const wrap = h('div', { class: 'ks-rw' },
-          h('div', { class: 'ks-rw-main' }, viewBox, ctl), side);
+          h('div', { class: 'ks-rw-main' }, viewBox, ctl), sliderSlot, side);
         body.append(wrap);
         const view = createSoil(viewBox, { reveal: true, labels: true, result, cardHost: root, onInfo: k => { if (k) setPlaying(false); } });
         stepSc.add(() => view.destroy());
-        const whoBtn = UI.btn('登場する者たち', 'ghost', () => { UI.sfx('tap'); setPlaying(false); whoCard(root, stepSc); });
+        const whoBtn = UI.btn('', 'ghost', () => { UI.sfx('tap'); setPlaying(false); whoCard(root, stepSc); });
+        whoBtn.append(h('span', { class: 'ks-who-l' }, '登場する者たち'), h('span', { class: 'ks-who-s', 'aria-hidden': 'true' }, '者たち')); whoBtn.setAttribute('aria-label', '登場する者たち');
         ctl.append(whoBtn);
         onSize = () => {
-          if (root.classList.contains('ks-port')) viewBox.style.height = clamp(body.clientHeight - 118, root.classList.contains('ks-narrow') ? 380 : 300, 480) + 'px';
-          else viewBox.style.height = '';
+          if (root.classList.contains('ks-narrow')) {
+            // スマホ：断面（一言＋絵）と操作の帯で、ちょうど一画面。凡例・場面の説明・合計は、その下（スクロール）
+            const nt = viewBox.querySelector('.ks-soil-note'), ntH = nt && !nt.hidden ? nt.offsetHeight + 4 : 0;
+            const short = body.clientHeight < 400;   // 小さいスマホ：絵の高さをかせぐため、つまみは下へ（場面のボタンで行き来できる）
+            if (short && slider.parentNode !== sliderSlot) sliderSlot.append(slider);
+            else if (!short && slider.parentNode !== ctl) ctl.prepend(slider);
+            viewBox.style.height = '';
+            viewBox.style.setProperty('--ks-cv-h', clamp(body.clientHeight - 12 - ctl.offsetHeight - 4 - ntH, 150, 440) + 'px');
+          }
+          else {
+            if (slider.parentNode !== ctl) ctl.prepend(slider);
+            viewBox.style.height = root.classList.contains('ks-port') ? clamp(body.clientHeight - 118, 300, 480) + 'px' : '';
+          }
         };
         onSize();
 
@@ -12979,6 +13524,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
           noteTitle.textContent = s.title; noteText.innerHTML = chem(s.text);
           noteCast.replaceChildren(castEl(s.cast) || '');
           view.note(s.now);
+          if (onSize) onSize();   // 一言の行数が変わると、絵の高さも変わる（せまい画面）
         }
         function show(i, jumped) {
           day = i; const row = daily[i];
@@ -13017,18 +13563,20 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         stepSc.add(stopGame);
         const flow = () => h('div', { class: 'ks-flow' },
           h('span', { html: chem('根が NH4+ を吸う') }), h('i', null, '→'), h('span', null, 'グルタミン'), h('i', null, '→'), h('span', null, 'グルタミン酸'), h('i', null, '→'), h('span', null, 'いろいろなアミノ酸'), h('i', null, '→'), h('span', null, 'タンパク質・クロロフィル'));
+        let playedHere = false;   // この感想戦の中で遊んだか（稲作の途中＝分げつ期に遊んだ結果をふりかえるだけなら false）
         function intro(res, err) {
           stopGame();
-          const startBtn = UI.btn(res ? 'もう一度あそぶ' : 'はじめる', res ? '' : 'primary', () => { UI.sfx('tap'); start(); });
+          const back = !!res && !playedHere;   // 分げつ期に見たことを、ふりかえる
+          const startBtn = UI.btn(res ? (back ? 'もう一度 入ってみる' : 'もう一度あそぶ') : 'はじめる', res ? '' : 'primary', () => { UI.sfx('tap'); start(); });
           const card = h('div', { class: 'card ks-card' },
             h('div', { class: 'hero' }, ic(art('tsugumi', res ? 'proud' : 'idea')),
               h('div', null, h('h3', null, res ? '稲の中で、窒素はアミノ酸になった' : '稲の中へ'),
                 res
-                  ? P((res.delivered != null ? 'アミノ酸を ' + res.delivered + ' こ 届けた。' : '') + '根が吸った NH4+ は、グルタミン酸に結びついてグルタミンになり、そのアミノ基がつぎつぎに受け渡されて、いろいろなアミノ酸になる。これが窒素同化。' + (res.no3Used > 0 ? 'NO3- は、NH4+ に還元してからでないと使えないので、二手間よけいにかかった。' : ''))
+                  ? P((back ? '分げつ期に、稲の中へ入って見たこと。' : '') + (res.delivered != null ? (back ? 'あのとき、' : '') + 'アミノ酸を ' + res.delivered + ' こ 届けた。' : '') + '根が吸った NH4+ は、グルタミン酸に結びついてグルタミンになり、そのアミノ基がつぎつぎに受け渡されて、いろいろなアミノ酸になる。これが窒素同化。' + (res.no3Used > 0 ? 'NO3- は、NH4+ に還元してからでないと使えないので、二手間よけいにかかった。' : ''))
                   : P('この一年で、稲は ' + fx(result.fate.rice, 1) + ' kg の窒素を根から吸った。吸われた NH4+ は、稲の体の中でどうなるのだろう。不思議な力で小さくなって、細胞の中へ入ってみよう。'))),
             flow(),
             err ? h('p', { class: 'ks-cap' }, 'うまく始められなかった。とばして先へ進もう。') : null,
-            P(res ? '葉の緑（クロロフィル）もタンパク質も、こうして取り込んだ窒素から作られる。葉の色が濃いほど、稲は窒素を多く取り込んでいる。' : '1分ほどの遊び。「つぎへ」で、とばしてもよい。', 'ks-cap'),
+            P(res ? '葉の緑（クロロフィル）もタンパク質も、こうして取り込んだ窒素から作られる。葉の色が濃いほど、稲は窒素を多く取り込んでいる。' + (back ? 'この一年で、稲は ' + fx(result.fate.rice, 1) + ' kg の窒素を、こうして体に取り込んだ。' : '') : '1分ほどの遊び。「つぎへ」で、とばしてもよい。', 'ks-cap'),
             h('div', { class: 'ks-acts', style: { marginTop: '8px' } }, startBtn));
           body.replaceChildren(h('div', { class: 'ks-assim' }, card)); body.scrollTop = 0;
           info.textContent = res ? 'つぎは、窒素の行方。' : 'あそばずに、つぎへ進んでもよい。';
@@ -13046,13 +13594,14 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
           } catch (e) { p = Promise.reject(e); }
           Promise.resolve(p).then(r => {
             if (ac !== my || done || stepSc.dead) return;
-            ac = null; out.assim = r || null;
+            ac = null; out.assim = r || null; playedHere = true;
             intro(r || {}, false);
             say('吸った窒素は、こうして稲の体になるのか。', 'laugh');
           }, () => { if (ac !== my || done || stepSc.dead) return; ac = null; intro(null, true); });
         }
         intro(out.assim || null, false);
         if (!out.assim) say('根が吸った窒素は、稲の中でどうなるんだろう。', 'idea');
+        else say('分げつ期に、稲の中で見たことを思い出そう。', 'idea');
       }
 
       // ---- 窒素の行方 ----
@@ -13114,12 +13663,19 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       // ---- とれ高のわけ（何がどれだけ効いたか） ----
       function stepYield() {
         const s = result.summary, d = result.decisions, yp = yieldParts(result);
-        const pot = Math.max(1, yp.potential);
+        const pot = Math.max(1, yp.potential), gn = (yp.gains || [])[0] || null, gOn = !!(gn && gn.kg >= 0.5), barAll = pot + (gOn ? gn.kg : 0);
         const fs = yp.factors.slice().sort((a, b) => (b.loss > 0.004 ? b.loss : 0) - (a.loss > 0.004 ? a.loss : 0) || a.idx - b.idx);
         const hit = fs.filter(x => x.loss > 0.004);
         const stack = h('div', { class: 'ks-yl-stack', role: 'img', 'aria-label': '見込めたとれ高のうち、実ったのは ' + yp.actual + ' kg' },
-          h('i', { class: 'got', style: { width: (yp.actual / pot * 100).toFixed(2) + '%' } }),
-          hit.map(x => h('i', { class: 'ks-f' + (x.idx % 14), title: x.name, style: { width: (x.kg / pot * 100).toFixed(2) + '%' } })));
+          h('i', { class: 'got', style: { width: ((yp.actual - (gOn ? gn.kg : 0)) / barAll * 100).toFixed(2) + '%' } }),
+          gOn ? h('i', { class: 'gain', title: 'タニシで増えた分', style: { width: (gn.kg / barAll * 100).toFixed(2) + '%' } }) : null,
+          hit.map(x => h('i', { class: 'ks-f' + (x.idx % 14), title: x.name, style: { width: (x.kg / barAll * 100).toFixed(2) + '%' } })));
+        // 増えた分（タニシ）。減った分の一覧とは別に、1行だけ
+        const gainRow = gn ? h('div', { class: 'ks-yl-rows ks-yl-gain' }, h('div', { class: 'ks-yl-row' + (gn.gain > 0 ? '' : ' zero') },
+          h('span', { class: 'sw gain' }), h('span', { class: 'nm' }, gn.name),
+          h('span', { class: 'tr' }, h('i', { class: 'gain', style: { width: (gn.gain > 0 ? clamp(gn.gain / Math.max(0.1, hit.length ? hit[0].loss : 0) * 100, 3, 100) : 0).toFixed(1) + '%' } })),
+          h('span', { class: 'vl' }, gn.gain > 0 ? '＋' + fx(gn.gain * 100, 1) + '%（およそ ' + fx(gn.kg, 0) + ' kg）' : '増えなかった'),
+          h('span', { class: 'wy', html: chem(gn.why) }))) : null;
         const maxLoss = Math.max(0.1, hit.length ? hit[0].loss : 0);
         const rows = h('div', { class: 'ks-yl-rows' }, fs.map(x => {
           const on = x.loss > 0.004;
@@ -13130,10 +13686,10 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
             h('span', { class: 'wy', html: chem(x.why) }));
         }));
         const main = h('div', { class: 'card ks-card' }, h('h3', null, 'とれ高を決めたもの'),
-          h('div', { class: 'ks-yl-sum' }, h('span', null, '稲が吸った窒素から見込めたとれ高 ', h('b', null, fx(pot, 0) + ' kg')), h('span', null, '→ 実ったのは ', h('b', null, yp.actual + ' kg')), h('span', null, '（減った分 ' + fx(yp.lost, 0) + ' kg）')),
+          h('div', { class: 'ks-yl-sum' }, h('span', null, '稲が吸った窒素から見込めたとれ高 ', h('b', null, fx(pot, 0) + ' kg')), h('span', null, '→ 実ったのは ', h('b', null, yp.actual + ' kg')), h('span', null, '（減った分 ' + fx(yp.lost, 0) + ' kg' + (gOn ? '、タニシで増えた分 ＋' + fx(gn.kg, 0) + ' kg' : '') + '）')),
           stack,
-          h('div', { class: 'ks-yl-ends' }, h('span', null, '黄金色＝実った分'), h('span', null, 'しま・色の帯＝減った分')),
-          rows,
+          h('div', { class: 'ks-yl-ends' }, h('span', null, '黄金色＝実った分' + (gOn ? '（明るい所＝タニシで増えた分）' : '')), h('span', null, 'しま・色の帯＝減った分')),
+          rows, gainRow,
           P('帯の長さが、とれ高を減らした割合。減りは掛け算で重なるので、kg は減った分を割合の大きさで分けた目安。' + (hit.length ? '' : 'この一年、とれ高を大きく減らしたものはなかった。'), 'ks-cap'));
         // 石・耕し：稲が吸う窒素の量そのものを変えるので、上の帯には入らない。その一手だけ変えて計算し直した差で見せる
         const ifs = [];
@@ -13296,6 +13852,8 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
             h('div', { class: 'ks-acts', style: { marginTop: '6px' } }, UI.btn('もう一度', '', () => { UI.sfx('tap'); go2(); })));
           const old = box.querySelector('[data-duo]'); if (old) old.remove();
           fig.setAttribute('data-duo', '1'); box.append(fig);
+          const nar = root.classList.contains('ks-narrow');
+          if (nar) va.style.height = vb.style.height = clamp(Math.floor((body.clientHeight - 62) / 2), 118, 190) + 'px';   // スマホ：二つの断面が、一画面にならぶ高さ
           const A = createSoil(va, { reveal: true, labels: false, result: w.base }), B = createSoil(vb, { reveal: true, labels: false, result: w.other });
           mySc.add(() => { A.destroy(); B.destroy(); });
           const rg = rangeFor(lv.id, w.base.decisions, w.other.decisions); let stop = null;
@@ -13306,7 +13864,8 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
               dd => { cap.textContent = '田植えから ' + dd + ' 日目（' + rg[0] + '〜' + rg[1] + ' 日目を早送り）。駒1つ ≈ 窒素 0.1 kg。'; });
           };
           go2();
-          fig.scrollIntoView({ block: 'nearest' });
+          if (nar) { const dq = fig.querySelector('.ks-duo'); body.scrollTop += dq.getBoundingClientRect().top - body.getBoundingClientRect().top - 2; }
+          else fig.scrollIntoView({ block: 'nearest' });
         }
         levers.forEach(lv => {
           const b = h('button', { class: 'ks-lever' + (triedKey(lv.id) ? ' tried' : ''), type: 'button', 'data-lever': lv.id, onclick: () => { UI.sfx('tap'); showLever(lv, b); } },
@@ -13589,7 +14148,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
         h('div', { class: 'ks-tc-stat' }, h('small', null, '稼ぎ'), h('b', null, net == null ? '—' : (net < 0 ? '−' : '') + num(Math.abs(net)), h('i', null, '文')),
           h('small', null, purse != null ? '手持ち ' + num(purse) + ' 文' : (m.income != null ? '売り上げ ' + num(m.income) + '・かかった銭 ' + num(m.cost || 0) : '')),
           (m.price != null && m.soldKg != null) ? h('small', { class: 'px' }, '米 1kg ' + fx(m.price, 1) + ' 文 × ' + num(m.soldKg) + ' kg') : null)),
-      o.hideFate ? h('div', { class: 'ks-tc-fate' }, h('div', { class: 'ks-tc-key' }, h('span', null, '窒素の行方'), h('span', null, '田に入った窒素がどこへ行ったかは、このあとの感想戦で。'))) : h('div', { class: 'ks-tc-fate' },
+      o.hideFate ? h('div', { class: 'ks-tc-fate' }, h('div', { class: 'ks-tc-key' }, h('span', null, '窒素の行方'), h('span', { class: 'long' }, '田に入った窒素がどこへ行ったかは、このあとの感想戦で。'))) : h('div', { class: 'ks-tc-fate' },
         h('div', { class: 'ks-tc-bar', role: 'img', 'aria-label': '窒素の行方' }, seg.map(x => h('i', { style: { width: (x[1] / tot * 100).toFixed(2) + '%', background: x[2] } }))),
         h('div', { class: 'ks-tc-key' }, h('span', null, '窒素の行方'), seg.map(x => h('span', null, h('i', { style: { background: x[2] } }), x[0] + ' ' + fx(x[1], x[3]) + ' kg')))),
       gods,
@@ -13642,6 +14201,11 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
   let elHud, elStage, elScene, elOver, elTalk, elFace, elWho, elLine, elMood, elBtns, elInv, elNext, elLater;
 
   // ------------------------------------------------------------------ 骨組み
+  // ------------------------------------------------------------------ 拡張フック（紙芝居・音楽など外付け用。契約書 10.16）
+  // 本体を書き換えずに、別ファイルから window.Ext.on('イベント名', async ctx => {...}) で差し込む。
+  const Ext = window.Ext = window.Ext || { h: {}, on(ev, fn) { (this.h[ev] = this.h[ev] || []).push(fn); }, async emit(ev, ctx) {
+    for (const fn of (this.h[ev] || [])) { if (G.cancelled) return; try { await fn(ctx); } catch (e) { console.error('Ext.' + ev, e); } } } };
+  const extCtx = o => Object.assign({ host: elOver, say, page, waitBtn, UI, R, G, hud }, o);
   function mount() {
     const app = document.getElementById('app'); app.replaceChildren();
     elHud = h('div', { class: 'hud' });
@@ -13652,6 +14216,11 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     elMood = h('div', { class: 'mood' }); elBtns = h('div', { class: 'sh-talkbtns' });
     elTalk = h('div', { class: 'talk' }, elFace, h('div', { style: { minWidth: 0 } }, elWho, elLine, elInv), h('div', { class: 'sh-talkbtns' }, elMood, elBtns));
     app.append(elHud, elStage, elTalk);
+    // スマホ：作業中（重ね面が出ているあいだ）は帯をたたむ。横向きの小さい画面では、たてに持ってもらい、時計を止める（契約書 10.17）
+    const busy = () => app.classList.toggle('sh-busy', !elOver.hidden);
+    new MutationObserver(busy).observe(elOver, { attributes: true, attributeFilter: ['hidden'] }); busy();
+    document.body.append(h('div', { class: 'sh-rotate' }, 'スマホを、たてに持ってください', h('small', null, '横向きでは画面の高さが足りません。たてにすると、つづきから遊べます。')));
+    try { const mq = window.matchMedia('(orientation:landscape) and (max-height:480px) and (pointer:coarse)'); let on = false; const f = () => { if (mq.matches && !on) { on = true; UI.guideOpen++; } else if (!mq.matches && on) { on = false; UI.guideOpen = Math.max(0, UI.guideOpen - 1); } }; (mq.addEventListener ? mq.addEventListener('change', f) : mq.addListener(f)); f(); } catch (e) {}
     elScene.addEventListener('click', e => { const s = e.target.closest && e.target.closest('[data-spot]'); if (s) tapSpot(s.getAttribute('data-spot')); });
     setInterval(tick, 250);
   }
@@ -13814,6 +14383,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     drawScene();
     elBtns.replaceChildren();
     say('ツグミ', '', 'normal');
+    await Ext.emit('sectionStart', extCtx({ run: G.run, index: i, section: sec })); if (G.cancelled) return;
     await banner(sec.name, sec.season + '　（' + (i + 1) + ' / 8）');
     if (G.cancelled) return;
     say('ツグミ', OPENING[sec.id], 'normal');
@@ -13939,7 +14509,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     async seed(spot, host, c) {
       const r = await MG.list.seed.run(host, c); if (G.later) return;
       set('seed', { method: r.method || 'none', level: r.level || 0, rinsed: r.rinsed !== false });
-      if (r.usedSalt) take('shio', 1);
+      if (r.usedSalt) take('shio', Math.max(1, Math.round(r.usedSalt)));   // 塩は、足したつかみの数だけ減る（契約書 10.17）
       G.done.ie = true;
     },
     async market(spot, host, c) {
@@ -14073,7 +14643,8 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       if (r && after) after(r);
     };
     if (wx.thunder) await runEvent('kaminari', '空が暗くなってきた。夕立だ。', 'pale', r => { G.d.lightning[sec.id] = r.power || 0; });
-    if (sec.id === 'bunketsu' && G.run > 1) await runEvent('assim', '不思議な力で、体が小さくなった！ 稲の中へ入ってみよう。', 'idea');
+    // 稲の中へ：どの周も、分げつ期のはじめに入る（一周目も稲作の途中で。感想戦では、その結果をふりかえるだけ。契約書 10.17）
+    if (sec.id === 'bunketsu') await runEvent('assim', '不思議な力で、体が小さくなった！ 稲の中へ入ってみよう。', 'idea', r => { G.assim = r; });
     if (sec.id === 'minori' && G.d.ducks && !G.decided.duckFate) await duckEvent();
     if (!G.cancelled) { drawScene(); say('ツグミ', OPENING[sec.id], 'normal'); }
     if (G.timeUp && G.endSection) { const f = G.endSection; G.endSection = null; f(); }
@@ -14151,10 +14722,11 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
   }
 
   function title() {
-    G.cancelled = false; G.d = null; G.frozen = true; G.timeLeft = Infinity; G.results = []; G.ledger = []; G.lastLevels = null;
+    G.cancelled = false; G.d = null; G.frozen = true; G.timeLeft = Infinity; G.results = []; G.ledger = []; G.lastLevels = null; G.farm = null; G.money = R.ECON.startMoney; delete G.savedMoney; // タイトルに戻ったら引き継ぎ状態は空（つづきからはセーブから復元）
     hud('里の田あずかり', 'ベータ版'); elBtns.replaceChildren(); elMood.replaceChildren(); elInv.replaceChildren(); elScene.replaceChildren();
     
     const save = getSave();
+    Ext.emit('title', extCtx({ save }));
     const seg = h('div', { class: 'sh-seg' });
     const modes = [['class', '授業（時間どおり）'], ['short', '短め（半分）'], ['free', '時間なし']];
     const drawSeg = () => seg.replaceChildren(...modes.map(m => h('button', { type: 'button', class: G.mode === m[0] ? 'on' : '', onclick: () => { G.mode = m[0]; UI.sfx('tap'); drawSeg(); } }, m[1])));
@@ -14223,9 +14795,9 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       ['キキミミ', '里の人は、いろんな言い伝えを教えてくれる。' + (window.RUMOR_NOTE || 'うわさは、うわさ。ほんとうかどうかは、まだ分からない。'), 'normal'],
       ['ツグミ', '何がいいのかは、まだ分からない。季節は待ってくれないから、まずはやってみよう。秋に答え合わせだ。', 'proud']
     ] : run === 2 ? [
-      ['ツグミ', '同じ田の、同じ一年をもう一度。銭と持ち物は、はじめに戻る。手がかりは今回も出ない。でも、土の中で何が起きるかは、もう知っている。', 'proud']
+      ['ツグミ', '同じ田の、同じ一年をもう一度。土と銭は去年から引き継ぐ。持ち物は空からはじめる。手がかりは今回も出ない。でも、土の中で何が起きるかは、もう知っている。', 'proud']
     ] : [
-      ['ツグミ', '三周目は「見える田」。同じ一年をもう一度（銭と持ち物は、はじめに戻る）。季節が終わるたびに、決めたことで土の中がどう動いたかと、その理由が見える。', 'idea']
+      ['ツグミ', '三周目は「見える田」。同じ一年をもう一度（土と銭は去年から引き継ぐ。持ち物は空からはじめる）。季節が終わるたびに、決めたことで土の中がどう動いたかと、その理由が見える。', 'idea']
     ];
     for (const pg of pages) {
       say(pg[0], '', pg[2]);
@@ -14262,9 +14834,12 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     }
 
     G.si = 0;
+    G.endingShown = false; G.assim = null;
     hud(RUN_NAME[run], '', null);
+    await Ext.emit('runStart', extCtx({ run })); if (G.cancelled) return;
     await intro(run); if (G.cancelled) return;
-    for (let i = 0; i < R.SECTIONS.length; i++) { await playSection(i); if (G.cancelled) return; }
+    for (let i = 0; i < R.SECTIONS.length; i++) { await playSection(i); if (G.cancelled) return; await Ext.emit('sectionEnd', extCtx({ run, index: i, section: R.SECTIONS[i] })); }
+    await Ext.emit('kessanStart', extCtx({ run })); if (G.cancelled) return;
     await kessan(); if (G.cancelled) return;
     await afterYear();
   }
@@ -14330,7 +14905,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
     elOver.replaceChildren(); elOver.hidden = false;
     const ac = new AbortController(); G.actAC = ac;
     let out = null;
-    try { out = await Kansou.run(elOver, { result: G.results[G.run], prevResult: G.results[G.run - 1] || null, farm: G.farm, run: G.run, fast: !!fast, signal: ac.signal, say }); } catch (e) { console.error(e); }
+    try { out = await Kansou.run(elOver, { result: G.results[G.run], prevResult: G.results[G.run - 1] || null, farm: G.farm, run: G.run, fast: !!fast, signal: ac.signal, say, assim: G.assim || null }); } catch (e) { console.error(e); }
     G.frozen = true; G.timeLeft = Infinity; G.kansouOut = out;
   }
 
@@ -14346,6 +14921,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
   }
 
   async function afterYear() {
+    if (G.run && G.results[G.run] && !G.endingShown) { await Ext.emit('yearEnd', extCtx({ run: G.run, result: G.results[G.run] })); if (G.cancelled) return; }
     if (G.run === 1) {
       await kansou(false); if (G.cancelled) return;
       if (G.results[1] && G.results[1].sim && G.results[1].sim.next) {
@@ -14387,6 +14963,7 @@ h1,h2,h3{font-family:var(--font-maru);margin:0;text-wrap:balance}
       return startRun(3);
     }
     // 三周目のあと：まとめ
+    if (!G.endingShown) { G.endingShown = true; await Ext.emit('ending', extCtx({ results: G.results })); if (G.cancelled) return; }
     say('ツグミ', '三年ぶん、田をあずかった。同じ田でも、決め方でこんなに変わる。', 'proud');
     hud('まとめ', '', null);
     const cmp = h('div', { class: 'wide' }), sk = h('div', { class: 'wide' });
