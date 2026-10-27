@@ -14556,6 +14556,7 @@ window.STORY_IMG_SIZE = {"tsugumi_ten_jishin": [367, 440], "tsugumi_ten_warai": 
       h('span', { class: 'timer num' }, fmt(G.timeLeft)),
       h('span', { class: 'zeni num' }, G.d ? G.money + ' 文' : ''),
       UI.btn(G.muted ? '音なし' : '音', 'ghost sh-ico', e => { G.muted = !G.muted; UI.setMuted(G.muted); e.currentTarget.textContent = G.muted ? '音なし' : '音'; }),
+      (hasHistoryResults() && stepIdx != null && stepIdx <= 7) ? UI.btn('📜 記録', 'ghost sh-ico', () => openHistoryModal()) : null,
       (G.d && stepIdx != null && stepIdx <= 7) ? UI.btn('💾 セーブ', 'ghost sh-ico', openSaveModal) : null,
       UI.btn('休む', 'ghost sh-ico', pause)].filter(Boolean));
   }
@@ -15127,6 +15128,93 @@ window.STORY_IMG_SIZE = {"tsugumi_ten_jishin": [367, 440], "tsugumi_ten_warai": 
     elStage.append(p);
   }
 
+  // 過去の年の結果記録が存在するか判定
+  function hasHistoryResults() {
+    if (G.results && (G.results[1] || G.results[2] || G.results[3])) return true;
+    try {
+      const s = getSave();
+      return !!(s && s.results && (s.results[1] || s.results[2] || s.results[3]));
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // 過去の年の結果（今年の一枚・スクショ用）を表示するモーダル
+  function openHistoryModal(initialRun) {
+    let resList = G.results;
+    if (!resList || (!resList[1] && !resList[2] && !resList[3])) {
+      const save = getSave();
+      if (save && save.results) resList = save.results;
+    }
+    const availableRuns = [1, 2, 3].filter(r => resList && resList[r]);
+    if (availableRuns.length === 0) {
+      UI.toast(elStage, 'まだ保存された年の記録がありません。', 2000);
+      return;
+    }
+
+    const wasPaused = G.paused;
+    G.paused = true;
+
+    let curRun = initialRun && resList[initialRun] ? initialRun : availableRuns[0];
+
+    const modal = h('div', { class: 'sh-pause', style: { padding: '16px 12px', overflowY: 'auto', zIndex: 40, justifyContent: 'flex-start' } });
+    
+    const render = () => {
+      const res = resList[curRun];
+      const tabs = h('div', { class: 'row', style: { gap: '8px', marginBottom: '8px', flexWrap: 'wrap', justifyContent: 'center' } },
+        availableRuns.map(r => UI.btn(RUN_NAME[r] + 'の結果', r === curRun ? 'primary' : 'ghost', () => {
+          curRun = r;
+          render();
+        }))
+      );
+
+      const notice = h('div', {
+        class: 'card wide',
+        style: {
+          background: '#fff9e6',
+          border: '2px solid var(--kohaku)',
+          textAlign: 'center',
+          padding: '10px 14px',
+          margin: '0 0 10px 0',
+          maxWidth: '740px',
+          boxSizing: 'border-box'
+        }
+      },
+        h('div', { style: { fontFamily: 'var(--font-maru)', fontWeight: 700, fontSize: '1.15rem', color: 'var(--sumi)', marginBottom: '4px' } },
+          '📸 ロイロノート提出用：この画面をスクリーンショット、もしくは保存してください'
+        ),
+        h('div', { style: { fontSize: '.88rem', color: 'var(--usuzumi)' } },
+          '（iPadの場合：電源ボタン＋音量ボタンを同時に押してスクショを撮影し、ロイロノートの提出箱へ提出）'
+        )
+      );
+
+      const cardContainer = h('div', { class: 'wide', style: { maxWidth: '740px', width: '100%' } });
+      try {
+        if (window.Kansou && Kansou.card) {
+          Kansou.card(cardContainer, res, { run: curRun, money: res.money ? res.money.hand : null, hideFate: curRun < 3 });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+
+      const closeBtn = UI.btn('閉じる', 'primary', () => {
+        if (!wasPaused) G.paused = false;
+        modal.remove();
+      });
+
+      modal.replaceChildren(
+        h('h2', { style: { margin: '8px 0', fontSize: '1.3rem' } }, '📜 過去の年の結果記録'),
+        tabs,
+        notice,
+        cardContainer,
+        h('div', { class: 'row', style: { margin: '14px 0 20px 0' } }, closeBtn)
+      );
+    };
+
+    render();
+    elStage.append(modal);
+  }
+
   // 途中セーブからの再開
   async function resumeRun(save) {
     G.cancelled = false;
@@ -15220,7 +15308,8 @@ window.STORY_IMG_SIZE = {"tsugumi_ten_jishin": [367, 440], "tsugumi_ten_warai": 
         UI.btn(targetLabel, 'primary', onStart),
         save.savedAt ? h('div', { class: 'muted', style: { fontSize: '.82rem' } }, '💾 保存日時: ' + save.savedAt) : null
       ));
-      rows.push(h('div', { class: 'row' },
+      rows.push(h('div', { class: 'row', style: { flexWrap: 'wrap', justifyContent: 'center', gap: '8px' } },
+        UI.btn('📸 過去の年の結果（スクショ用）を見る', 'ghost', () => openHistoryModal()),
         UI.btn('一周目を最初からあそぶ', 'ghost', () => {
           if (confirm('前の記録をリセットして、一周目から始めますか？')) {
             clearSave();
@@ -15351,7 +15440,30 @@ window.STORY_IMG_SIZE = {"tsugumi_ten_jishin": [367, 440], "tsugumi_ten_warai": 
     UI.sfx('bell'); await waitBtn(p, '今年の一枚を見る'); if (G.cancelled) return;
     // 4) 今年の一枚（見せ合える札）
     const cardEl = h('div', { class: 'wide' });
-    p = page('center', [h('h2', null, '今年の田'), h('p', { class: 'sub' }, '今年は「' + res.weather.name + '」だった。'), cardEl]);
+    const notice = h('div', {
+      class: 'card wide',
+      style: {
+        background: '#fff9e6',
+        border: '2px solid var(--kohaku)',
+        textAlign: 'center',
+        padding: '10px 14px',
+        margin: '0 0 12px 0',
+        boxSizing: 'border-box'
+      }
+    },
+      h('div', { style: { fontFamily: 'var(--font-maru)', fontWeight: 700, fontSize: '1.15rem', color: 'var(--sumi)', marginBottom: '4px' } },
+        '📸 提出用：この画面をスクリーンショット、もしくは保存してください'
+      ),
+      h('div', { style: { fontSize: '.9rem', color: 'var(--usuzumi)' } },
+        'ロイロノートの提出箱へ提出します（iPadの場合：電源ボタン＋音量ボタンなどでスクショ撮影）'
+      )
+    );
+    p = page('center', [
+      h('h2', null, '今年の田'),
+      h('p', { class: 'sub' }, '今年は「' + res.weather.name + '」だった。'),
+      notice,
+      cardEl
+    ]);
     try { if (window.Kansou && Kansou.card) Kansou.card(cardEl, res, { run: G.run, money: G.money, hideFate: G.run < 3 }); } catch (e) { console.error(e); }
     await waitBtn(p, G.run === 1 ? '感想戦へ' : 'つぎへ');
   }
@@ -15403,7 +15515,8 @@ window.STORY_IMG_SIZE = {"tsugumi_ten_jishin": [367, 440], "tsugumi_ten_warai": 
         h('h2', null, '一周目はここまで'),
         h('p', { class: 'sub' }, '授業の一コマ目はここで終わり。土と銭の記録を保存しました。つぎは、手がかりなしでもう一度。'),
         runsTable(),
-        h('div', { class: 'row', style: { marginTop: '14px' } },
+        h('div', { class: 'row', style: { marginTop: '14px', flexWrap: 'wrap', justifyContent: 'center', gap: '8px' } },
+          UI.btn('📸 一周目の結果札（スクショ用）を見る', 'ghost', () => openHistoryModal(1)),
           UI.btn('タイトルへ戻る（次回つづきから）', 'ghost', () => title())
         )
       ]);
@@ -15413,7 +15526,7 @@ window.STORY_IMG_SIZE = {"tsugumi_ten_jishin": [367, 440], "tsugumi_ten_warai": 
     if (G.run === 2) {
       say('クボカワ', G.results[1] ? '一周目とくらべてみましょう。' : '二周目が終わりましたな。', 'idea');
       const cmp = h('div', { class: 'wide' });
-      const row = h('div', { class: 'row' });
+      const row = h('div', { class: 'row', style: { flexWrap: 'wrap', justifyContent: 'center', gap: '8px' } });
       const p = page('', [h('h2', null, '二周目をおえて'), runsTable(), row, cmp]);
       if (G.results[1] && window.Kansou) { try { Kansou.compare(cmp, G.results[1], G.results[2], { baseLabel: '一周目', otherLabel: '二周目' }); } catch (e) { console.error(e); } }
       if (G.results[2] && G.results[2].sim && G.results[2].sim.next) {
@@ -15423,6 +15536,7 @@ window.STORY_IMG_SIZE = {"tsugumi_ten_jishin": [367, 440], "tsugumi_ten_warai": 
       const v = await new Promise(res => {
         row.append(
           UI.btn('土の中を見る（感想戦・短め）', '', () => res('k')),
+          UI.btn('📸 これまでの結果札（スクショ用）を見る', 'ghost', () => openHistoryModal(2)),
           UI.btn('三周目「見える田」へ', 'primary', () => res('n')),
           UI.btn('タイトルへ（保存して中断）', 'ghost', () => res('t'))
         );
@@ -15437,7 +15551,7 @@ window.STORY_IMG_SIZE = {"tsugumi_ten_jishin": [367, 440], "tsugumi_ten_warai": 
     say('ツグミ', '三年ぶん、田をあずかった。同じ田でも、決め方でこんなに変わるのじゃな。', 'proud');
     hud('まとめ', '', null);
     const cmp = h('div', { class: 'wide' }), sk = h('div', { class: 'wide' });
-    const row = h('div', { class: 'row' });
+    const row = h('div', { class: 'row', style: { flexWrap: 'wrap', justifyContent: 'center', gap: '8px' } });
     const p = page('', [h('h2', null, '三つの一年をならべる'), runsTable(), row, cmp,
       h('div', { class: 'card wide' }, h('b', null, 'ふりかえりの問い'), h('ul', { style: { margin: '6px 0 0', paddingLeft: '1.2em' } },
         h('li', null, '稲に届かなかった窒素は、どこへ行っただろう。それを決めたのは、どの一手だっただろう。'),
@@ -15446,7 +15560,9 @@ window.STORY_IMG_SIZE = {"tsugumi_ten_jishin": [367, 440], "tsugumi_ten_warai": 
     const first = G.results[1] || G.results[2];
     if (first && window.Kansou) { try { Kansou.compare(cmp, first, G.results[3], { baseLabel: G.results[1] ? '一周目' : '二周目', otherLabel: '三周目' }); } catch (e) { console.error(e); } }
     if (window.Kansou) { try { Kansou.sankey(sk, G.results[3].fate); } catch (e) { console.error(e); } }
-    row.append(UI.btn('三周目の感想戦をする', '', async () => { await kansou(true); if (!G.cancelled) afterYear(); }),
+    row.append(
+      UI.btn('📸 結果札（スクショ用）を見る', 'ghost', () => openHistoryModal(3)),
+      UI.btn('三周目の感想戦をする', '', async () => { await kansou(true); if (!G.cancelled) afterYear(); }),
       MG.list.gesui ? UI.btn('おまけ：下水処理場', '', async () => { await omake('gesui'); if (!G.cancelled) afterYear(); }) : null,
       UI.btn('はじめの画面へ', 'primary', () => title()));
   }
