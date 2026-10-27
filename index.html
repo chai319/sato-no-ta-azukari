@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>里の田あずかり</title>
+<title>里の田あずかり（公開版V1）</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
@@ -14556,6 +14556,7 @@ window.STORY_IMG_SIZE = {"tsugumi_ten_jishin": [367, 440], "tsugumi_ten_warai": 
       h('span', { class: 'timer num' }, fmt(G.timeLeft)),
       h('span', { class: 'zeni num' }, G.d ? G.money + ' 文' : ''),
       UI.btn(G.muted ? '音なし' : '音', 'ghost sh-ico', e => { G.muted = !G.muted; UI.setMuted(G.muted); e.currentTarget.textContent = G.muted ? '音なし' : '音'; }),
+      (G.d && stepIdx != null && stepIdx <= 7) ? UI.btn('💾 セーブ', 'ghost sh-ico', openSaveModal) : null,
       UI.btn('休む', 'ghost sh-ico', pause)].filter(Boolean));
   }
   function wxChip(stepIdx) {
@@ -14990,40 +14991,187 @@ window.STORY_IMG_SIZE = {"tsugumi_ten_jishin": [367, 440], "tsugumi_ten_warai": 
 
   
   // ------------------------------------------------------------------ セーブ・ロード（localStorage）
-  const SAVE_KEY = 'sato_no_ta_azukari_v02_save';
+  const SAVE_KEY = 'sato_no_ta_azukari_v1_save';
+  const SAVE_KEY_OLD = 'sato_no_ta_azukari_v02_save';
+
   function getSave() {
     try {
-      const s = localStorage.getItem(SAVE_KEY);
+      let s = localStorage.getItem(SAVE_KEY);
+      if (!s) s = localStorage.getItem(SAVE_KEY_OLD);
       return s ? JSON.parse(s) : null;
     } catch (e) {
       console.warn('セーブ読込失敗:', e);
       return null;
     }
   }
-  function saveState(nextRun) {
+
+  // プレイ中の手動セーブ（現在の節、所持金、決定、土壌、これまでの結果）
+  function saveMidRun() {
     try {
+      const curSec = (G.si != null && R.SECTIONS[G.si]) ? R.SECTIONS[G.si] : null;
       const data = {
-        version: '0.2',
-        nextRun: nextRun || (G.run + 1),
-        results: G.results,
-        ledger: G.ledger,
-        farm: G.farm,
+        version: '1.0',
+        type: 'midRun',
+        run: G.run,
+        si: G.si != null ? G.si : 0,
+        secName: curSec ? curSec.name : '',
+        d: clone(G.d || {}),
+        decided: clone(G.decided || {}),
         money: G.money,
+        spent: G.spent || 0,
+        results: clone(G.results || []),
+        ledger: clone(G.ledger || []),
+        farm: clone(G.farm || null),
+        inv: clone(G.inv || {}),
+        stock: clone(G.stock || {}),
+        trips: clone(G.trips || {}),
+        known: (G.known || []).slice(),
+        visits: clone(G.visits || {}),
+        mode: G.mode || 'class',
         savedAt: new Date().toLocaleDateString('ja-JP') + ' ' + new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })
       };
       localStorage.setItem(SAVE_KEY, JSON.stringify(data));
-      console.log('里の田あずかり セーブ完了:', data.nextRun, '周目へ');
+      console.log('里の田あずかり 手動セーブ完了:', RUN_NAME[G.run], curSec ? curSec.name : '', data.savedAt);
+      return true;
     } catch (e) {
-      console.warn('セーブ保存失敗:', e);
+      console.warn('手動セーブ保存失敗:', e);
+      return false;
     }
   }
+
+  // 年越し（周回終了時）の自動セーブ
+  function saveState(nextRun) {
+    try {
+      const data = {
+        version: '1.0',
+        type: 'yearEnd',
+        nextRun: nextRun || (G.run + 1),
+        results: clone(G.results || []),
+        ledger: clone(G.ledger || []),
+        farm: clone(G.farm || null),
+        money: G.money,
+        mode: G.mode || 'class',
+        savedAt: new Date().toLocaleDateString('ja-JP') + ' ' + new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })
+      };
+      localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+      console.log('里の田あずかり 年越しセーブ完了:', data.nextRun, '周目へ');
+      return true;
+    } catch (e) {
+      console.warn('セーブ保存失敗:', e);
+      return false;
+    }
+  }
+
   function clearSave() {
-    try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+    try {
+      localStorage.removeItem(SAVE_KEY);
+      localStorage.removeItem(SAVE_KEY_OLD);
+    } catch (e) {}
+  }
+
+  // 手動セーブ用のモーダル表示（iPad対応・大きなタップ領域と明確な選択肢）
+  function openSaveModal() {
+    if (G.paused) return;
+    if (G.busy || G.noPause) {
+      UI.toast(elStage, 'いまの作業が終わってからセーブできます。', 2000);
+      return;
+    }
+    G.paused = true; // 時間を止める
+    const curSec = (G.si != null && R.SECTIONS[G.si]) ? R.SECTIONS[G.si] : null;
+    const secName = curSec ? curSec.name : '';
+    const runName = RUN_NAME[G.run] || (G.run + '周目');
+    const moneyStr = (G.money != null ? G.money : 0) + ' 文';
+
+    const p = h('div', { class: 'sh-pause' },
+      h('h2', null, '💾 進行状況のセーブ'),
+      h('p', { class: 'sub', style: { margin: '0 0 8px 0', fontSize: '1.1rem', textAlign: 'center' } },
+        '【現在地】' + runName + '・' + secName + '（所持金: ' + moneyStr + '）'
+      ),
+      h('p', { class: 'muted', style: { margin: '0 0 16px 0', fontSize: '.92rem', textAlign: 'center', maxWidth: '32em', lineHeight: '1.5' } },
+        'この端末（iPad・ブラウザ）に進行状況を保存します。' +
+        '次回プレイするとき、この季節の最初から再開できます。'
+      ),
+      h('div', { class: 'row', style: { gap: '12px', flexWrap: 'wrap', justifyContent: 'center' } },
+        UI.btn('セーブしてつづける', 'primary', () => {
+          const ok = saveMidRun();
+          if (ok) {
+            UI.sfx('good');
+            UI.toast(elStage, '💾 セーブしました（' + runName + '・' + secName + '）', 2400);
+          }
+          G.paused = false;
+          p.remove();
+        }),
+        UI.btn('セーブしてタイトルへ戻る', 'ghost', e => {
+          const ok = saveMidRun();
+          if (ok) {
+            UI.sfx('good');
+            e.currentTarget.disabled = true;
+            UI.toast(elStage, '💾 セーブしました。タイトルへ戻ります。', 1800);
+            setTimeout(() => {
+              G.paused = false;
+              abortAll();
+              p.remove();
+              title();
+            }, 600);
+          } else {
+            G.paused = false;
+            p.remove();
+          }
+        }),
+        UI.btn('とじる（セーブしない）', 'ghost', () => {
+          G.paused = false;
+          p.remove();
+        })
+      )
+    );
+    elStage.append(p);
+  }
+
+  // 途中セーブからの再開
+  async function resumeRun(save) {
+    G.cancelled = false;
+    G.run = save.run || 1;
+    G.d = save.d || R.defaultDecisions();
+    G.d.year = G.run;
+    G.stock = save.stock || R.newStock();
+    G.trips = save.trips || {};
+    G.inv = save.inv || {};
+    G.money = (save.money != null) ? save.money : R.ECON.startMoney;
+    G.spent = save.spent || 0;
+    G.decided = save.decided || {};
+    G.known = save.known || [];
+    G.visits = save.visits || {};
+    G.results = save.results || [];
+    G.ledger = save.ledger || [];
+    G.farm = save.farm || null;
+    G.mode = save.mode || G.mode || 'class';
+    G.snap = null;
+    G.later = false;
+    G.endingShown = false;
+    G.assim = null;
+    G.lastLevels = null;
+    G.pestSeen = false;
+
+    const startSi = (save.si != null && save.si >= 0 && save.si < R.SECTIONS.length) ? save.si : 0;
+    G.si = startSi;
+
+    hud(RUN_NAME[G.run], '', startSi);
+    await Ext.emit('runStart', extCtx({ run: G.run })); if (G.cancelled) return;
+    
+    // 途中再開時は紙芝居はスキップし、保存された節から再開
+    for (let i = startSi; i < R.SECTIONS.length; i++) {
+      await playSection(i);
+      if (G.cancelled) return;
+      await Ext.emit('sectionEnd', extCtx({ run: G.run, index: i, section: R.SECTIONS[i] }));
+    }
+    await Ext.emit('kessanStart', extCtx({ run: G.run })); if (G.cancelled) return;
+    await kessan(); if (G.cancelled) return;
+    await afterYear();
   }
 
   function title() {
     G.cancelled = false; G.d = null; G.frozen = true; G.timeLeft = Infinity; G.results = []; G.ledger = []; G.lastLevels = null; G.farm = null; G.money = R.ECON.startMoney; delete G.savedMoney; // タイトルに戻ったら引き継ぎ状態は空（つづきからはセーブから復元）
-    hud('里の田あずかり', 'ベータ版'); elBtns.replaceChildren(); elMood.replaceChildren(); elInv.replaceChildren(); elScene.replaceChildren();
+    hud('里の田あずかり', '公開版V1'); elBtns.replaceChildren(); elMood.replaceChildren(); elInv.replaceChildren(); elScene.replaceChildren();
     
     const save = getSave();
     Ext.emit('title', extCtx({ save }));
@@ -15039,19 +15187,38 @@ window.STORY_IMG_SIZE = {"tsugumi_ten_jishin": [367, 440], "tsugumi_ten_warai": 
       h('div', { class: 'row' }, h('span', { class: 'muted' }, '季節ごとの制限時間'), seg)
     ];
 
-    if (save && save.nextRun && save.nextRun <= 3) {
-      say('クボカワ', RUN_NAME[save.nextRun] + 'の記録（土と手持ち銭）が残っております。つづきから始めますかな？', 'idea');
-      const targetRun = save.nextRun;
-      const targetLabel = '【つづきから】' + RUN_NAME[targetRun] + 'へ（所持金: ' + (save.money || 0) + '文）';
-      rows.push(h('div', { class: 'row', style: { margin: '8px 0' } },
-        UI.btn(targetLabel, 'primary', () => {
+    if (save && (save.type === 'midRun' || (save.nextRun && save.nextRun <= 3))) {
+      let targetLabel = '';
+      let onStart = null;
+      let kubokawaText = '';
+
+      if (save.type === 'midRun') {
+        const runName = RUN_NAME[save.run] || (save.run + '周目');
+        const secName = save.secName || (R.SECTIONS[save.si] ? R.SECTIONS[save.si].name : '');
+        kubokawaText = runName + '・' + secName + ' の進行記録（所持金: ' + (save.money || 0) + '文）が残っております。つづきから始めますかな？';
+        targetLabel = '【つづきから】' + runName + '・' + secName + ' から再開';
+        onStart = () => {
+          UI.sfx('good');
+          resumeRun(save);
+        };
+      } else {
+        const targetRun = save.nextRun;
+        kubokawaText = RUN_NAME[targetRun] + 'の記録（土と手持ち銭: ' + (save.money || 0) + '文）が残っております。つづきから始めますかな？';
+        targetLabel = '【つづきから】' + RUN_NAME[targetRun] + 'へ（所持金: ' + (save.money || 0) + '文）';
+        onStart = () => {
           UI.sfx('good');
           G.results = save.results || [];
           G.ledger = save.ledger || [];
           G.farm = save.farm || null;
           G.savedMoney = save.money;
           startRun(targetRun, true);
-        })
+        };
+      }
+
+      say('クボカワ', kubokawaText, 'idea');
+      rows.push(h('div', { class: 'row', style: { margin: '8px 0', flexDirection: 'column', alignItems: 'center', gap: '4px' } },
+        UI.btn(targetLabel, 'primary', onStart),
+        save.savedAt ? h('div', { class: 'muted', style: { fontSize: '.82rem' } }, '💾 保存日時: ' + save.savedAt) : null
       ));
       rows.push(h('div', { class: 'row' },
         UI.btn('一周目を最初からあそぶ', 'ghost', () => {
