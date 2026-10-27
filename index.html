@@ -15218,10 +15218,25 @@ window.STORY_IMG_SIZE = {"tsugumi_ten_jishin": [367, 440], "tsugumi_ten_warai": 
   // 途中セーブからの再開
   async function resumeRun(save) {
     G.cancelled = false;
-    G.run = save.run || 1;
-    G.d = save.d || R.defaultDecisions();
+    G.paused = false;
+    G.busy = false;
+    G.frozen = false;
+    G.timeUp = false;
+    G.eventBusy = false;
+    G.onTimeUp = null;
+
+    // ★★★ 最重要：全画面オーバーレイ（タイトル画面のDOM）を直ちに完全消去＆非表示にする！ ★★★
+    elOver.hidden = true;
+    elOver.replaceChildren();
+    elBtns.replaceChildren();
+    elMood.replaceChildren();
+    elInv.replaceChildren();
+    elScene.replaceChildren();
+
+    G.run = (save.run && save.run >= 1 && save.run <= 3) ? save.run : 1;
+    G.d = Object.assign(R.defaultDecisions(), save.d || {});
     G.d.year = G.run;
-    G.stock = save.stock || R.newStock();
+    G.stock = Object.assign(R.newStock(), save.stock || {});
     G.trips = save.trips || {};
     G.inv = save.inv || {};
     G.money = (save.money != null) ? save.money : R.ECON.startMoney;
@@ -15244,7 +15259,8 @@ window.STORY_IMG_SIZE = {"tsugumi_ten_jishin": [367, 440], "tsugumi_ten_warai": 
     G.si = startSi;
 
     hud(RUN_NAME[G.run], '', startSi);
-    await Ext.emit('runStart', extCtx({ run: G.run })); if (G.cancelled) return;
+    await Ext.emit('runStart', extCtx({ run: G.run }));
+    if (G.cancelled) return;
     
     // 途中再開時は紙芝居はスキップし、保存された節から再開
     for (let i = startSi; i < R.SECTIONS.length; i++) {
@@ -15252,8 +15268,10 @@ window.STORY_IMG_SIZE = {"tsugumi_ten_jishin": [367, 440], "tsugumi_ten_warai": 
       if (G.cancelled) return;
       await Ext.emit('sectionEnd', extCtx({ run: G.run, index: i, section: R.SECTIONS[i] }));
     }
-    await Ext.emit('kessanStart', extCtx({ run: G.run })); if (G.cancelled) return;
-    await kessan(); if (G.cancelled) return;
+    await Ext.emit('kessanStart', extCtx({ run: G.run }));
+    if (G.cancelled) return;
+    await kessan();
+    if (G.cancelled) return;
     await afterYear();
   }
 
@@ -15285,21 +15303,34 @@ window.STORY_IMG_SIZE = {"tsugumi_ten_jishin": [367, 440], "tsugumi_ten_warai": 
         const secName = save.secName || (R.SECTIONS[save.si] ? R.SECTIONS[save.si].name : '');
         kubokawaText = runName + '・' + secName + ' の進行記録（所持金: ' + (save.money || 0) + '文）が残っております。つづきから始めますかな？';
         targetLabel = '【つづきから】' + runName + '・' + secName + ' から再開';
-        onStart = () => {
+        onStart = async e => {
+          if (e && e.currentTarget) e.currentTarget.disabled = true;
           UI.sfx('good');
-          resumeRun(save);
+          try {
+            await resumeRun(save);
+          } catch (err) {
+            console.error('resumeRun failed:', err);
+            UI.toast(elStage, '再開処理でエラーが発生したため、季節の最初から開始します。', 2500);
+            startRun(save.run || 1);
+          }
         };
       } else {
         const targetRun = save.nextRun;
         kubokawaText = RUN_NAME[targetRun] + 'の記録（土と手持ち銭: ' + (save.money || 0) + '文）が残っております。つづきから始めますかな？';
         targetLabel = '【つづきから】' + RUN_NAME[targetRun] + 'へ（所持金: ' + (save.money || 0) + '文）';
-        onStart = () => {
+        onStart = async e => {
+          if (e && e.currentTarget) e.currentTarget.disabled = true;
           UI.sfx('good');
-          G.results = save.results || [];
-          G.ledger = save.ledger || [];
-          G.farm = save.farm || null;
-          G.savedMoney = save.money;
-          startRun(targetRun, true);
+          try {
+            G.results = save.results || [];
+            G.ledger = save.ledger || [];
+            G.farm = save.farm || null;
+            G.savedMoney = save.money;
+            await startRun(targetRun, true);
+          } catch (err) {
+            console.error('startRun failed:', err);
+            startRun(1);
+          }
         };
       }
 
@@ -15368,7 +15399,9 @@ window.STORY_IMG_SIZE = {"tsugumi_ten_jishin": [367, 440], "tsugumi_ten_warai": 
   }
 
   async function startRun(run, isContinue) {
-    G.cancelled = false; G.run = run; G.d = R.defaultDecisions(); G.d.year = run; G.stock = R.newStock(); G.trips = {}; G.inv = {}; G.d.bought = {}; Object.keys(R.PEST_ITEMS).forEach(k => { G.d.bought[k] = 0; }); G.snap = null; G.later = false;
+    G.cancelled = false; G.paused = false; G.busy = false; G.frozen = false;
+    elOver.hidden = true; elOver.replaceChildren();
+    G.run = run; G.d = R.defaultDecisions(); G.d.year = run; G.stock = R.newStock(); G.trips = {}; G.inv = {}; G.d.bought = {}; Object.keys(R.PEST_ITEMS).forEach(k => { G.d.bought[k] = 0; }); G.snap = null; G.later = false;
     
     // 銭の引き継ぎ
     if (isContinue && G.savedMoney != null) {
